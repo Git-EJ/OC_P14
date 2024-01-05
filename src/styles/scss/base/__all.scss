@@ -1,0 +1,11 @@
+html,
+body {
+  max-width: 1440px;
+  // height:2000px; //DEV
+  margin: 0 auto;
+  font-family: 'Roboto', sans-serif;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  ::-webkit-scrollbar {display: none}
+  
+}
