@@ -115,6 +115,7 @@ body ::-webkit-scrollbar {
   justify-content: center;
   align-items: center;
   flex-direction: row;
+  justify-content: flex-start;
   width: 100%;
   height: 150px;
   position: relative;
@@ -134,7 +135,7 @@ body ::-webkit-scrollbar {
   justify-content: center;
   align-items: center;
   justify-content: flex-start;
-  width: 100%;
+  width: fit-content;
   height: 100%;
   padding: 20px;
 }
@@ -147,6 +148,20 @@ body ::-webkit-scrollbar {
   font-size: 3rem;
   margin-left: 20px;
   background: linear-gradient(to right, #1494B9, #0E3C55);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.vertical_bar_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: fit-content;
+  margin-right: 1rem;
+  font-size: 3rem;
+  background: linear-gradient(to bottom, #1494B9, #0E3C55);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
