@@ -110,40 +110,232 @@ body ::-webkit-scrollbar {
   font-family: "Tektur_bold";
   src: url("/src/fonts/Tektur-Bold.ttf") format("truetype");
 }
-.header_container {
+@keyframes dynamic_border_bottom_30 {
+  0% {
+    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
+  }
+  5% {
+    background: radial-gradient(circle at 56% center, #1494B9 0%, #0E3C55 100%);
+  }
+  10% {
+    background: radial-gradient(circle at 62% center, #1494B9 0%, #0E3C55 100%);
+  }
+  15% {
+    background: radial-gradient(circle at 68% center, #1494B9 0%, #0E3C55 100%);
+  }
+  20% {
+    background: radial-gradient(circle at 74% center, #1494B9 0%, #0E3C55 100%);
+  }
+  25% {
+    background: radial-gradient(circle at 80% center, #1494B9 0%, #0E3C55 100%);
+  }
+  30% {
+    background: radial-gradient(circle at 74% center, #1494B9 0%, #0E3C55 100%);
+  }
+  35% {
+    background: radial-gradient(circle at 68% center, #1494B9 0%, #0E3C55 100%);
+  }
+  40% {
+    background: radial-gradient(circle at 62% center, #1494B9 0%, #0E3C55 100%);
+  }
+  45% {
+    background: radial-gradient(circle at 56% center, #1494B9 0%, #0E3C55 100%);
+  }
+  50% {
+    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
+  }
+  55% {
+    background: radial-gradient(circle at 44% center, #1494B9 0%, #0E3C55 100%);
+  }
+  60% {
+    background: radial-gradient(circle at 38% center, #1494B9 0%, #0E3C55 100%);
+  }
+  65% {
+    background: radial-gradient(circle at 32% center, #1494B9 0%, #0E3C55 100%);
+  }
+  70% {
+    background: radial-gradient(circle at 26% center, #1494B9 0%, #0E3C55 100%);
+  }
+  75% {
+    background: radial-gradient(circle at 20% center, #1494B9 0%, #0E3C55 100%);
+  }
+  80% {
+    background: radial-gradient(circle at 26% center, #1494B9 0%, #0E3C55 100%);
+  }
+  85% {
+    background: radial-gradient(circle at 32% center, #1494B9 0%, #0E3C55 100%);
+  }
+  90% {
+    background: radial-gradient(circle at 38% center, #1494B9 0%, #0E3C55 100%);
+  }
+  95% {
+    background: radial-gradient(circle at 44% center, #1494B9 0%, #0E3C55 100%);
+  }
+  100% {
+    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
+  }
+}
+@keyframes dynamic_border_bottom_20 {
+  0% {
+    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
+  }
+  5% {
+    background: radial-gradient(circle at 54% center, #1494B9 0%, #0E3C55 100%);
+  }
+  10% {
+    background: radial-gradient(circle at 58% center, #1494B9 0%, #0E3C55 100%);
+  }
+  15% {
+    background: radial-gradient(circle at 62% center, #1494B9 0%, #0E3C55 100%);
+  }
+  20% {
+    background: radial-gradient(circle at 66% center, #1494B9 0%, #0E3C55 100%);
+  }
+  25% {
+    background: radial-gradient(circle at 70% center, #1494B9 0%, #0E3C55 100%);
+  }
+  30% {
+    background: radial-gradient(circle at 66% center, #1494B9 0%, #0E3C55 100%);
+  }
+  35% {
+    background: radial-gradient(circle at 62% center, #1494B9 0%, #0E3C55 100%);
+  }
+  40% {
+    background: radial-gradient(circle at 58% center, #1494B9 0%, #0E3C55 100%);
+  }
+  45% {
+    background: radial-gradient(circle at 54% center, #1494B9 0%, #0E3C55 100%);
+  }
+  50% {
+    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
+  }
+  55% {
+    background: radial-gradient(circle at 46% center, #1494B9 0%, #0E3C55 100%);
+  }
+  60% {
+    background: radial-gradient(circle at 42% center, #1494B9 0%, #0E3C55 100%);
+  }
+  65% {
+    background: radial-gradient(circle at 38% center, #1494B9 0%, #0E3C55 100%);
+  }
+  70% {
+    background: radial-gradient(circle at 34% center, #1494B9 0%, #0E3C55 100%);
+  }
+  75% {
+    background: radial-gradient(circle at 30% center, #1494B9 0%, #0E3C55 100%);
+  }
+  80% {
+    background: radial-gradient(circle at 34% center, #1494B9 0%, #0E3C55 100%);
+  }
+  85% {
+    background: radial-gradient(circle at 38% center, #1494B9 0%, #0E3C55 100%);
+  }
+  90% {
+    background: radial-gradient(circle at 42% center, #1494B9 0%, #0E3C55 100%);
+  }
+  95% {
+    background: radial-gradient(circle at 46% center, #1494B9 0%, #0E3C55 100%);
+  }
+  100% {
+    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
+  }
+}
+@keyframes dynamic_border_bottom_10 {
+  0% {
+    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
+  }
+  5% {
+    background: radial-gradient(circle at 52% center, #1494B9 0%, #0E3C55 100%);
+  }
+  10% {
+    background: radial-gradient(circle at 54% center, #1494B9 0%, #0E3C55 100%);
+  }
+  15% {
+    background: radial-gradient(circle at 56% center, #1494B9 0%, #0E3C55 100%);
+  }
+  20% {
+    background: radial-gradient(circle at 58% center, #1494B9 0%, #0E3C55 100%);
+  }
+  25% {
+    background: radial-gradient(circle at 60% center, #1494B9 0%, #0E3C55 100%);
+  }
+  30% {
+    background: radial-gradient(circle at 58% center, #1494B9 0%, #0E3C55 100%);
+  }
+  35% {
+    background: radial-gradient(circle at 56% center, #1494B9 0%, #0E3C55 100%);
+  }
+  40% {
+    background: radial-gradient(circle at 54% center, #1494B9 0%, #0E3C55 100%);
+  }
+  45% {
+    background: radial-gradient(circle at 52% center, #1494B9 0%, #0E3C55 100%);
+  }
+  50% {
+    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
+  }
+  55% {
+    background: radial-gradient(circle at 48% center, #1494B9 0%, #0E3C55 100%);
+  }
+  60% {
+    background: radial-gradient(circle at 46% center, #1494B9 0%, #0E3C55 100%);
+  }
+  65% {
+    background: radial-gradient(circle at 44% center, #1494B9 0%, #0E3C55 100%);
+  }
+  70% {
+    background: radial-gradient(circle at 42% center, #1494B9 0%, #0E3C55 100%);
+  }
+  75% {
+    background: radial-gradient(circle at 40% center, #1494B9 0%, #0E3C55 100%);
+  }
+  80% {
+    background: radial-gradient(circle at 42% center, #1494B9 0%, #0E3C55 100%);
+  }
+  85% {
+    background: radial-gradient(circle at 44% center, #1494B9 0%, #0E3C55 100%);
+  }
+  90% {
+    background: radial-gradient(circle at 46% center, #1494B9 0%, #0E3C55 100%);
+  }
+  95% {
+    background: radial-gradient(circle at 48% center, #1494B9 0%, #0E3C55 100%);
+  }
+  100% {
+    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
+  }
+}
+.header_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 150px;
+}
+.header_logo_and_vertical_bar_container {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
   justify-content: flex-start;
   width: 100%;
-  height: 150px;
-  position: relative;
+  height: 100%;
 }
-.header_container::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: radial-gradient(circle at center, #1494B9 0%, #0E3C55 100%);
-}
-
-.logo_container {
+.header_logo_container {
   display: flex;
   justify-content: center;
   align-items: center;
   justify-content: flex-start;
   width: fit-content;
   height: 100%;
-  padding: 20px;
+  padding: 1.2rem;
 }
-.logo_img {
+.header_logo_img {
   width: fit-content;
   height: 100%;
 }
-.logo_title {
+.header_logo_title {
   font-family: "Tektur_Bold", sans-serif;
   font-size: 3rem;
   margin-left: 20px;
@@ -152,8 +344,7 @@ body ::-webkit-scrollbar {
   background-clip: text;
   color: transparent;
 }
-
-.vertical_bar_container {
+.header_vertical_bar_container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -165,6 +356,32 @@ body ::-webkit-scrollbar {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  cursor: default;
+}
+.header_vertical_bar_item:hover {
+  transform: scale(1.1);
+}
+.header_border_bottom {
+  position: relative;
+  width: calc(100% - 2.4rem);
+}
+.header_border_bottom::after {
+  will-change: true;
+  content: "";
+  position: absolute;
+  bottom: -1.2rem;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  border-radius: 50px 20px;
+  animation: dynamic_border_bottom_30 2s infinite;
+}
+
+.main_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .title {

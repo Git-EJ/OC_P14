@@ -4,3 +4,7 @@
   background-clip: text;
   color: transparent;
 }
+
+@mixin dynamic_radial-gradient($percentage) {
+  background: radial-gradient(circle at $percentage center, #1494B9 0%, #0E3C55 100%);
+}
