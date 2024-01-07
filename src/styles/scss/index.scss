@@ -5,35 +5,9 @@
 @import './utils/__mixins.scss';
 @import './utils/__flex_mixins.scss';
 @import './utils/__animations.scss';
-@import './components/header.scss';
+@import './components/header.scss'; 
 @import './pages/home.scss';
 
-
-
-// app.css
-.title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-label {
-  display: block;
-  margin-top: 1rem;
-  margin-bottom: 10px;
-}
-
-.address {
-  margin-top: 10px;
-}
-// END app.css
 
 
 // jquery.datetimepicker.css

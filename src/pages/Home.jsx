@@ -1,4 +1,5 @@
 import Header from "../molecules/Header";
+import CreateEmployee from "../organisms/CreateEmployee";
 
 
 const Home = () => {
@@ -6,8 +7,7 @@ const Home = () => {
   return (
     <>
       <Header />
-      <main className="main_wrapper">
-      </main>
+      <CreateEmployee />
     </>
   );
 };

@@ -1,4 +1,4 @@
-const EmployeeList = () => {
+const CurrentEmployees = () => {
 
   return (
   )
