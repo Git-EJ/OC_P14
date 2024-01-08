@@ -1,0 +1,30 @@
+// select field border
+.MuiInputBase-root, 
+.MuiOutlinedInput-root, 
+.MuiInputBase-colorPrimary, 
+.MuiInputBase-formControl, 
+.css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
+ border-radius: 0px !important;
+}
+
+// select field border
+.MuiOutlinedInput-notchedOutline, 
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+  border-radius: 0px !important;
+  border-style: none !important;
+  border-width: 0px !important;
+  border-color: transparent !important;
+}
+
+// select field text
+.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+  padding: 0px 0px !important;
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 0.9rem !important;
+}
+
+
+//height of select list when is open
+.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+  max-height: calc(500px - 10%) !important;
+}
