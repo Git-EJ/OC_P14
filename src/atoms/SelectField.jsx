@@ -22,6 +22,7 @@ const SelectField = ({ label, menuItem }) => {
     setOpen(true);
   };
 
+
   return (
     <> 
       <FormControl>
@@ -34,7 +35,11 @@ const SelectField = ({ label, menuItem }) => {
           onOpen={handleOpen}
           value={fieldValue}
           onChange={handleChange}
+          displayEmpty
         >
+          <MenuItem value="" disabled>
+            {label}
+          </MenuItem>
           {menuItem.map(item => (
             <MenuItem value={item.abbreviation} key={`selectField_${item.abbreviation}`}>
               {item.name}

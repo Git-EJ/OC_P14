@@ -28,3 +28,12 @@
 .css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
   max-height: calc(500px - 10%) !important;
 }
+
+//select placeholder color
+.MuiSelect-select, 
+.MuiSelect-outlined,
+.MuiInputBase-input, 
+.MuiOutlinedInput-input, 
+.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+color: #757575 !important;
+}
