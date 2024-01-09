@@ -72,3 +72,9 @@
   95% { @include dynamic_radial-gradient(48%); }
   100% { @include dynamic_radial-gradient(50%); }
 }
+
+
+@keyframes sphereline_home_rotation {
+  0% { transform: rotatey(0deg); }
+  100% { transform: rotateZ(360deg); }
+}

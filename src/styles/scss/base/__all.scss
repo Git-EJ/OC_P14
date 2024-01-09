@@ -7,5 +7,20 @@ body {
   scrollbar-width: none;
   -ms-overflow-style: none;
   ::-webkit-scrollbar {display: none}
+}
+
+.main {
+
+  &_wrapper {
+    @include flex_center_column;
+    height: auto;
+    width: 100%;
+    margin: 2rem 0 0 0;
+
+  }
   
+  &_modal-opacity {
+    opacity: 0.2;
+    pointer-events: none;
+  }
 }

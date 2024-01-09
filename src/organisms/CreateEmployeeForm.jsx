@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SelectField from "../atoms/SelectField";
 import Modal from '../atoms/Modal';
+import SphereLine from "../atoms/SphereLine";
 
 const CreateEmployeeForm = () => { 
 
@@ -108,6 +109,8 @@ const CreateEmployeeForm = () => {
     setIsModalOpen(false);
   }
 
+  const arrayOfSpheres = [1, 1, 1, 1];
+
 
   return (
     <>
@@ -145,15 +148,9 @@ const CreateEmployeeForm = () => {
           </div>
 
           <div className="form_submit_container">
-            <div className="form_submit_outside-circle"></div>
-            <div className="form_submit_middleOut-circle"></div>
-            <div className="form_submit_middleIn-circle"></div>
-            <div className="form_submit_inside-circle"></div>
+            <SphereLine />
             <button type="submit" className="form_submit_button" onClick={createEmployee} >Create Employee</button>
-            <div className="form_submit_inside-circle"></div>
-            <div className="form_submit_middleIn-circle"></div>
-            <div className="form_submit_middleOut-circle"></div>
-            <div className="form_submit_outside-circle"></div>
+            <SphereLine rotation={'east'} />
           </div>
 
         </form>
