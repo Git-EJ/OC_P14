@@ -1,0 +1,27 @@
+.sphere-pyramid {
+
+  &_wrapper {
+    @include flex_center_column;
+    width: fit-content;
+    height: fit-content;
+    
+    &:first-child {
+      transform: rotateZ(180deg)
+    }
+  }
+
+  &_level-container {
+    @include flex_center_row;
+    width: fit-content;
+    height: fit-content;
+  }
+
+  &_item {
+    @include flex_center;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: $primary_radial-gradient;
+  }
+
+}

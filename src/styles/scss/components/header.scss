@@ -6,7 +6,7 @@
     height: 150px;
   }
 
-  &_logo_and_vertical_bar_container {
+  &_contents_container {
     @include flex_center_row;
     justify-content: flex-start;
     width: 100%;
@@ -20,7 +20,8 @@
       justify-content: flex-start;
       width: fit-content;
       height: 100%;
-      padding: 1.2rem;
+      margin: 0 1.2rem;
+      padding: 1.2rem 0;
     }
   
     &_img {
@@ -41,8 +42,10 @@
 
     &_container {
       @include flex_center_row;
+      justify-content: flex-start;
+      flex: 1;
+      height: 100%;
       width: fit-content;
-      margin-right: 1rem;
       font-size: 3rem;
       @include gradient_text($tertiary_linear-gradient);
       cursor: default;
@@ -70,6 +73,24 @@
       height: 20px;
       border-radius: 50px 20px;
       animation: dynamic_border_bottom_30 2.5s infinite;
+    }
+  }
+
+  &_button {
+
+    &_container {
+      @include flex_center_column;
+      width: fit-content;
+      height: 100%;
+      margin: 0 1.2rem;
+    }
+
+    &_nav {
+      @include gradient_text($primary_radial-gradient);
+      padding: 0px 0 5px 0;
+      font-size: 1.2rem;
+      font-family: 'Tektur_Bold', sans-serif;
+      font-weight: 500;
     }
   }
 }

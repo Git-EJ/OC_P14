@@ -1,17 +1,593 @@
-/* Error: Can't find stylesheet to import.
- *   ,
- * 9 | @import './components/datepicker.scss';
- *   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- *   '
- *   src\styles\scss\index.scss 9:9  root stylesheet */
-
-body::before {
-  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
-      "Droid Sans Mono", monospace, monospace;
-  white-space: pre;
-  display: block;
-  padding: 1em;
-  margin-bottom: 1em;
-  border-bottom: 2px solid black;
-  content: "Error: Can't find stylesheet to import.\a   \2577 \a 9 \2502  @import './components/datepicker.scss';\d\a   \2502          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\a   \2575 \a   src\\styles\\scss\\index.scss 9:9  root stylesheet";
+/*! minireset.css v0.0.6 | MIT License | github.com/jgthms/minireset.css */
+html,
+body,
+p,
+ol,
+ul,
+li,
+dl,
+dt,
+dd,
+blockquote,
+figure,
+legend,
+textarea,
+pre,
+iframe,
+hr,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
 }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+  font-weight: normal;
+}
+
+ul {
+  list-style: none;
+}
+
+button,
+input,
+select,
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+img,
+video {
+  height: auto;
+  max-width: 100%;
+}
+
+iframe {
+  border: 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th {
+  padding: 0;
+}
+
+/* =============================== add perso =========================== */
+.navlink {
+  text-decoration: none;
+  color: inherit;
+}
+
+html,
+body {
+  max-width: 1440px;
+  margin: 0 auto;
+  font-family: "Roboto", sans-serif;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html ::-webkit-scrollbar,
+body ::-webkit-scrollbar {
+  display: none;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/src/fonts/Roboto-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Tektur_regular";
+  src: url("/src/fonts/Tektur-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Tektur_bold";
+  src: url("/src/fonts/Tektur-Bold.ttf") format("truetype");
+}
+@keyframes dynamic_border_bottom_30 {
+  0% {
+    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
+  }
+  5% {
+    background: radial-gradient(circle at 56% center, #1494B9 0%, #0E3C55 100%);
+  }
+  10% {
+    background: radial-gradient(circle at 62% center, #1494B9 0%, #0E3C55 100%);
+  }
+  15% {
+    background: radial-gradient(circle at 68% center, #1494B9 0%, #0E3C55 100%);
+  }
+  20% {
+    background: radial-gradient(circle at 74% center, #1494B9 0%, #0E3C55 100%);
+  }
+  25% {
+    background: radial-gradient(circle at 80% center, #1494B9 0%, #0E3C55 100%);
+  }
+  30% {
+    background: radial-gradient(circle at 74% center, #1494B9 0%, #0E3C55 100%);
+  }
+  35% {
+    background: radial-gradient(circle at 68% center, #1494B9 0%, #0E3C55 100%);
+  }
+  40% {
+    background: radial-gradient(circle at 62% center, #1494B9 0%, #0E3C55 100%);
+  }
+  45% {
+    background: radial-gradient(circle at 56% center, #1494B9 0%, #0E3C55 100%);
+  }
+  50% {
+    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
+  }
+  55% {
+    background: radial-gradient(circle at 44% center, #1494B9 0%, #0E3C55 100%);
+  }
+  60% {
+    background: radial-gradient(circle at 38% center, #1494B9 0%, #0E3C55 100%);
+  }
+  65% {
+    background: radial-gradient(circle at 32% center, #1494B9 0%, #0E3C55 100%);
+  }
+  70% {
+    background: radial-gradient(circle at 26% center, #1494B9 0%, #0E3C55 100%);
+  }
+  75% {
+    background: radial-gradient(circle at 20% center, #1494B9 0%, #0E3C55 100%);
+  }
+  80% {
+    background: radial-gradient(circle at 26% center, #1494B9 0%, #0E3C55 100%);
+  }
+  85% {
+    background: radial-gradient(circle at 32% center, #1494B9 0%, #0E3C55 100%);
+  }
+  90% {
+    background: radial-gradient(circle at 38% center, #1494B9 0%, #0E3C55 100%);
+  }
+  95% {
+    background: radial-gradient(circle at 44% center, #1494B9 0%, #0E3C55 100%);
+  }
+  100% {
+    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
+  }
+}
+@keyframes dynamic_border_bottom_20 {
+  0% {
+    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
+  }
+  5% {
+    background: radial-gradient(circle at 54% center, #1494B9 0%, #0E3C55 100%);
+  }
+  10% {
+    background: radial-gradient(circle at 58% center, #1494B9 0%, #0E3C55 100%);
+  }
+  15% {
+    background: radial-gradient(circle at 62% center, #1494B9 0%, #0E3C55 100%);
+  }
+  20% {
+    background: radial-gradient(circle at 66% center, #1494B9 0%, #0E3C55 100%);
+  }
+  25% {
+    background: radial-gradient(circle at 70% center, #1494B9 0%, #0E3C55 100%);
+  }
+  30% {
+    background: radial-gradient(circle at 66% center, #1494B9 0%, #0E3C55 100%);
+  }
+  35% {
+    background: radial-gradient(circle at 62% center, #1494B9 0%, #0E3C55 100%);
+  }
+  40% {
+    background: radial-gradient(circle at 58% center, #1494B9 0%, #0E3C55 100%);
+  }
+  45% {
+    background: radial-gradient(circle at 54% center, #1494B9 0%, #0E3C55 100%);
+  }
+  50% {
+    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
+  }
+  55% {
+    background: radial-gradient(circle at 46% center, #1494B9 0%, #0E3C55 100%);
+  }
+  60% {
+    background: radial-gradient(circle at 42% center, #1494B9 0%, #0E3C55 100%);
+  }
+  65% {
+    background: radial-gradient(circle at 38% center, #1494B9 0%, #0E3C55 100%);
+  }
+  70% {
+    background: radial-gradient(circle at 34% center, #1494B9 0%, #0E3C55 100%);
+  }
+  75% {
+    background: radial-gradient(circle at 30% center, #1494B9 0%, #0E3C55 100%);
+  }
+  80% {
+    background: radial-gradient(circle at 34% center, #1494B9 0%, #0E3C55 100%);
+  }
+  85% {
+    background: radial-gradient(circle at 38% center, #1494B9 0%, #0E3C55 100%);
+  }
+  90% {
+    background: radial-gradient(circle at 42% center, #1494B9 0%, #0E3C55 100%);
+  }
+  95% {
+    background: radial-gradient(circle at 46% center, #1494B9 0%, #0E3C55 100%);
+  }
+  100% {
+    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
+  }
+}
+@keyframes dynamic_border_bottom_10 {
+  0% {
+    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
+  }
+  5% {
+    background: radial-gradient(circle at 52% center, #1494B9 0%, #0E3C55 100%);
+  }
+  10% {
+    background: radial-gradient(circle at 54% center, #1494B9 0%, #0E3C55 100%);
+  }
+  15% {
+    background: radial-gradient(circle at 56% center, #1494B9 0%, #0E3C55 100%);
+  }
+  20% {
+    background: radial-gradient(circle at 58% center, #1494B9 0%, #0E3C55 100%);
+  }
+  25% {
+    background: radial-gradient(circle at 60% center, #1494B9 0%, #0E3C55 100%);
+  }
+  30% {
+    background: radial-gradient(circle at 58% center, #1494B9 0%, #0E3C55 100%);
+  }
+  35% {
+    background: radial-gradient(circle at 56% center, #1494B9 0%, #0E3C55 100%);
+  }
+  40% {
+    background: radial-gradient(circle at 54% center, #1494B9 0%, #0E3C55 100%);
+  }
+  45% {
+    background: radial-gradient(circle at 52% center, #1494B9 0%, #0E3C55 100%);
+  }
+  50% {
+    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
+  }
+  55% {
+    background: radial-gradient(circle at 48% center, #1494B9 0%, #0E3C55 100%);
+  }
+  60% {
+    background: radial-gradient(circle at 46% center, #1494B9 0%, #0E3C55 100%);
+  }
+  65% {
+    background: radial-gradient(circle at 44% center, #1494B9 0%, #0E3C55 100%);
+  }
+  70% {
+    background: radial-gradient(circle at 42% center, #1494B9 0%, #0E3C55 100%);
+  }
+  75% {
+    background: radial-gradient(circle at 40% center, #1494B9 0%, #0E3C55 100%);
+  }
+  80% {
+    background: radial-gradient(circle at 42% center, #1494B9 0%, #0E3C55 100%);
+  }
+  85% {
+    background: radial-gradient(circle at 44% center, #1494B9 0%, #0E3C55 100%);
+  }
+  90% {
+    background: radial-gradient(circle at 46% center, #1494B9 0%, #0E3C55 100%);
+  }
+  95% {
+    background: radial-gradient(circle at 48% center, #1494B9 0%, #0E3C55 100%);
+  }
+  100% {
+    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
+  }
+}
+.sphere-pyramid_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: fit-content;
+  height: fit-content;
+}
+.sphere-pyramid_wrapper:first-child {
+  transform: rotateZ(180deg);
+}
+.sphere-pyramid_level-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: fit-content;
+  height: fit-content;
+}
+.sphere-pyramid_item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, #1494B9 0%, #0E3C55 100%);
+}
+
+.header_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 150px;
+}
+.header_contents_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100%;
+}
+.header_logo_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
+  width: fit-content;
+  height: 100%;
+  margin: 0 1.2rem;
+  padding: 1.2rem 0;
+}
+.header_logo_img {
+  width: fit-content;
+  height: 100%;
+}
+.header_logo_title {
+  font-family: "Tektur_Bold", sans-serif;
+  font-size: 3rem;
+  margin-left: 20px;
+  background: linear-gradient(to right, #1494B9, #0E3C55);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  cursor: default;
+}
+.header_vertical_bar_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex: 1;
+  height: 100%;
+  width: fit-content;
+  font-size: 3rem;
+  background: linear-gradient(to bottom, #1494B9, #0E3C55);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  cursor: default;
+}
+.header_vertical_bar_item:hover {
+  transform: scale(1.1);
+}
+.header_border_bottom {
+  position: relative;
+  width: calc(100% - 2.4rem);
+}
+.header_border_bottom::after {
+  will-change: true;
+  content: "";
+  position: absolute;
+  bottom: -1.2rem;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  border-radius: 50px 20px;
+  animation: dynamic_border_bottom_30 2.5s infinite;
+}
+.header_button_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: fit-content;
+  height: 100%;
+  margin: 0 1.2rem;
+}
+.header_button_nav {
+  background: radial-gradient(circle at center, #1494B9 0%, #0E3C55 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding: 0px 0 5px 0;
+  font-size: 1.2rem;
+  font-family: "Tektur_Bold", sans-serif;
+  font-weight: 500;
+}
+
+.css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
+  border-radius: 0px !important;
+}
+
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+  border-radius: 0px !important;
+  border-style: none !important;
+  border-width: 0px !important;
+  border-color: transparent !important;
+}
+
+.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+  padding: 0px 0px !important;
+  font-family: "Roboto", sans-serif !important;
+  font-size: 0.9rem !important;
+  color: #757575 !important;
+}
+
+.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
+  max-height: calc(500px - 10%) !important;
+}
+
+.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root {
+  padding: 6px 16px !important;
+}
+.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root:hover {
+  background: radial-gradient(circle at center, #1494B9 0%, #0E3C55 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 1.2rem !important;
+}
+.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected {
+  color: #fff !important;
+  background: radial-gradient(circle at center, #1494B9 0%, #0E3C55 100%) !important;
+}
+
+.form_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.form_fieldsets_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  align-items: stretch;
+  width: 70%;
+  height: auto;
+  gap: 5rem;
+}
+.form_fieldset_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 1.5rem;
+  border: 2px solid #1494B9;
+  border-radius: 10px;
+  flex: 1;
+}
+.form_fieldset_legend {
+  font-family: "Tektur_Bold", sans-serif;
+  font-size: 1.5rem;
+  background: linear-gradient(to right, #1494B9, #0E3C55);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  cursor: default;
+}
+.form_input_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.form_input_field {
+  width: 200px;
+  height: 20px;
+  margin-bottom: 0.5rem;
+  border: 1px solid #1494B9;
+  padding: 1rem 0.5rem;
+  font-family: "Roboto", sans-serif;
+  font-size: 0.9rem;
+}
+.form_input_label {
+  width: fit-content;
+  font-family: "Tektur_Bold", sans-serif;
+  font-size: 1.3rem;
+  margin-bottom: 0.2rem;
+  background: linear-gradient(to right, #1494B9, #0E3C55);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.form_submit_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  height: fit-content;
+  margin-top: 1rem;
+  background: #fff;
+}
+.form_submit_button {
+  background: linear-gradient(to right, #1494B9, #0E3C55);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  width: 135px;
+  height: 135px;
+  font-family: "Tektur_Bold", sans-serif;
+  font-size: 1.3rem;
+  border: 10px solid #1494B9;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: inset 0 0 40px #1494B9;
+}
+.form_submit_button:hover {
+  border: 9px solid #1494B9;
+  transform: translateY(6px) scale(0.98);
+  box-shadow: inset 0 0 40px #1494B9, 0 0 8px 3px rgba(48, 47, 47, 0.37);
+}
+.form_submit_inside-circle, .form_submit_middleIn-circle, .form_submit_middleOut-circle, .form_submit_outside-circle {
+  background: radial-gradient(circle at center, #1494B9 0%, #0E3C55 100%);
+  border-radius: 50%;
+  margin: 1px;
+}
+.form_submit_inside-circle {
+  width: 80px;
+  height: 80px;
+}
+.form_submit_middleIn-circle {
+  width: 65px;
+  height: 65px;
+}
+.form_submit_middleOut-circle {
+  width: 50px;
+  height: 50px;
+}
+.form_submit_outside-circle {
+  width: 35px;
+  height: 35px;
+}
+
+.main_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: auto;
+  margin: 2rem 0 0 0;
+}
+
+/*# sourceMappingURL=index.css.map */
