@@ -1,8 +1,15 @@
+import { useNavigate } from "react-router-dom";
 import MultipleVerticalBar from "../atoms/MultipleVerticalBar";
 import SpherePyramid from "../atoms/SpherePyramid";
 
 
 const Header = () => {
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/employee-list');
+  }
 
   return (
     <>
@@ -23,7 +30,7 @@ const Header = () => {
             <div className="sphere-pyramid_wrapper">
               <SpherePyramid />
             </div>
-              <button className="header_button_nav">Employee list</button>
+              <button className="header_button_nav" onClick={handleClick}>Employee list</button>
             <div className="sphere-pyramid_wrapper">
               <SpherePyramid />
             </div>
