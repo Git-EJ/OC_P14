@@ -1,14 +1,17 @@
-import Header from "../molecules/Header";
-import CreateEmployee from "../organisms/CreateEmployee";
-
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
 
+  const navigate = useNavigate();
+
+  const clickCreateEmployee = () => {
+    navigate ('/create-employee');
+  }
+
   return (
-    <>
-      <Header navigateButton='/employee-list' textButton='Employee List' />
-      <CreateEmployee />
-    </>
+    <div>
+      <h1 onClick={clickCreateEmployee}>Home</h1>
+    </div>
   );
 };
 

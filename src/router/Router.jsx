@@ -1,14 +1,26 @@
 import { Navigate, createBrowserRouter } from "react-router-dom"
 import Home from "../pages/Home";
+import CreateEmployee from "../pages/CreateEmployee";
 import EmployeeList from "../pages/EmployeeList";
+
 
 const Router = createBrowserRouter([
 
 
   // Default routes
   {
-    path: '/employee-create',
+    path: '/home',
     element: <Home />,
+  },
+
+  {
+    path: '/employee-create',
+    element: <CreateEmployee />,
+  },
+
+  {
+    path: '/employee-create',
+    element: <CreateEmployee />,
   },
   
   {
@@ -20,7 +32,7 @@ const Router = createBrowserRouter([
   // Redirections Routes
   {
     path: '/',
-    element: <Navigate to ='/employee-create' replace />,
+    element: <Navigate to ='/home' replace />,
   },
 
   {

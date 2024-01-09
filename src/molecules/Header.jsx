@@ -8,6 +8,10 @@ const Header = ({ navigateButton, textButton }) => {
 
   const navigate = useNavigate();
 
+  const onClickHome = () => {
+    navigate('/home');
+  }
+
   const handleClick = () => {
     navigate(navigateButton);
   }
@@ -18,7 +22,7 @@ const Header = ({ navigateButton, textButton }) => {
         <div className="header_contents_container">
 
           <div className="header_logo_container">
-            <img className="header_logo_img" src="/src/assets/logos/logo-circle_hr-net.png" alt="Logo HR Net" />
+            <img className="header_logo_img" src="/src/assets/logos/logo-circle_hr-net.png" alt="Logo HR Net" onClick={onClickHome} />
             <h1 className="header_logo_title">HR net</h1>
           </div>
 

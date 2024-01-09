@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SelectField from "../atoms/SelectField";
 import Modal from '../atoms/Modal';
 
-const CreateEmployee = () => { 
+const CreateEmployeeForm = () => { 
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -165,4 +165,4 @@ const CreateEmployee = () => {
 }
 
 
-export default CreateEmployee;
+export default CreateEmployeeForm;
