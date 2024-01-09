@@ -35,7 +35,7 @@ const CreateEmployee = () => {
     {name: "Legal", abbreviation: "legal"},
   ];
 
-  // this array or npm usa-states??
+  // TODO this array or npm usa-states??
   const arrayOfStates = [
     {name: "Alabama", abbreviation: "AL"},
     {name: "Alaska", abbreviation: "AK"},
@@ -103,6 +103,7 @@ const CreateEmployee = () => {
     setIsModalOpen(true);
   }
 
+  // TODO need to setIsModalOpen to false when click on Employee List button when modal is still open??
   const closeModal = () => {
     setIsModalOpen(false);
   }
@@ -111,9 +112,8 @@ const CreateEmployee = () => {
   return (
     <>
       <main className={`main_wrapper ${isModalOpen ? 'main_modal-opacity' : ''}`}>
-      {/* <main className="main_wrapper"> */}
         <form className="form_wrapper" name="create_employee" action="">
-          <div className="form_fieldsets_wrapper">
+          <div className="form_fieldsets_wrapper"> 
 
             {formFieldsets.map((fieldset, index) => {
               return (

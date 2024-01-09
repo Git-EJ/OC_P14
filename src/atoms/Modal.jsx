@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-
+// TODO inactive main wrapper form when modal open with pointer-events: none in home.scss Good pratice?
 const Modal = ({closeModal}) => {
 
   return (

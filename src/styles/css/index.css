@@ -504,6 +504,7 @@ body ::-webkit-scrollbar {
   color: #fff;
   background: radial-gradient(circle at center, #1494B9 0%, #0E3C55 100%);
   border-radius: 50%;
+  cursor: pointer;
 }
 .modal_close-button_label {
   margin-top: 0.1rem;
@@ -640,6 +641,7 @@ body ::-webkit-scrollbar {
 }
 .main_modal-opacity {
   opacity: 0.2;
+  pointer-events: none;
 }
 
 /*# sourceMappingURL=index.css.map */
