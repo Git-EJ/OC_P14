@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import SelectField from "../atoms/SelectField";
-
+import Modal from '../atoms/Modal';
 
 const CreateEmployee = () => { 
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const formFieldsets = [
   
@@ -96,56 +98,69 @@ const CreateEmployee = () => {
     {name: "Wyoming", abbreviation: "WY"}
   ];
 
+  const createEmployee = (e) => {
+    e.preventDefault();
+    setIsModalOpen(true);
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  }
+
 
   return (
-    <main className="main_wrapper">
-      <form className="form_wrapper" name="create_employee" action="">
-        <div className="form_fieldsets_wrapper">
+    <>
+      <main className={`main_wrapper ${isModalOpen ? 'main_modal-opacity' : ''}`}>
+      {/* <main className="main_wrapper"> */}
+        <form className="form_wrapper" name="create_employee" action="">
+          <div className="form_fieldsets_wrapper">
 
-          {formFieldsets.map((fieldset, index) => {
-            return (
-              <fieldset className="form_fieldset_container" key={index}>
-                <legend className="form_fieldset_legend">{fieldset.legend}</legend>
-                
-                {fieldset.input.map((input, inputIndex) => {
-                  return (
-                    <React.Fragment key={`input_${inputIndex}`}>
-                      <div className="form_input_container">
-                        <label htmlFor={input.id} className={input.labelClassName}>{input.label}</label>
-                        <input type={input.type} id={input.id} placeholder={input.placeholder} className={input.inputClassName} />
-                      </div>
-
-                      {fieldset.legend === "Employee Address" && input.id === "city" && (
+            {formFieldsets.map((fieldset, index) => {
+              return (
+                <fieldset className="form_fieldset_container" key={index}>
+                  <legend className="form_fieldset_legend">{fieldset.legend}</legend>
+                  
+                  {fieldset.input.map((input, inputIndex) => {
+                    return (
+                      <React.Fragment key={`input_${inputIndex}`}>
                         <div className="form_input_container">
-                          <SelectField label={'State'} menuItem={arrayOfStates} />
+                          <label htmlFor={input.id} className={input.labelClassName}>{input.label}</label>
+                          <input type={input.type} id={input.id} placeholder={input.placeholder} className={input.inputClassName} />
                         </div>
-                      )}
-                    </React.Fragment>
-                  )
-                })}
 
-                {fieldset.legend === "Employee Informations" && <SelectField label={'Department'}  menuItem={arrayOfDepartments} />} 
+                        {fieldset.legend === "Employee Address" && input.id === "city" && (
+                          <div className="form_input_container">
+                            <SelectField label={'State'} menuItem={arrayOfStates} />
+                          </div>
+                        )}
+                      </React.Fragment>
+                    )
+                  })}
 
-              </fieldset>
-            )
-          })}
+                  {fieldset.legend === "Employee Informations" && <SelectField label={'Department'}  menuItem={arrayOfDepartments} />} 
 
-        </div>
+                </fieldset>
+              )
+            })}
+          </div>
 
-        <div className="form_submit_container">
-          <div className="form_submit_outside-circle"></div>
-          <div className="form_submit_middleOut-circle"></div>
-          <div className="form_submit_middleIn-circle"></div>
-          <div className="form_submit_inside-circle"></div>
-          <button type="submit" className="form_submit_button" >Create Employee</button>
-          <div className="form_submit_inside-circle"></div>
-          <div className="form_submit_middleIn-circle"></div>
-          <div className="form_submit_middleOut-circle"></div>
-          <div className="form_submit_outside-circle"></div>
-        </div>
-      </form>
-        
-    </main>
+          <div className="form_submit_container">
+            <div className="form_submit_outside-circle"></div>
+            <div className="form_submit_middleOut-circle"></div>
+            <div className="form_submit_middleIn-circle"></div>
+            <div className="form_submit_inside-circle"></div>
+            <button type="submit" className="form_submit_button" onClick={createEmployee} >Create Employee</button>
+            <div className="form_submit_inside-circle"></div>
+            <div className="form_submit_middleIn-circle"></div>
+            <div className="form_submit_middleOut-circle"></div>
+            <div className="form_submit_outside-circle"></div>
+          </div>
+
+        </form>
+      </main>
+
+      {isModalOpen && <Modal closeModal={closeModal} />}
+    </>
   )
 }
 

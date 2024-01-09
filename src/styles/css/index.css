@@ -427,6 +427,7 @@ body ::-webkit-scrollbar {
   font-size: 1.2rem;
   font-family: "Tektur_Bold", sans-serif;
   font-weight: 500;
+  cursor: pointer;
 }
 
 .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
@@ -464,6 +465,54 @@ body ::-webkit-scrollbar {
 .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected {
   color: #fff !important;
   background: radial-gradient(circle at center, #1494B9 0%, #0E3C55 100%) !important;
+}
+
+.modal_container {
+  width: fit-content;
+  height: 30vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1.2rem;
+  border: 2px solid #1494B9;
+  border-radius: 10px;
+  background-color: #fff;
+}
+.modal_text {
+  font-family: "Tektur_Bold", sans-serif;
+  font-size: 2.5rem;
+  background: linear-gradient(to right, #1494B9, #0E3C55);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  cursor: default;
+}
+.modal_close-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5rem;
+  width: 5rem;
+  margin-top: 2rem;
+  font-weight: 700;
+  font-size: 3.5rem;
+  color: #fff;
+  background: radial-gradient(circle at center, #1494B9 0%, #0E3C55 100%);
+  border-radius: 50%;
+}
+.modal_close-button_label {
+  margin-top: 0.1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: linear-gradient(to right, #1494B9, #0E3C55);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .form_wrapper {
@@ -588,6 +637,9 @@ body ::-webkit-scrollbar {
   flex-direction: column;
   height: auto;
   margin: 2rem 0 0 0;
+}
+.main_modal-opacity {
+  opacity: 0.2;
 }
 
 /*# sourceMappingURL=index.css.map */

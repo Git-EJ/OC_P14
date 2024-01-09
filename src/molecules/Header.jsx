@@ -1,14 +1,15 @@
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import MultipleVerticalBar from "../atoms/MultipleVerticalBar";
 import SpherePyramid from "../atoms/SpherePyramid";
 
 
-const Header = () => {
+const Header = ({ navigateButton, textButton }) => {
 
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/employee-list');
+    navigate(navigateButton);
   }
 
   return (
@@ -30,7 +31,7 @@ const Header = () => {
             <div className="sphere-pyramid_wrapper">
               <SpherePyramid />
             </div>
-              <button className="header_button_nav" onClick={handleClick}>Employee list</button>
+              <button className="header_button_nav" onClick={handleClick}>{textButton}</button>
             <div className="sphere-pyramid_wrapper">
               <SpherePyramid />
             </div>
@@ -46,3 +47,8 @@ const Header = () => {
 }
 
 export default Header;
+
+Header.propTypes = {
+  navigateButton: PropTypes.string.isRequired,
+  textButton: PropTypes.string.isRequired,
+};

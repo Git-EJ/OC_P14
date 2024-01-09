@@ -6,7 +6,7 @@ const Home = () => {
 
   return (
     <>
-      <Header />
+      <Header navigateButton='/employee-list' textButton='Employee List' />
       <CreateEmployee />
     </>
   );

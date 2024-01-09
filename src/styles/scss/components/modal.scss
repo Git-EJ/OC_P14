@@ -1,0 +1,43 @@
+.modal {
+
+  &_container {
+    width: fit-content;
+    height: 30vh;
+    @include flex_center_column;
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 1.2rem;
+    border: 2px solid $primary-color;
+    border-radius: 10px;
+    background-color: #fff;
+  }
+
+  &_text {
+    font-family: 'Tektur_Bold', sans-serif;
+    font-size: 2.5rem;
+    @include gradient_text($secondary_linear-gradient);
+    cursor: default;
+  }
+
+  &_close-button {
+    @include flex_center;
+    height: 5rem;
+    width: 5rem;
+    margin-top: 2rem;
+    font-weight: 700;
+    font-size: 3.5rem;
+    color: #fff;
+    background: $primary_radial-gradient;
+    border-radius: 50%;
+
+    //Need it?
+    &_label {
+      margin-top: 0.1rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      @include gradient_text($secondary_linear-gradient);
+    }
+  }
+}

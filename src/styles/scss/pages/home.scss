@@ -4,5 +4,10 @@
     @include flex_center_column;
     height: auto;
     margin: 2rem 0 0 0;
+
+  }
+  
+  &_modal-opacity {
+    opacity: 0.2;
   }
 }

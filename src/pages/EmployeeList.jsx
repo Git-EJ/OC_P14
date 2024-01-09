@@ -1,9 +1,16 @@
+import Header from "../molecules/Header";
+import CurrentEmployees from "../organisms/CurrentEmployees";
+
+
+
+
 const EmployeeList = () => {
   
   return (
-    <div>
-      <h2>Employee List</h2>
-    </div>
+    <>
+      <Header navigateButton='/employee-create' textButton='Create Employee' />
+      <CurrentEmployees />
+    </>
   );
 };
 
