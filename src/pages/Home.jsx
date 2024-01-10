@@ -3,28 +3,60 @@ import SphereLine from "../atoms/SphereLine";
 
 const Home = () => {
 
-
-
-
-
   return (
-
     <>
       <Header navigateButton='/create-employee' textButton='Create Employee' />
       <main className="main_wrapper">
+
         <div className="home-main_container">
-          <SphereLine rotation="north" />
-          <div className="home-main_middle-line_container">
-            <SphereLine />
-            <div className="home-main_logo_container">
-              <img className="home-main_logo_img" src="/src/assets/logos/logo-circle-bg_hr-net.png" alt="Logo HR net" />
+
+          {/* horizontal and vertical lines */}
+          <div className="home-main_spheres-lines_container">
+            
+            <div className="home-main_vertical-lines_container">
+              <SphereLine rotation="north" />
+              <SphereLine rotation="south" />
             </div>
-            <SphereLine rotation="east" />
+
+            <div className="home-main_horizontal-lines_container">
+              <SphereLine />
+              <SphereLine rotation="east" />
+            </div>
+          
+            {/* first diagonal */}
+            <div className="home-main_diagonal-lines_first-container">
+              <div className="home-main_vertical-lines_container">
+                <SphereLine rotation="north" />
+                <SphereLine rotation="south" />
+              </div>
+
+              <div className="home-main_horizontal-lines_container">
+                <SphereLine />
+                <SphereLine rotation="east" />
+              </div>
+            </div>
+
+            {/* second diagonal */}
+            <div className="home-main_diagonal-lines_second-container">
+              <div className="home-main_vertical-lines_container">
+                <SphereLine rotation="north" />
+                <SphereLine rotation="south" />
+              </div>
+
+              <div className="home-main_horizontal-lines_container">
+                <SphereLine />
+                <SphereLine rotation="east" />
+              </div>
+            </div>
+
           </div>
-          <SphereLine rotation="south" />
+
+          <div className="home-main_logo_container">
+            <img className="home-main_logo_img" src="/src/assets/logos/logo-circle-bg_hr-net.png" alt="Logo HR net" />
+          </div>
+
         </div>
       </main>
-
     </>
   );
 };

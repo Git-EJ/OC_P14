@@ -75,6 +75,6 @@
 
 
 @keyframes sphereline_home_rotation {
-  0% { transform: rotatey(0deg); }
+  0% { transform: rotateZ(0deg); }
   100% { transform: rotateZ(360deg); }
 }

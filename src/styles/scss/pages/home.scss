@@ -1,23 +1,52 @@
 .home-main {
 
   &_container {
-    @include flex_center_column;
+    @include flex_center;
     height: 80vh;
-    width: fit-content;
-    // gap: 1rem;
-    animation: sphereline_home_rotation 240s infinite;
-
+    width: 100%;
+    position: relative;
   }
 
-  &_middle-line_container{
+  &_spheres-lines_container {
+    @include flex_center;
+    @include absolute_center;
+    animation: sphereline_home_rotation 60s linear infinite;
+  }
+
+  &_vertical-lines_container,
+  &_horizontal-lines_container {
+    @include absolute_center;
+    gap:15rem; //logo container width/height
+  }
+
+  &_vertical-lines_container {
+    @include flex_center_column;
+  }
+
+  &_horizontal-lines_container {
     @include flex_center_row;
-    // gap:1rem;
   }
+
+
+  &_diagonal-lines_first-container,
+  &_diagonal-lines_second-container {
+    @include flex_center;
+    gap:15rem; //logo container width/height
+  }
+
+  &_diagonal-lines_first-container {
+    @include absolute_center_rotate(30deg);
+  }
+
+  &_diagonal-lines_second-container {
+    @include absolute_center_rotate(60deg);
+  }
+
 
   &_logo {
 
     &_container {
-      @include flex_center_column;
+      @include flex_center;
       height: 15rem;
       width: 15rem;
     }
