@@ -6,7 +6,7 @@ const CreateEmployee = () => {
 
   return (
     <>
-      <Header navigateButton='/employee-list' textButton='Employee List' />
+      <Header navigateButton_1='/employee-list' textButton_1='Employee List' />
       <CreateEmployeeForm />
     </>
   );

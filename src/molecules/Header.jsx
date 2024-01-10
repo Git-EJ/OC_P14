@@ -4,7 +4,7 @@ import MultipleVerticalBar from "../atoms/MultipleVerticalBar";
 import SpherePyramid from "../atoms/SpherePyramid";
 
 
-const Header = ({ navigateButton, textButton }) => {
+const Header = ({ navigateButton_1, textButton_1, navigateButton_2, textButton_2 }) => {
 
   const navigate = useNavigate();
 
@@ -12,8 +12,11 @@ const Header = ({ navigateButton, textButton }) => {
     navigate('/home');
   }
 
-  const handleClick = () => {
-    navigate(navigateButton);
+  const handleClick_1 = () => {
+    navigate(navigateButton_1);
+  }
+  const handleClick_2 = () => {
+    navigate(navigateButton_2);
   }
 
   return (
@@ -35,7 +38,13 @@ const Header = ({ navigateButton, textButton }) => {
             <div className="sphere-pyramid_wrapper">
               <SpherePyramid />
             </div>
-              <button className="header_button_nav" onClick={handleClick}>{textButton}</button>
+
+              <button className="header_button_nav" onClick={handleClick_1}>{textButton_1}</button>
+              
+              {navigateButton_2 && textButton_2 &&
+              <button className="header_button_nav" onClick={handleClick_2}>{textButton_2}</button>
+              }
+
             <div className="sphere-pyramid_wrapper">
               <SpherePyramid />
             </div>
@@ -53,6 +62,8 @@ const Header = ({ navigateButton, textButton }) => {
 export default Header;
 
 Header.propTypes = {
-  navigateButton: PropTypes.string.isRequired,
-  textButton: PropTypes.string.isRequired,
+  navigateButton_1: PropTypes.string.isRequired,
+  textButton_1: PropTypes.string.isRequired,
+  navigateButton_2: PropTypes.string,
+  textButton_2: PropTypes.string,
 };

@@ -32,7 +32,14 @@ const Home = () => {
 
   return (
     <>
-      <Header navigateButton='/create-employee' textButton='Create Employee' />
+      <Header 
+        navigateButton_1='/create-employee' 
+        textButton_1='Create Employee'
+        navigateButton_2='/employees-list'
+        textButton_2='Employees List' 
+      />
+
+
       <main className="main_wrapper">
 
         <div className="home-main_container">

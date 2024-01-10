@@ -8,7 +8,7 @@ const EmployeeList = () => {
   
   return (
     <>
-      <Header navigateButton='/employee-create' textButton='Create Employee' />
+      <Header navigateButton_1='/employee-create' textButton_1='Create Employee' />
       <CurrentEmployees />
     </>
   );
