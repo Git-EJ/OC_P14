@@ -3,6 +3,33 @@ import SphereLine from "../atoms/SphereLine";
 
 const Home = () => {
 
+  const FourSpheresLine = () => {
+
+    const arrayOfClassNames = [
+      "regular-lines_container", 
+      "diagonal-lines_first-container", 
+      "diagonal-lines_second-container", 
+    ];
+
+    return (
+      <div className="home-main_all_spheres-lines_container">
+        {arrayOfClassNames.map((className, index) => (
+          <div className={`home-main_${className}`} key={`${className}_${index}`}>
+            <div className="home-main_vertical-lines_container">
+              <SphereLine rotation="north" />
+              <SphereLine rotation="south" />
+            </div>
+
+            <div className="home-main_horizontal-lines_container">
+              <SphereLine /> {/* default = rotation: west */}
+              <SphereLine rotation="east" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <>
       <Header navigateButton='/create-employee' textButton='Create Employee' />
@@ -10,46 +37,7 @@ const Home = () => {
 
         <div className="home-main_container">
 
-          {/* horizontal and vertical lines */}
-          <div className="home-main_spheres-lines_container">
-            
-            <div className="home-main_vertical-lines_container">
-              <SphereLine rotation="north" />
-              <SphereLine rotation="south" />
-            </div>
-
-            <div className="home-main_horizontal-lines_container">
-              <SphereLine />
-              <SphereLine rotation="east" />
-            </div>
-          
-            {/* first diagonal */}
-            <div className="home-main_diagonal-lines_first-container">
-              <div className="home-main_vertical-lines_container">
-                <SphereLine rotation="north" />
-                <SphereLine rotation="south" />
-              </div>
-
-              <div className="home-main_horizontal-lines_container">
-                <SphereLine />
-                <SphereLine rotation="east" />
-              </div>
-            </div>
-
-            {/* second diagonal */}
-            <div className="home-main_diagonal-lines_second-container">
-              <div className="home-main_vertical-lines_container">
-                <SphereLine rotation="north" />
-                <SphereLine rotation="south" />
-              </div>
-
-              <div className="home-main_horizontal-lines_container">
-                <SphereLine />
-                <SphereLine rotation="east" />
-              </div>
-            </div>
-
-          </div>
+          <FourSpheresLine />
 
           <div className="home-main_logo_container">
             <img className="home-main_logo_img" src="/src/assets/logos/logo-circle-bg_hr-net.png" alt="Logo HR net" />

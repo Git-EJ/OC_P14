@@ -7,8 +7,7 @@
     position: relative;
   }
 
-  &_spheres-lines_container {
-    @include flex_center;
+  &_all_spheres-lines_container {
     @include absolute_center;
     animation: sphereline_home_rotation 60s linear infinite;
   }
@@ -27,12 +26,9 @@
     @include flex_center_row;
   }
 
-
-  &_diagonal-lines_first-container,
-  &_diagonal-lines_second-container {
-    @include flex_center;
-    gap:15rem; //logo container width/height
-  }
+  // &_regular-lines_container {
+  //   @include absolute_center_rotate(0deg);
+  // }
 
   &_diagonal-lines_first-container {
     @include absolute_center_rotate(30deg);

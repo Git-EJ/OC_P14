@@ -681,10 +681,7 @@ body ::-webkit-scrollbar {
   width: 100%;
   position: relative;
 }
-.home-main_spheres-lines_container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.home-main_all_spheres-lines_container {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -709,12 +706,6 @@ body ::-webkit-scrollbar {
   justify-content: center;
   align-items: center;
   flex-direction: row;
-}
-.home-main_diagonal-lines_first-container, .home-main_diagonal-lines_second-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15rem;
 }
 .home-main_diagonal-lines_first-container {
   position: absolute;
