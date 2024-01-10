@@ -35,8 +35,8 @@ const Home = () => {
       <Header 
         navigateButton_1='/create-employee' 
         textButton_1='Create Employee'
-        navigateButton_2='/employees-list'
-        textButton_2='Employees List' 
+        navigateButton_2='/employee-list'
+        textButton_2='Employee List' 
       />
       
       <main className="main_wrapper">
