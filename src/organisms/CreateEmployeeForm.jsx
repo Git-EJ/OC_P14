@@ -109,8 +109,6 @@ const CreateEmployeeForm = () => {
     setIsModalOpen(false);
   }
 
-  const arrayOfSpheres = [1, 1, 1, 1];
-
 
   return (
     <>

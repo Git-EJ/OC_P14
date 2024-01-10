@@ -1,5 +1,6 @@
 .home-main {
 
+  //TODO absolute positioning for small resolution? size for containers?
   &_container {
     @include flex_center;
     height: 80vh;

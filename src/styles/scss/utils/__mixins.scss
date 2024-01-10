@@ -23,3 +23,9 @@
   transform: translate(-50%, -50%) rotate($deg);
 }
 
+@mixin text_ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  // white-space: nowrap;
+}
+

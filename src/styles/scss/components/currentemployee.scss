@@ -1,0 +1,156 @@
+.current-employees {
+
+  &_page-title {
+    font-family: 'Tektur_Bold', sans-serif;
+    font-size: 2.5rem;
+    @include gradient_text($secondary_linear-gradient);
+    margin-bottom: 1rem;
+  }
+
+
+  &_data-table {
+
+    &_wrapper {
+      @include flex_center_column;
+      width: 80%;
+      height: auto;
+    }
+
+
+    &_options {
+
+      &_container {
+        @include flex_center_row;
+        justify-content: space-between;
+        width: 100%;
+        height: auto;
+        border: 1px solid red;
+      }
+
+      &_entries {
+        @include flex_center;
+        width: fit-content;
+        height: auto;
+
+        >select {
+          border: 1px solid black;
+          margin: 0 0.2rem;
+        }
+      }
+
+      &_search {
+        @include flex_center;
+        width: fit-content;
+        height: auto;
+
+        >label {
+          margin-right: 0.5rem;
+        }
+
+        >input {
+          border: 1px solid black;
+          width: 100%;
+        }
+      }
+    }
+
+
+    &_titles_container {
+      @include flex_center_row;
+      justify-content: space-between;
+      align-items: stretch;
+      width: 100%;
+      border: 1px solid orange;
+    }
+
+    &_title {
+      
+      &_item {
+
+        &_0, &_1, &_2, &_3, &_4, &_5 ,&_6, &_7, &_8 {
+          @include flex_center;
+          border: 1px solid green;
+        }
+
+        &_0, &_1, &_3, &_5, &_6 {
+          width: 14%; // 5x14 = 70%
+        }
+
+        &_2, &_4 {
+          width: 9%;
+        }
+
+        &_7 {
+          width: 5%;
+        }
+
+        &_8 {
+          width: 7%;
+        }
+        
+        &_value {
+          @include text_ellipsis;
+          text-align: center;
+          width: 100%;
+          font-size: 0.9rem;
+          padding: 0.5rem;
+        }
+      }
+
+    }
+
+
+    &_content-lines_container {
+      @include flex_center_column;
+      width: 100%;
+      height: auto;
+      border: 1px solid yellow;
+    }
+
+    &_content-line {
+
+      &_container {
+        @include flex_center_row;
+        justify-content: space-between;
+        align-items: stretch;
+        width: 100%;
+        border: 1px solid blue;
+      }
+      
+      &_item {
+        
+        &_0, &_1, &_2, &_3, &_4, &_5 ,&_6, &_7, &_8 {
+          @include flex_center;
+          border: 1px solid purple;
+        }
+        
+        &_0, &_1, &_3, &_5, &_6 {
+          width: 14%; // 5x14 = 70%
+        }
+        
+        &_2, &_4 {
+          width: 9%;
+        }
+
+        &_7 {
+          width: 5%;
+        }
+
+        &_8 {
+          width: 7%;
+        }
+
+        &_value {
+          @include text_ellipsis;
+          text-align: center;
+          width: 100%;
+          font-size: 0.9rem;
+          padding: 0.5rem;
+        }
+      }
+    }
+
+
+
+  }
+}

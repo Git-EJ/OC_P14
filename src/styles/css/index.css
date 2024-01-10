@@ -673,6 +673,140 @@ body ::-webkit-scrollbar {
   box-shadow: inset 0 0 40px #1494B9, 0 0 8px 3px rgba(48, 47, 47, 0.37);
 }
 
+.current-employees_page-title {
+  font-family: "Tektur_Bold", sans-serif;
+  font-size: 2.5rem;
+  background: linear-gradient(to right, #1494B9, #0E3C55);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 1rem;
+}
+.current-employees_data-table_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 80%;
+  height: auto;
+}
+.current-employees_data-table_options_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  height: auto;
+  border: 1px solid red;
+}
+.current-employees_data-table_options_entries {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  height: auto;
+}
+.current-employees_data-table_options_entries > select {
+  border: 1px solid black;
+  margin: 0 0.2rem;
+}
+.current-employees_data-table_options_search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  height: auto;
+}
+.current-employees_data-table_options_search > label {
+  margin-right: 0.5rem;
+}
+.current-employees_data-table_options_search > input {
+  border: 1px solid black;
+  width: 100%;
+}
+.current-employees_data-table_titles_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+  width: 100%;
+  border: 1px solid orange;
+}
+.current-employees_data-table_title_item_0, .current-employees_data-table_title_item_1, .current-employees_data-table_title_item_2, .current-employees_data-table_title_item_3, .current-employees_data-table_title_item_4, .current-employees_data-table_title_item_5, .current-employees_data-table_title_item_6, .current-employees_data-table_title_item_7, .current-employees_data-table_title_item_8 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid green;
+}
+.current-employees_data-table_title_item_0, .current-employees_data-table_title_item_1, .current-employees_data-table_title_item_3, .current-employees_data-table_title_item_5, .current-employees_data-table_title_item_6 {
+  width: 14%;
+}
+.current-employees_data-table_title_item_2, .current-employees_data-table_title_item_4 {
+  width: 9%;
+}
+.current-employees_data-table_title_item_7 {
+  width: 5%;
+}
+.current-employees_data-table_title_item_8 {
+  width: 7%;
+}
+.current-employees_data-table_title_item_value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  width: 100%;
+  font-size: 0.9rem;
+  padding: 0.5rem;
+}
+.current-employees_data-table_content-lines_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  border: 1px solid yellow;
+}
+.current-employees_data-table_content-line_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+  width: 100%;
+  border: 1px solid blue;
+}
+.current-employees_data-table_content-line_item_0, .current-employees_data-table_content-line_item_1, .current-employees_data-table_content-line_item_2, .current-employees_data-table_content-line_item_3, .current-employees_data-table_content-line_item_4, .current-employees_data-table_content-line_item_5, .current-employees_data-table_content-line_item_6, .current-employees_data-table_content-line_item_7, .current-employees_data-table_content-line_item_8 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid purple;
+}
+.current-employees_data-table_content-line_item_0, .current-employees_data-table_content-line_item_1, .current-employees_data-table_content-line_item_3, .current-employees_data-table_content-line_item_5, .current-employees_data-table_content-line_item_6 {
+  width: 14%;
+}
+.current-employees_data-table_content-line_item_2, .current-employees_data-table_content-line_item_4 {
+  width: 9%;
+}
+.current-employees_data-table_content-line_item_7 {
+  width: 5%;
+}
+.current-employees_data-table_content-line_item_8 {
+  width: 7%;
+}
+.current-employees_data-table_content-line_item_value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  width: 100%;
+  font-size: 0.9rem;
+  padding: 0.5rem;
+}
+
 .home-main_container {
   display: flex;
   justify-content: center;

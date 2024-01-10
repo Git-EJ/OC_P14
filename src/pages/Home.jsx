@@ -38,8 +38,7 @@ const Home = () => {
         navigateButton_2='/employees-list'
         textButton_2='Employees List' 
       />
-
-
+      
       <main className="main_wrapper">
 
         <div className="home-main_container">
