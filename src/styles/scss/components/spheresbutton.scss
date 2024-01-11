@@ -1,0 +1,29 @@
+.spheres-button {
+
+  &_container {
+    @include flex_center;
+    width: fit-content;
+    height: fit-content;
+    margin-top: 1rem;
+    background: #fff;
+  }
+
+  &_button {
+    @include gradient_text($secondary_linear-gradient);
+    width: 135px;
+    height: 135px;
+    font-family: 'Tektur_Bold', sans-serif;
+    font-size: 1.3rem;
+    border: 10px solid $primary-color;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: inset 0 0 40px $primary-color;
+
+    &:hover {
+      border: 9px solid $primary-color;
+      transform: translateY(6px) scale(0.98);
+      box-shadow: inset 0 0 40px $primary-color, 0 0 8px 3px (rgba(48, 47, 47, 0.37));
+    }
+  }
+}

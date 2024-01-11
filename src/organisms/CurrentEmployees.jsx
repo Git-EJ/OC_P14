@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import SphereLine from "../atoms/SphereLine";
 import CaretUp from "../assets/icons/Caret_up";
 import CaretDown from "../assets/icons/Caret_down";
+import SpheresButton from "../molecules/SpheresButton";
 
 const CurrentEmployees = () => {
 
@@ -151,13 +151,7 @@ const CurrentEmployees = () => {
           </div>
 
           {/* TODO delete employee with checkbox and button delete*/}
-          {/* TODO component for this button props type className onclick text value */}
-
-          <div className="form_submit_container">
-            <SphereLine />
-            <button type="submit" className="form_submit_button" onClick={addEmployeeLink} >Add Employee</button>
-            <SphereLine rotation={'east'} />
-          </div>
+          <SpheresButton type="submit" className="spheres-button_button" onClick={addEmployeeLink} text="Add Employee" />
 
 
         </div>

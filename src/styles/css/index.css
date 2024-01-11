@@ -396,6 +396,36 @@ body ::-webkit-scrollbar {
   background: radial-gradient(circle at center, #1494B9 0%, #0E3C55 100%);
 }
 
+.spheres-button_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  height: fit-content;
+  margin-top: 1rem;
+  background: #fff;
+}
+.spheres-button_button {
+  background: linear-gradient(to right, #1494B9, #0E3C55);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  width: 135px;
+  height: 135px;
+  font-family: "Tektur_Bold", sans-serif;
+  font-size: 1.3rem;
+  border: 10px solid #1494B9;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: inset 0 0 40px #1494B9;
+}
+.spheres-button_button:hover {
+  border: 9px solid #1494B9;
+  transform: translateY(6px) scale(0.98);
+  box-shadow: inset 0 0 40px #1494B9, 0 0 8px 3px rgba(48, 47, 47, 0.37);
+}
+
 .header_wrapper {
   display: flex;
   justify-content: center;
@@ -643,38 +673,9 @@ body ::-webkit-scrollbar {
   background-clip: text;
   color: transparent;
 }
-.form_submit_container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: fit-content;
-  height: fit-content;
-  margin-top: 1rem;
-  background: #fff;
-}
-.form_submit_button {
-  background: linear-gradient(to right, #1494B9, #0E3C55);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  width: 135px;
-  height: 135px;
-  font-family: "Tektur_Bold", sans-serif;
-  font-size: 1.3rem;
-  border: 10px solid #1494B9;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  box-shadow: inset 0 0 40px #1494B9;
-}
-.form_submit_button:hover {
-  border: 9px solid #1494B9;
-  transform: translateY(6px) scale(0.98);
-  box-shadow: inset 0 0 40px #1494B9, 0 0 8px 3px rgba(48, 47, 47, 0.37);
-}
 
 .current-employees_page-title {
-  margin-bottom: 1rem;
+  margin: 1.5rem 0 3rem 0;
   font-family: "Tektur_Bold", sans-serif;
   font-size: 2.5rem;
   background: linear-gradient(to right, #1494B9, #0E3C55);

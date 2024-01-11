@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import SelectField from "../atoms/SelectField";
 import Modal from '../atoms/Modal';
-import SphereLine from "../atoms/SphereLine";
+import SpheresButton from "../molecules/SpheresButton";
 
 const CreateEmployeeForm = () => { 
 
@@ -145,11 +145,8 @@ const CreateEmployeeForm = () => {
             })}
           </div>
 
-          <div className="form_submit_container">
-            <SphereLine />
-            <button type="submit" className="form_submit_button" onClick={createEmployee} >Create Employee</button>
-            <SphereLine rotation={'east'} />
-          </div>
+          <SpheresButton type="submit" className="spheres-button_button" onClick={createEmployee} text="Add Employee" />
+
 
         </form>
       </main>
