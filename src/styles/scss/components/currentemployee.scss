@@ -1,10 +1,10 @@
 .current-employees {
 
   &_page-title {
+    margin-bottom: 1rem;
     font-family: 'Tektur_Bold', sans-serif;
     font-size: 2.5rem;
     @include gradient_text($secondary_linear-gradient);
-    margin-bottom: 1rem;
   }
 
 
@@ -12,7 +12,7 @@
 
     &_wrapper {
       @include flex_center_column;
-      width: 80%;
+      width: 95%;
       height: auto;
     }
 
@@ -25,6 +25,7 @@
         width: 100%;
         height: auto;
         border: 1px solid red;
+        font-size: 0.8rem;
       }
 
       &_entries {
@@ -35,6 +36,7 @@
         >select {
           border: 1px solid black;
           margin: 0 0.2rem;
+          cursor: pointer;
         }
       }
 
@@ -61,42 +63,48 @@
       align-items: stretch;
       width: 100%;
       border: 1px solid orange;
+      margin-top: 1rem;
     }
 
     &_title {
       
       &_item {
-
-        &_0, &_1, &_2, &_3, &_4, &_5 ,&_6, &_7, &_8 {
-          @include flex_center;
-          border: 1px solid green;
-        }
-
-        &_0, &_1, &_3, &_5, &_6 {
-          width: 14%; // 5x14 = 70%
-        }
-
-        &_2, &_4 {
-          width: 9%;
-        }
-
-        &_7 {
-          width: 5%;
-        }
-
-        &_8 {
-          width: 7%;
-        }
+        @include data_table_contents_width;
         
         &_value {
-          @include text_ellipsis;
+          width: fit-content;
           text-align: center;
-          width: 100%;
-          font-size: 0.9rem;
           padding: 0.5rem;
+          @include text_ellipsis;
+          font-family: 'Tektur_Bold', sans-serif;
+          font-size: 0.9rem;
+          @include gradient_text($secondary_linear-gradient);
+        }
+
+        &_sorting {
+
+          &_container {
+            @include flex_center_column;
+            width: fit-content;
+            height: auto;
+            cursor: pointer;
+            
+            svg {
+              width: 1rem;
+              height: 1rem;
+            }
+  
+            path {
+              fill: $primary-color;
+            }
+          }
+
+          &_icon-up, 
+          &_icon-down {
+            @include flex_center;
+          }
         }
       }
-
     }
 
 
@@ -119,26 +127,7 @@
       
       &_item {
         
-        &_0, &_1, &_2, &_3, &_4, &_5 ,&_6, &_7, &_8 {
-          @include flex_center;
-          border: 1px solid purple;
-        }
-        
-        &_0, &_1, &_3, &_5, &_6 {
-          width: 14%; // 5x14 = 70%
-        }
-        
-        &_2, &_4 {
-          width: 9%;
-        }
-
-        &_7 {
-          width: 5%;
-        }
-
-        &_8 {
-          width: 7%;
-        }
+        @include data_table_contents_width;
 
         &_value {
           @include text_ellipsis;
@@ -151,6 +140,63 @@
     }
 
 
+  &_showing_container {
+    @include flex_center_row;
+    justify-content: space-between;
+    width: 100%;
+    height: auto;
+    border: 1px solid red;
+    margin-top: 0.5rem;
+  }
 
+  &_showing_entries {
+
+    &_container {
+      @include flex_center_row;
+      justify-content: space-between;
+      max-width: 45%;
+      height: auto;
+      border: 1px solid lime;
+    }
+
+    &_text {
+      border: 1px solid black;
+      width: fit-content;
+      font-size: 0.8rem;
+    }
+  }
+
+   &_showing_pagination {
+   
+    &_container {
+      @include flex_center_row;
+      justify-content: space-between;
+      max-width: 45%;
+      height: auto;
+      border: 1px solid black;
+      gap: 0.5rem;
+    }
+    
+    &_button {
+      
+      &_previous,
+      &_next,
+      &_current,
+      &_not-current{
+        @include flex_center;
+        width: fit-content;
+        background: none;
+        font-size: 0.8rem;
+        cursor: pointer;
+      }
+
+      &_current {
+        background: $primary-color;
+        color: #fff;
+        width:2rem;
+        height: 2rem;
+      }
+    }
+   }
   }
 }

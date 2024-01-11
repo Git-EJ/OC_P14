@@ -29,3 +29,26 @@
   // white-space: nowrap;
 }
 
+@mixin data_table_contents_width {
+  &_0, &_1, &_2, &_3, &_4, &_5 ,&_6, &_7, &_8 {
+    @include flex_center;
+    justify-content: space-around;
+    border: 1px solid green;
+  }
+
+  &_0, &_1, &_3, &_5, &_6 {
+    width: 13%; // 5x13 = 65%
+  }
+
+  &_2, &_4 {
+    width: 10%;
+  }
+
+  &_7 {
+    width: 7%;
+  }
+
+  &_8 {
+    width: 8%;
+  }
+}
