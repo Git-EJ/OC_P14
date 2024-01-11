@@ -10,11 +10,9 @@ const SpherePyramid = () => {
 
           <div className={`sphere-pyramid_level-container`} key={`pyramidLevel_${index}`}>
            
-            {Array.from({ length: level }, (_, index) => {
-              return (
-                <div className="sphere-pyramid_item" key={`sphere_${index}`}></div>
-              );
-            })}
+            {Array.from({ length: level }, (_, index) => 
+              <div className="sphere-pyramid_item" key={`sphere_${level}_${index}`}></div>
+            )}
 
           </div>
         );

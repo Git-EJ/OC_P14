@@ -36,7 +36,6 @@ const CreateEmployeeForm = () => {
     {name: "Legal", abbreviation: "legal"},
   ];
 
-  // TODO this array or npm usa-states??
   const arrayOfStates = [
     {name: "Alabama", abbreviation: "AL"},
     {name: "Alaska", abbreviation: "AK"},
@@ -99,12 +98,12 @@ const CreateEmployeeForm = () => {
     {name: "Wyoming", abbreviation: "WY"}
   ];
 
+  // TODO call modal function here createEmployee, context for modal state, render of modal in app.jsx
   const createEmployee = (e) => {
     e.preventDefault();
     setIsModalOpen(true);
   }
 
-  // TODO need to setIsModalOpen to false when click on Employee List button when modal is still open??
   const closeModal = () => {
     setIsModalOpen(false);
   }

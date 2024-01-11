@@ -97,199 +97,18 @@ th {
   font-family: "Tektur_bold";
   src: url("/src/fonts/Tektur-Bold.ttf") format("truetype");
 }
-@keyframes dynamic_border_bottom_30 {
+@keyframes dynamic_border_bottom_linear {
   0% {
-    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
-  }
-  5% {
-    background: radial-gradient(circle at 56% center, #1494B9 0%, #0E3C55 100%);
-  }
-  10% {
-    background: radial-gradient(circle at 62% center, #1494B9 0%, #0E3C55 100%);
-  }
-  15% {
-    background: radial-gradient(circle at 68% center, #1494B9 0%, #0E3C55 100%);
-  }
-  20% {
-    background: radial-gradient(circle at 74% center, #1494B9 0%, #0E3C55 100%);
+    background-position: 0 0;
   }
   25% {
-    background: radial-gradient(circle at 80% center, #1494B9 0%, #0E3C55 100%);
-  }
-  30% {
-    background: radial-gradient(circle at 74% center, #1494B9 0%, #0E3C55 100%);
-  }
-  35% {
-    background: radial-gradient(circle at 68% center, #1494B9 0%, #0E3C55 100%);
-  }
-  40% {
-    background: radial-gradient(circle at 62% center, #1494B9 0%, #0E3C55 100%);
-  }
-  45% {
-    background: radial-gradient(circle at 56% center, #1494B9 0%, #0E3C55 100%);
-  }
-  50% {
-    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
-  }
-  55% {
-    background: radial-gradient(circle at 44% center, #1494B9 0%, #0E3C55 100%);
-  }
-  60% {
-    background: radial-gradient(circle at 38% center, #1494B9 0%, #0E3C55 100%);
-  }
-  65% {
-    background: radial-gradient(circle at 32% center, #1494B9 0%, #0E3C55 100%);
-  }
-  70% {
-    background: radial-gradient(circle at 26% center, #1494B9 0%, #0E3C55 100%);
+    background-position: -20vw 0;
   }
   75% {
-    background: radial-gradient(circle at 20% center, #1494B9 0%, #0E3C55 100%);
-  }
-  80% {
-    background: radial-gradient(circle at 26% center, #1494B9 0%, #0E3C55 100%);
-  }
-  85% {
-    background: radial-gradient(circle at 32% center, #1494B9 0%, #0E3C55 100%);
-  }
-  90% {
-    background: radial-gradient(circle at 38% center, #1494B9 0%, #0E3C55 100%);
-  }
-  95% {
-    background: radial-gradient(circle at 44% center, #1494B9 0%, #0E3C55 100%);
+    background-position: 20vw 0;
   }
   100% {
-    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
-  }
-}
-@keyframes dynamic_border_bottom_20 {
-  0% {
-    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
-  }
-  5% {
-    background: radial-gradient(circle at 54% center, #1494B9 0%, #0E3C55 100%);
-  }
-  10% {
-    background: radial-gradient(circle at 58% center, #1494B9 0%, #0E3C55 100%);
-  }
-  15% {
-    background: radial-gradient(circle at 62% center, #1494B9 0%, #0E3C55 100%);
-  }
-  20% {
-    background: radial-gradient(circle at 66% center, #1494B9 0%, #0E3C55 100%);
-  }
-  25% {
-    background: radial-gradient(circle at 70% center, #1494B9 0%, #0E3C55 100%);
-  }
-  30% {
-    background: radial-gradient(circle at 66% center, #1494B9 0%, #0E3C55 100%);
-  }
-  35% {
-    background: radial-gradient(circle at 62% center, #1494B9 0%, #0E3C55 100%);
-  }
-  40% {
-    background: radial-gradient(circle at 58% center, #1494B9 0%, #0E3C55 100%);
-  }
-  45% {
-    background: radial-gradient(circle at 54% center, #1494B9 0%, #0E3C55 100%);
-  }
-  50% {
-    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
-  }
-  55% {
-    background: radial-gradient(circle at 46% center, #1494B9 0%, #0E3C55 100%);
-  }
-  60% {
-    background: radial-gradient(circle at 42% center, #1494B9 0%, #0E3C55 100%);
-  }
-  65% {
-    background: radial-gradient(circle at 38% center, #1494B9 0%, #0E3C55 100%);
-  }
-  70% {
-    background: radial-gradient(circle at 34% center, #1494B9 0%, #0E3C55 100%);
-  }
-  75% {
-    background: radial-gradient(circle at 30% center, #1494B9 0%, #0E3C55 100%);
-  }
-  80% {
-    background: radial-gradient(circle at 34% center, #1494B9 0%, #0E3C55 100%);
-  }
-  85% {
-    background: radial-gradient(circle at 38% center, #1494B9 0%, #0E3C55 100%);
-  }
-  90% {
-    background: radial-gradient(circle at 42% center, #1494B9 0%, #0E3C55 100%);
-  }
-  95% {
-    background: radial-gradient(circle at 46% center, #1494B9 0%, #0E3C55 100%);
-  }
-  100% {
-    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
-  }
-}
-@keyframes dynamic_border_bottom_10 {
-  0% {
-    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
-  }
-  5% {
-    background: radial-gradient(circle at 52% center, #1494B9 0%, #0E3C55 100%);
-  }
-  10% {
-    background: radial-gradient(circle at 54% center, #1494B9 0%, #0E3C55 100%);
-  }
-  15% {
-    background: radial-gradient(circle at 56% center, #1494B9 0%, #0E3C55 100%);
-  }
-  20% {
-    background: radial-gradient(circle at 58% center, #1494B9 0%, #0E3C55 100%);
-  }
-  25% {
-    background: radial-gradient(circle at 60% center, #1494B9 0%, #0E3C55 100%);
-  }
-  30% {
-    background: radial-gradient(circle at 58% center, #1494B9 0%, #0E3C55 100%);
-  }
-  35% {
-    background: radial-gradient(circle at 56% center, #1494B9 0%, #0E3C55 100%);
-  }
-  40% {
-    background: radial-gradient(circle at 54% center, #1494B9 0%, #0E3C55 100%);
-  }
-  45% {
-    background: radial-gradient(circle at 52% center, #1494B9 0%, #0E3C55 100%);
-  }
-  50% {
-    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
-  }
-  55% {
-    background: radial-gradient(circle at 48% center, #1494B9 0%, #0E3C55 100%);
-  }
-  60% {
-    background: radial-gradient(circle at 46% center, #1494B9 0%, #0E3C55 100%);
-  }
-  65% {
-    background: radial-gradient(circle at 44% center, #1494B9 0%, #0E3C55 100%);
-  }
-  70% {
-    background: radial-gradient(circle at 42% center, #1494B9 0%, #0E3C55 100%);
-  }
-  75% {
-    background: radial-gradient(circle at 40% center, #1494B9 0%, #0E3C55 100%);
-  }
-  80% {
-    background: radial-gradient(circle at 42% center, #1494B9 0%, #0E3C55 100%);
-  }
-  85% {
-    background: radial-gradient(circle at 44% center, #1494B9 0%, #0E3C55 100%);
-  }
-  90% {
-    background: radial-gradient(circle at 46% center, #1494B9 0%, #0E3C55 100%);
-  }
-  95% {
-    background: radial-gradient(circle at 48% center, #1494B9 0%, #0E3C55 100%);
-  }
-  100% {
-    background: radial-gradient(circle at 50% center, #1494B9 0%, #0E3C55 100%);
+    background-position: 0 0;
   }
 }
 @keyframes sphereline_home_rotation {
@@ -492,7 +311,6 @@ body ::-webkit-scrollbar {
   width: calc(100% - 2.4rem);
 }
 .header_border_bottom::after {
-  will-change: true;
   content: "";
   position: absolute;
   bottom: -1.2rem;
@@ -500,7 +318,8 @@ body ::-webkit-scrollbar {
   width: 100%;
   height: 20px;
   border-radius: 50px 20px;
-  animation: dynamic_border_bottom_30 2.5s infinite;
+  background: linear-gradient(90deg, #0E3C55 0%, #0E3C55 40%, #1494B9 50%, #0E3C55 60%, #0E3C55 100%);
+  animation: dynamic_border_bottom_linear 10s linear infinite;
 }
 .header_button_container {
   display: flex;
@@ -577,6 +396,7 @@ body ::-webkit-scrollbar {
   background-color: #fff;
 }
 .modal_text {
+  text-align: center;
   font-family: "Tektur_Bold", sans-serif;
   font-size: 2.5rem;
   background: linear-gradient(to right, #1494B9, #0E3C55);
