@@ -108,7 +108,7 @@ const EmployeeList = () => {
     <>
       <Header navigateButton_1='/employee-create' textButton_1='Create Employee' />
       <main className="main_wrapper">
-        <h2 className="current-employees_page-title">Employee List</h2>
+        <h2 className="current-employee_page-title">Employee List</h2>
           <DataTable headers={arrayOfEmployeesDataTitle} data={arrayOfEmployeesDataContents} />
           <SpheresButton type="submit" className="spheres-button_button" onClick={addEmployeeLink} text="Add Employee" />
       </main>

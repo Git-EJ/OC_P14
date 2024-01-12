@@ -67,12 +67,12 @@ const DataTable = ({headers, data}) => {
 
     return (
       headers.map((entry, index) => (
-        <div className={`current-employees_data-table_title_item_${index}`} key={`${index}_${entry.value}`}>
-          <p className="current-employees_data-table_title_item_value">{entry.value}</p>
+        <div className={`data-table_title_item_${index}`} key={`${index}_${entry.value}`}>
+          <p className="data-table_title_item_value">{entry.value}</p>
           
-          <div className="current-employees_data-table_title_item_sorting_container">
+          <div className="data-table_title_item_sorting_container">
             <div
-              className={`current-employees_data-table_title_item_sorting_icon-asc ${
+              className={`data-table_title_item_sorting_icon-asc ${
                 activeSortIndex === index && isActiveCaretAsc ? 'caret_active' : ''
               }`}
               onClick={() => handleSortClick(index, 'asc')}
@@ -81,7 +81,7 @@ const DataTable = ({headers, data}) => {
             </div>
             
             <div
-              className={`current-employees_data-table_title_item_sorting_icon-desc ${
+              className={`data-table_title_item_sorting_icon-desc ${
                 activeSortIndex === index && isActiveCaretDesc ? 'caret_active' : ''
               }`}
               onClick={() => handleSortClick(index, 'desc')}
@@ -99,11 +99,11 @@ const DataTable = ({headers, data}) => {
   const DataContents = ({data}) => {
     return data.map((content, index) => (
           
-      <div className="current-employees_data-table_content-line_container" key={`${index}_${content.firstName}-${content.lastName}`}>
+      <div className="data-table_content-line_container" key={`${index}_${content.firstName}-${content.lastName}`}>
        
         {Object.values(content).map((value, i) => (
-          <div className={`current-employees_data-table_content-line_item_${i}`} key={`item_${i}_${value}`}>
-            <p className="current-employees_data-table_content-line_item_value">{value}</p>
+          <div className={`data-table_content-line_item_${i}`} key={`item_${i}_${value}`}>
+            <p className="data-table_content-line_item_value">{value}</p>
           </div>
         ))}
 
@@ -114,12 +114,12 @@ const DataTable = ({headers, data}) => {
 
   return (
 
-    <div className="current-employees_data-table_wrapper">
+    <div className="data-table_wrapper">
 
-      <div className="current-employees_data-table_options_container">
+      <div className="data-table_options_container">
 
         {/* TODO Tooltip */}
-        <div className="current-employees_data-table_options_entries">
+        <div className="data-table_options_entries">
           <label htmlFor="data-table_entries">Show</label>
           <select id="data-table_entries" defaultValue={1}>
             <option value="1">1</option>
@@ -131,31 +131,31 @@ const DataTable = ({headers, data}) => {
           <label htmlFor="data-table_entries">entries</label>
         </div>
 
-        <div className="current-employees_data-table_options_search">
+        <div className="data-table_options_search">
           <label htmlFor="data-table_search">Search:</label>
           <input id="data-table_search" type="text" placeholder="" />
         </div>
       </div>
 
-      <div className="current-employees_data-table_titles_container">
+      <div className="data-table_titles_container">
         <DataHeaders currentData={currentData} setCurrentData={setCurrentData} />
       </div>
 
-      <div className="current-employees_data-table_content-lines_container">
+      <div className="data-table_content-lines_container">
         <DataContents data={currentData} />
       </div>
 
-      <div className="current-employees_data-table_showing_container">
+      <div className="data-table_showing_container">
 
-        <div className="current-employees_data-table_showing_entries_container">
-          <p className="current-employees_data-table_showing_entries_text">Showing 1 to 3 of 3 entries</p>
+        <div className="data-table_showing_entries_container">
+          <p className="data-table_showing_entries_text">Showing 1 to 3 of 3 entries</p>
         </div>
 
-        <div className="current-employees_data-table_showing_pagination_container">
-          <button className="current-employees_data-table_showing_pagination_button_previous">Previous</button>
-          <button className="current-employees_data-table_showing_pagination_button_current">1</button>
-          <button className="current-employees_data-table_showing_pagination_button_not-current">2</button>
-          <button className="current-employees_data-table_showing_pagination_button_next">Next</button>
+        <div className="data-table_showing_pagination_container">
+          <button className="data-table_showing_pagination_button_previous">Previous</button>
+          <button className="data-table_showing_pagination_button_current">1</button>
+          <button className="data-table_showing_pagination_button_not-current">2</button>
+          <button className="data-table_showing_pagination_button_next">Next</button>
         </div>
 
       </div>

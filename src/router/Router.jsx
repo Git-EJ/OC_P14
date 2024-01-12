@@ -1,7 +1,7 @@
 import { Navigate, createBrowserRouter } from "react-router-dom"
 import Home from "../pages/Home";
 import CreateEmployee from "../pages/CreateEmployee";
-import EmployeeList from "../pages/EmployeeList";
+import EmployeeList from "../pages/CurrentEmployee";
 
 
 const Router = createBrowserRouter([

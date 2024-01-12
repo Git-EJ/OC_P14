@@ -1,0 +1,10 @@
+.current-employee {
+
+  &_page-title {
+    margin: 1.5rem 0 3rem 0;
+    font-family: 'Tektur_Bold', sans-serif;
+    font-size: 2.5rem;
+    @include gradient_text($secondary_linear-gradient);
+  }
+}
+
