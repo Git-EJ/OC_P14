@@ -96,7 +96,7 @@ const arrayOfEmployeesDataContents = [
 ];
 
 const EmployeeList = () => {
-  document.title = "Employee List";
+  document.title =   document.title = "HRnet | Employee List";
   
   const navigate = useNavigate();
   

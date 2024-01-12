@@ -3,7 +3,7 @@ import Header from "../molecules/Header";
 
 
 const Home = () => {
-
+  document.title = "HRnet | Home";
   return (
     <>
       <Header 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import SelectField from "../atoms/SelectField";
 import Modal from '../atoms/Modal';
-import SpheresButton from "../molecules/SpheresButton";
+import SpheresButton from "./SpheresButton";
 
 const CreateEmployeeForm = () => { 
 

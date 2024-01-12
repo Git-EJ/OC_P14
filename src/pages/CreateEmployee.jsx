@@ -1,8 +1,9 @@
 import Header from "../molecules/Header";
-import CreateEmployeeForm from "../organisms/CreateEmployeeForm";
+import CreateEmployeeForm from "../molecules/CreateEmployeeForm";
 
 
 const CreateEmployee = () => {
+  document.title = "HRnet | CreateEmployee";
 
   return (
     <>

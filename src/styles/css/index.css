@@ -607,7 +607,7 @@ body ::-webkit-scrollbar {
 .current-employees_data-table_title_item_sorting_container path {
   fill: #1494B9;
 }
-.current-employees_data-table_title_item_sorting_icon-up, .current-employees_data-table_title_item_sorting_icon-down {
+.current-employees_data-table_title_item_sorting_icon-asc, .current-employees_data-table_title_item_sorting_icon-desc {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -709,6 +709,10 @@ body ::-webkit-scrollbar {
   color: #fff;
   width: 2rem;
   height: 2rem;
+}
+
+.caret_active path {
+  fill: #0E3C55;
 }
 
 .home-main_container {

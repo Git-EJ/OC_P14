@@ -1,15 +1,19 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import CaretUp from "../assets/icons/Caret_up";
-import CaretDown from "../assets/icons/Caret_down";
+import CaretAsc from "../assets/icons/Caret_Asc";
+import CaretDesc from "../assets/icons/Caret_Desc";
 
 
 const DataTable = ({headers, data}) => {
 
   const [currentData, setCurrentData] = useState(data);
 
+  const [activeSortIndex, setActiveSortIndex] = useState(null);
+  const [isActiveCaretAsc, setIsActiveCaretAsc] = useState(false);
+  const [isActiveCaretDesc, setIsActiveCaretDesc] = useState(false);
 
-  //TODO default sort by lastName asc
+
+  //TODO default sort by lastName asc 
   const sort = (entry, data, sortBy='asc') => {
     const key = entry.key;
 
@@ -40,31 +44,55 @@ const DataTable = ({headers, data}) => {
   }
 
 
-  // TODO active class for caret with ternaire operator 
   const DataHeaders = ({ currentData, setCurrentData }) => {
+
+  
+    const handleSortClick = (index, direction) => {
+
+      const entry = headers[index];
+
+      setCurrentData(sort(entry, currentData, direction));
+      setActiveSortIndex(index);
+
+      if (direction === 'asc') {
+        setIsActiveCaretAsc(isActiveCaretAsc ? false : true)
+        setIsActiveCaretDesc(isActiveCaretAsc ? true : false)
     
-    return headers.map((entry, index) => (
-      
-      <div className={`current-employees_data-table_title_item_${index}`} key={`${index}_${entry.value}`}>
-        <p className= "current-employees_data-table_title_item_value">{entry.value}</p>
-        <div className="current-employees_data-table_title_item_sorting_container">
+      } else if (direction === 'desc'){
+        setIsActiveCaretDesc(isActiveCaretDesc ? false : true)
+        setIsActiveCaretAsc(isActiveCaretDesc ? true : false)
+      }
+    };
 
-          <div className="current-employees_data-table_title_item_sorting_icon-up" 
-            onClick={() => setCurrentData(sort(entry, currentData)) }
-          > 
-            <CaretUp /> 
-          </div>
 
-          <div className="current-employees_data-table_title_item_sorting_icon-down" 
-            onClick={() => setCurrentData(sort(entry, currentData, 'desc')) }
-          > 
-            <CaretDown /> 
+    return (
+      headers.map((entry, index) => (
+        <div className={`current-employees_data-table_title_item_${index}`} key={`${index}_${entry.value}`}>
+          <p className="current-employees_data-table_title_item_value">{entry.value}</p>
+          
+          <div className="current-employees_data-table_title_item_sorting_container">
+            <div
+              className={`current-employees_data-table_title_item_sorting_icon-asc ${
+                activeSortIndex === index && isActiveCaretAsc ? 'caret_active' : ''
+              }`}
+              onClick={() => handleSortClick(index, 'asc')}
+            >
+              {activeSortIndex === index && isActiveCaretDesc ? null : <CaretAsc />}
+            </div>
+            
+            <div
+              className={`current-employees_data-table_title_item_sorting_icon-desc ${
+                activeSortIndex === index && isActiveCaretDesc ? 'caret_active' : ''
+              }`}
+              onClick={() => handleSortClick(index, 'desc')}
+            >
+              {activeSortIndex === index && isActiveCaretAsc ? null : <CaretDesc />}
+            </div>
+            
           </div>
-        
         </div>
-
-      </div>
-    ));
+      ))
+    );
   };
 
 

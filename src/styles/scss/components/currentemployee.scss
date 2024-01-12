@@ -99,8 +99,8 @@
             }
           }
 
-          &_icon-up, 
-          &_icon-down {
+          &_icon-asc, 
+          &_icon-desc {
             @include flex_center;
           }
         }
@@ -198,5 +198,15 @@
       }
     }
    }
+  }
+}
+
+
+.caret_active {
+  // background: #000;
+  // height: 0.2rem;
+  // width: 0.2rem;
+  path {
+    fill: $secondary-color;
   }
 }

@@ -1,4 +1,4 @@
-const CaretDown = () => {
+const CaretDesc = () => {
   return (
     // <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
     <svg xmlns="http://www.w3.org/2000/svg" height="16" width="10" viewBox="0 0 320 512">
@@ -7,4 +7,4 @@ const CaretDown = () => {
   );
 }
 
-export default CaretDown;
+export default CaretDesc;
