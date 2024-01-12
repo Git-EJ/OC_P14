@@ -50,50 +50,60 @@ const arrayOfEmployeesDataTitle = [
 
 const arrayOfEmployeesDataContents = [
   {
-    firstName: "ATOTO",
-    lastName: "ATUTUTITI",
+    firstName: "Jean",
+    lastName: "DuCode",
     startDate: "01/10/2024",
-    department: "AHuman Ressources",
-    dateOfBirth: "02/02/2024",
-    street: "20 rue de TOTOVILLE",
-    city: "ATOTOVILLE",
-    state: "ATV",
-    zipCode: "01000",
+    department: "Human Ressources",
+    dateOfBirth: "02/02/1988",
+    street: "20 rue du code",
+    city: "ReactCity",
+    state: "RC",
+    zipCode: "01010",
   },
   {
-    firstName: "BTOTO",
-    lastName: "BTUTUTITI",
+    firstName: "Jeanne",
+    lastName: "DuCode",
     startDate: "01/01/2024",
-    department: "BHuman Ressources",
-    dateOfBirth: "10/02/2024",
-    street: "2 rue de TOTOVILLE",
-    city: "BTOTOVILLE",
-    state: "BTV",
+    department: "Tech",
+    dateOfBirth: "10/02/1983",
+    street: "2 rue du code",
+    city: "AngularCity",
+    state: "AC",
     zipCode: "00100",
   },
   {
-    firstName: "CTOTO",
-    lastName: "CTUTUTITI",
+    firstName: "Alain",
+    lastName: "Deloin",
     startDate: "10/01/2024",
-    department: "CHuman Ressources",
+    department: "Sales",
     dateOfBirth: "02/01/2024",
-    street: "02 rue de TOTOVILLE",
-    city: "CTOTOVILLE",
-    state: "CTV",
+    street: "1 avenue de vite",
+    city: "VueCity",
+    state: "VC",
     zipCode: "00010",
   },
   {
-    firstName: "DTOTO",
-    lastName: "DTUTUTITI",
-    startDate: "10/01/2023",
-    department: "DHuman Ressources",
-    dateOfBirth: "02/01/2023",
-    street: "10 rue de TOTOVILLE",
-    city: "DTOTOVILLE",
-    state: "DTV",
+    firstName: "Michel",
+    lastName: "Colucci",
+    startDate: "28/01/2001",
+    department: "Human Ressources",
+    dateOfBirth: "20/01/2023",
+    street: "02 rue du resto",
+    city: "JavaScriptCity",
+    state: "JS",
     zipCode: "00001",
   },
 ];
+
+
+const createEmployeeMockedData = (arrayOfEmployeesDataContents, nbreOfEmployee) => {
+  let arrayOfEmployeesDataContentsCopy = [...arrayOfEmployeesDataContents];
+  for (let i = 0; i < nbreOfEmployee; i++) {
+    arrayOfEmployeesDataContentsCopy.push(arrayOfEmployeesDataContentsCopy[i]);
+  }
+  return arrayOfEmployeesDataContentsCopy;
+}
+
 
 const EmployeeList = () => {
   document.title =   document.title = "HRnet | Employee List";
@@ -109,8 +119,18 @@ const EmployeeList = () => {
       <Header navigateButton_1='/employee-create' textButton_1='Create Employee' />
       <main className="main_wrapper">
         <h2 className="current-employee_page-title">Employee List</h2>
-          <DataTable headers={arrayOfEmployeesDataTitle} data={arrayOfEmployeesDataContents} />
-          <SpheresButton type="submit" className="spheres-button_button" onClick={addEmployeeLink} text="Add Employee" />
+
+          <DataTable 
+            headers={arrayOfEmployeesDataTitle} 
+            data={createEmployeeMockedData(arrayOfEmployeesDataContents, 11)} 
+          />
+
+          <SpheresButton 
+            type="submit" 
+            className="spheres-button_button" 
+            onClick={addEmployeeLink} text="Add Employee" 
+          />
+
       </main>
     </>
   );

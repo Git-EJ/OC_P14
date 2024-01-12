@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CaretAsc from "../assets/icons/Caret_Asc";
 import CaretDesc from "../assets/icons/Caret_Desc";
 
@@ -12,8 +12,13 @@ const DataTable = ({headers, data}) => {
   const [isActiveCaretAsc, setIsActiveCaretAsc] = useState(false);
   const [isActiveCaretDesc, setIsActiveCaretDesc] = useState(false);
 
+  const [selectValue, setSelectValue] = useState(1);
+  const [dataLenght, setDataLenght] = useState(0);
 
-  //TODO default sort by lastName asc 
+
+
+  //TODO default sort by lastName asc
+  //TODO sort by street fix issue sort by street name not number
   const sort = (entry, data, sortBy='asc') => {
     const key = entry.key;
 
@@ -110,6 +115,38 @@ const DataTable = ({headers, data}) => {
       </div>
     ));
   };
+  
+  const DisplayShowingEntries = () => {
+    const display = (selectValue > dataLenght ? dataLenght : selectValue);
+    return (
+      <>
+        <p className="data-table_showing_entries_text">
+            Showing 1 to {display} of {dataLenght} entries
+        </p>
+      </>
+    )
+  }
+
+
+  //TODO display pagination
+  const DisplayPagination = () => {
+ 
+    return (
+      <>
+        <button className="data-table_showing_pagination_button_previous">Previous</button>
+        <button className="data-table_showing_pagination_button_current">1</button>
+        <button className="data-table_showing_pagination_button_not-current">2</button>
+        <button className="data-table_showing_pagination_button_next">Next</button>
+      </>
+    )
+  }
+
+
+  //TODO good pratice??
+  useEffect(() => {
+    setCurrentData(data); 
+    setDataLenght(data.length);
+  }, [data]);
 
 
   return (
@@ -121,7 +158,11 @@ const DataTable = ({headers, data}) => {
         {/* TODO Tooltip */}
         <div className="data-table_options_entries">
           <label htmlFor="data-table_entries">Show</label>
-          <select id="data-table_entries" defaultValue={1}>
+          <select 
+            id="data-table_entries" 
+            value={selectValue}
+            onChange={(e) => setSelectValue(e.target.value)}
+          >
             <option value="1">1</option>
             <option value="10">10</option>
             <option value="25">25</option>
@@ -131,6 +172,7 @@ const DataTable = ({headers, data}) => {
           <label htmlFor="data-table_entries">entries</label>
         </div>
 
+        {/* TODO search component */}
         <div className="data-table_options_search">
           <label htmlFor="data-table_search">Search:</label>
           <input id="data-table_search" type="text" placeholder="" />
@@ -148,14 +190,11 @@ const DataTable = ({headers, data}) => {
       <div className="data-table_showing_container">
 
         <div className="data-table_showing_entries_container">
-          <p className="data-table_showing_entries_text">Showing 1 to 3 of 3 entries</p>
+          <DisplayShowingEntries />
         </div>
 
         <div className="data-table_showing_pagination_container">
-          <button className="data-table_showing_pagination_button_previous">Previous</button>
-          <button className="data-table_showing_pagination_button_current">1</button>
-          <button className="data-table_showing_pagination_button_not-current">2</button>
-          <button className="data-table_showing_pagination_button_next">Next</button>
+          <DisplayPagination />
         </div>
 
       </div>
