@@ -501,6 +501,7 @@ body ::-webkit-scrollbar {
   flex-direction: column;
   width: 95%;
   height: auto;
+  cursor: default;
 }
 .data-table_options_container {
   display: flex;
@@ -669,6 +670,7 @@ body ::-webkit-scrollbar {
   max-width: 45%;
   height: auto;
   border: 1px solid lime;
+  cursor: default;
 }
 .data-table_showing_entries_text {
   border: 1px solid black;
@@ -697,9 +699,10 @@ body ::-webkit-scrollbar {
 }
 .data-table_showing_pagination_button_current {
   background: #1494B9;
+  border-radius: 50%;
   color: #fff;
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .caret_active path {

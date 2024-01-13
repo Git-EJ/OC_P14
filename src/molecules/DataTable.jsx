@@ -17,6 +17,8 @@ const DataTable = ({headers, data}) => {
 
 
 
+
+  //TODO sort issue when click for the second time after refresh nothing happend and after sort is inverted
   //TODO default sort by lastName asc
   //TODO sort by street fix issue sort by street name not number
   const sort = (entry, data, sortBy='asc') => {
@@ -127,16 +129,48 @@ const DataTable = ({headers, data}) => {
     )
   }
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPageCount = Math.ceil(dataLenght / selectValue);
+
+  
 
   //TODO display pagination
   const DisplayPagination = () => {
- 
+
+    const handlePrevious = () => {
+      if (currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      }
+    }
+
+    const handleNext = () => {
+      if (currentPage < totalPageCount) {
+        setCurrentPage(currentPage + 1);
+      }
+    }
+
+    const paginationCounter = () => {
+      const pagesButtons = [];
+      for (let i = 1; i <= totalPageCount; i++) {
+        pagesButtons.push(
+          <button 
+            key={`pagination_button_${i}`} 
+            className= {`data-table_showing_pagination_button_${currentPage === i ? 'current' : 'not-current'}`}
+            onClick={() => setCurrentPage(i)}
+          >
+          {i}
+          </button>
+        )
+      }
+      return pagesButtons;
+    }
+
+
     return (
       <>
-        <button className="data-table_showing_pagination_button_previous">Previous</button>
-        <button className="data-table_showing_pagination_button_current">1</button>
-        <button className="data-table_showing_pagination_button_not-current">2</button>
-        <button className="data-table_showing_pagination_button_next">Next</button>
+        <button className="data-table_showing_pagination_button_previous" onClick={handlePrevious}>Previous</button>
+        {paginationCounter()}
+        <button className="data-table_showing_pagination_button_next" onClick={handleNext}>Next</button>
       </>
     )
   }

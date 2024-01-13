@@ -4,6 +4,7 @@
     @include flex_center_column;
     width: 95%;
     height: auto;
+    cursor: default;
   }
 
 
@@ -147,6 +148,7 @@
       max-width: 45%;
       height: auto;
       border: 1px solid lime;
+      cursor: default;
     }
 
     &_text {
@@ -182,9 +184,10 @@
 
       &_current {
         background: $primary-color;
+        border-radius: 50%;
         color: #fff;
-        width:2rem;
-        height: 2rem;
+        width:1.5rem;
+        height: 1.5rem;
       }
     }
   }
