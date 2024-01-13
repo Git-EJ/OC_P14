@@ -2,6 +2,8 @@ import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import CaretAsc from "../assets/icons/Caret_Asc";
 import CaretDesc from "../assets/icons/Caret_Desc";
+import CircleArrowLeft from "../assets/icons/CircleArrowLeft";
+import CircleArrowRight from "../assets/icons/CircleArrowRight";
 
 
 const DataTable = ({headers, data}) => {
@@ -132,18 +134,20 @@ const DataTable = ({headers, data}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPageCount = Math.ceil(dataLenght / selectValue);
 
-  
+
 
   //TODO display pagination
   const DisplayPagination = () => {
 
-    const handlePrevious = () => {
+    
+
+    const onPreviousPage = () => {
       if (currentPage > 1) {
         setCurrentPage(currentPage - 1);
       }
     }
 
-    const handleNext = () => {
+    const onNextPage = () => {
       if (currentPage < totalPageCount) {
         setCurrentPage(currentPage + 1);
       }
@@ -168,9 +172,13 @@ const DataTable = ({headers, data}) => {
 
     return (
       <>
-        <button className="data-table_showing_pagination_button_previous" onClick={handlePrevious}>Previous</button>
+        <button className="data-table_showing_pagination_button_previous" onClick={onPreviousPage}>
+          <CircleArrowLeft color1={'#1494B9'} color2={'#1494B9'} color3={'rgba(14, 60, 85, 0.80)'}/>
+        </button>
         {paginationCounter()}
-        <button className="data-table_showing_pagination_button_next" onClick={handleNext}>Next</button>
+        <button className="data-table_showing_pagination_button_next" onClick={onNextPage}>
+          <CircleArrowRight color1={'#1494B9'} color2={'#1494B9'} color3={'rgba(14, 60, 85, 0.80)'} />
+        </button>
       </>
     )
   }

@@ -697,6 +697,20 @@ body ::-webkit-scrollbar {
   font-size: 0.8rem;
   cursor: pointer;
 }
+.data-table_showing_pagination_button_previous > svg, .data-table_showing_pagination_button_next > svg, .data-table_showing_pagination_button_current > svg, .data-table_showing_pagination_button_not-current > svg {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+@supports (fill: url(#svg_radial-gradient)) {
+  .data-table_showing_pagination_button_previous > svg > path, .data-table_showing_pagination_button_next > svg > path, .data-table_showing_pagination_button_current > svg > path, .data-table_showing_pagination_button_not-current > svg > path {
+    fill: url(#svg_radial-gradient);
+  }
+}
+@supports not (fill: url(#svg_radial-gradient)) {
+  .data-table_showing_pagination_button_previous > svg > path, .data-table_showing_pagination_button_next > svg > path, .data-table_showing_pagination_button_current > svg > path, .data-table_showing_pagination_button_not-current > svg > path {
+    fill: #1494B9;
+  }
+}
 .data-table_showing_pagination_button_current {
   background: #1494B9;
   border-radius: 50%;
