@@ -685,7 +685,6 @@ body ::-webkit-scrollbar {
   justify-content: space-between;
   max-width: 45%;
   height: auto;
-  border: 1px solid black;
   gap: 0.5rem;
 }
 .data-table_showing_pagination_button_previous, .data-table_showing_pagination_button_next, .data-table_showing_pagination_button_current, .data-table_showing_pagination_button_not-current {
@@ -698,8 +697,8 @@ body ::-webkit-scrollbar {
   cursor: pointer;
 }
 .data-table_showing_pagination_button_previous > svg, .data-table_showing_pagination_button_next > svg, .data-table_showing_pagination_button_current > svg, .data-table_showing_pagination_button_not-current > svg {
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 3rem;
+  height: 3rem;
 }
 @supports (fill: url(#svg_radial-gradient)) {
   .data-table_showing_pagination_button_previous > svg > path, .data-table_showing_pagination_button_next > svg > path, .data-table_showing_pagination_button_current > svg > path, .data-table_showing_pagination_button_not-current > svg > path {

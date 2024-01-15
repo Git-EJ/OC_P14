@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import CaretAsc from "../assets/icons/Caret_Asc";
 import CaretDesc from "../assets/icons/Caret_Desc";
 import CircleArrowLeft from "../assets/icons/CircleArrowLeft";
@@ -13,12 +13,16 @@ const DataTable = ({headers, data}) => {
   const [activeSortIndex, setActiveSortIndex] = useState(null);
   const [isActiveCaretAsc, setIsActiveCaretAsc] = useState(false);
   const [isActiveCaretDesc, setIsActiveCaretDesc] = useState(false);
-
+  const [currentPage, setCurrentPage] = useState(1); 
   const [selectValue, setSelectValue] = useState(1);
   const [dataLenght, setDataLenght] = useState(0);
+  const totalPageCount = Math.ceil(dataLenght / selectValue);
 
+  console.log('dataLenght', dataLenght);
+  console.log('currentPage', currentPage);
+  console.log('selectValue', selectValue);
 
-
+  
 
   //TODO sort issue when click for the second time after refresh nothing happend and after sort is inverted
   //TODO default sort by lastName asc
@@ -53,7 +57,7 @@ const DataTable = ({headers, data}) => {
   }
 
 
-  const DataHeaders = ({ currentData, setCurrentData }) => {
+  const DisplayDataHeaders = ({ currentData, setCurrentData }) => {
 
   
     const handleSortClick = (index, direction) => {
@@ -119,6 +123,19 @@ const DataTable = ({headers, data}) => {
       </div>
     ));
   };
+
+  const DisplayDataContents = ({data}) => {
+    if (selectValue > dataLenght) {
+      return (
+        <DataContents data={data} />
+      )
+    } else {
+      console.log('dataContents', data.slice((currentPage - 1) * selectValue, currentPage * selectValue))
+      return (
+        <DataContents data={data.slice((currentPage - 1) * selectValue, currentPage * selectValue)} />
+      )
+    }
+  }
   
   const DisplayShowingEntries = () => {
     const display = (selectValue > dataLenght ? dataLenght : selectValue);
@@ -131,14 +148,11 @@ const DataTable = ({headers, data}) => {
     )
   }
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPageCount = Math.ceil(dataLenght / selectValue);
+  
 
-
-
+  
   //TODO display pagination
   const DisplayPagination = () => {
-
     
 
     const onPreviousPage = () => {
@@ -153,12 +167,16 @@ const DataTable = ({headers, data}) => {
       }
     }
 
+    // const range = (start, end) => {
+    //   return Array(end - start + 1).fill().map((_, index) => start + index) 
+    // }
+
     const paginationCounter = () => {
       const pagesButtons = [];
       for (let i = 1; i <= totalPageCount; i++) {
         pagesButtons.push(
           <button 
-            key={`pagination_button_${i}`} 
+          key={`pagination_button_${i}`} 
             className= {`data-table_showing_pagination_button_${currentPage === i ? 'current' : 'not-current'}`}
             onClick={() => setCurrentPage(i)}
           >
@@ -169,26 +187,28 @@ const DataTable = ({headers, data}) => {
       return pagesButtons;
     }
 
+  
 
     return (
       <>
         <button className="data-table_showing_pagination_button_previous" onClick={onPreviousPage}>
-          <CircleArrowLeft color1={'#1494B9'} color2={'#1494B9'} color3={'rgba(14, 60, 85, 0.80)'}/>
+          <CircleArrowLeft color1={'#1494B9'} color2={'#0E3C55'} rayon={70}/>
         </button>
         {paginationCounter()}
         <button className="data-table_showing_pagination_button_next" onClick={onNextPage}>
-          <CircleArrowRight color1={'#1494B9'} color2={'#1494B9'} color3={'rgba(14, 60, 85, 0.80)'} />
+          <CircleArrowRight color1={'#1494B9'} color2={'#0E3C55'} rayon={70} />
         </button>
       </>
     )
   }
 
-
+  
   //TODO good pratice??
   useEffect(() => {
     setCurrentData(data); 
     setDataLenght(data.length);
   }, [data]);
+  
 
 
   return (
@@ -222,11 +242,11 @@ const DataTable = ({headers, data}) => {
       </div>
 
       <div className="data-table_titles_container">
-        <DataHeaders currentData={currentData} setCurrentData={setCurrentData} />
+        <DisplayDataHeaders currentData={currentData} setCurrentData={setCurrentData} />
       </div>
 
       <div className="data-table_content-lines_container">
-        <DataContents data={currentData} />
+        <DisplayDataContents data={currentData} />
       </div>
 
       <div className="data-table_showing_container">
