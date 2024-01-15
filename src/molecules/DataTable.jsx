@@ -16,11 +16,11 @@ const DataTable = ({headers, data}) => {
   const [currentPage, setCurrentPage] = useState(1); 
   const [selectValue, setSelectValue] = useState(1);
   const [dataLenght, setDataLenght] = useState(0);
-  const totalPageCount = Math.ceil(dataLenght / selectValue);
 
-  console.log('dataLenght', dataLenght);
-  console.log('currentPage', currentPage);
-  console.log('selectValue', selectValue);
+
+  // console.log('dataLenght', dataLenght);
+  // console.log('currentPage', currentPage);
+  // console.log('selectValue', selectValue);
 
   
 
@@ -138,6 +138,7 @@ const DataTable = ({headers, data}) => {
   
 
   const DisplayShowingEntries = () => {
+
     if(selectValue > dataLenght) {
       return (
         <p className="data-table_showing_entries_text">Showing 1 to {dataLenght} of {dataLenght} entries</p>
@@ -150,15 +151,27 @@ const DataTable = ({headers, data}) => {
   };
 
   
+  const totalPageCount = Math.ceil(dataLenght / selectValue);
+  const dots = '...';
+  const siblingCount = 1;
+  const leftSiblingRange = Math.max(currentPage - siblingCount, 1); // throw max value if currentPage - siblingCount < 1
+  const rightSiblingRange = Math.min(currentPage + siblingCount, totalPageCount); // throw min value if currentPage + siblingCount > totalPageCount
+  const hasLeftDots = leftSiblingRange > 2; // if leftSiblingRange > 2 then we have left dots
+  const hasRightDots = (totalPageCount - rightSiblingRange) > 1; // if (totalPageCount - rightSiblingRange) > 1 then we have right dots
 
+  
+  
+  console.log('totalPageCount', totalPageCount)
+  console.log('leftSiblingRange', leftSiblingRange)
+  console.log('rightSiblingRange', rightSiblingRange)
+  console.log('hasLeftDots', hasLeftDots)
+  console.log('hasRightDots', hasRightDots)
+  console.log('leftDots', hasLeftDots && dots)
+  console.log('rightDots', hasRightDots && dots)
   
   //TODO display pagination dots
   const DisplayPagination = () => {
 
-    if(selectValue * currentPage > dataLenght) {
-      setCurrentPage(1);
-    }
-    
     const onPreviousPage = () => {
       if (currentPage > 1) {
         setCurrentPage(currentPage - 1);
@@ -171,27 +184,74 @@ const DataTable = ({headers, data}) => {
       }
     }
 
-    // const range = (start, end) => {
-    //   return Array(end - start + 1).fill().map((_, index) => start + index) 
-    // }
-
-    const paginationCounter = () => {
-      const pagesButtons = [];
-      for (let i = 1; i <= totalPageCount; i++) {
-        pagesButtons.push(
-          <button 
-          key={`pagination_button_${i}`} 
-            className= {`data-table_showing_pagination_button_${currentPage === i ? 'current' : 'not-current'}`}
-            onClick={() => setCurrentPage(i)}
-          >
-          {i}
-          </button>
-        )
-      }
-      return pagesButtons;
+    const range = (start, end) => {
+      const length = (end - start + 1);
+      return Array(length).fill().map((_, index) => start + index) 
     }
 
-  
+    const paginationCounter = () => {
+
+      if (totalPageCount <= 5) {
+        return range(1, totalPageCount).map( page => (
+          <button 
+            key={`pagination_button_${page}`} 
+            className= {`data-table_showing_pagination_button_${currentPage === page ? 'current' : 'not-current'}`}
+            onClick={() => setCurrentPage(page)}
+          >
+            {page}
+          </button>
+        ))
+      }
+
+      return (
+        <>
+          <button 
+            className= {`data-table_showing_pagination_button_${currentPage === 1 ? 'current' : 'not-current'}`}
+            onClick={() => setCurrentPage(1)}
+          >
+            1
+          </button>
+
+          {hasLeftDots && dots}
+
+          {range(leftSiblingRange, rightSiblingRange).map( page => (
+            console.log('range', range(leftSiblingRange, rightSiblingRange)), //DEV
+
+            (page !== 1 && page !== totalPageCount) && ( //condition for not display 1 and totalPageCount
+              <button 
+                key={`pagination_button_${page}`} 
+                className= {`data-table_showing_pagination_button_${currentPage === page ? 'current' : 'not-current'}`}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            )
+          ))}
+
+          {hasRightDots && dots}
+
+          <button 
+              className= {`data-table_showing_pagination_button_${currentPage === totalPageCount ? 'current' : 'not-current'}`}
+              onClick={() => setCurrentPage(totalPageCount)}
+            >
+              {totalPageCount}
+          </button>
+        </>
+      )
+    }
+
+    // const paginationCounter = () => {
+    //   return range(1, totalPageCount).map( page => (
+    //     <button 
+    //       key={`pagination_button_${page}`} 
+    //       className= {`data-table_showing_pagination_button_${currentPage === page ? 'current' : 'not-current'}`}
+    //       onClick={() => setCurrentPage(page)}
+    //     >
+    //       {page}
+    //     </button>
+    //   ))
+    // }
+
 
     return (
       <>
@@ -211,7 +271,12 @@ const DataTable = ({headers, data}) => {
   useEffect(() => {
     setCurrentData(data); 
     setDataLenght(data.length);
-  }, [data, data.length]);
+      
+    //for showing entries update when selectValue change and currentPage is not in the range of data
+    if(selectValue * currentPage > dataLenght) {
+      setCurrentPage(1);
+    }
+  }, [data, data.lenght, dataLenght, selectValue, currentPage]);
   
 
 
