@@ -130,9 +130,6 @@ const DataTable = ({headers, data}) => {
         <DataContents data={data} />
       )
     } else {
-      if(selectValue * currentPage > dataLenght) {
-        setCurrentPage(1);
-      }
       return (
         <DataContents data={data.slice((currentPage - 1) * selectValue, currentPage * selectValue)} />
       )
@@ -157,8 +154,11 @@ const DataTable = ({headers, data}) => {
   
   //TODO display pagination dots
   const DisplayPagination = () => {
-    
 
+    if(selectValue * currentPage > dataLenght) {
+      setCurrentPage(1);
+    }
+    
     const onPreviousPage = () => {
       if (currentPage > 1) {
         setCurrentPage(currentPage - 1);
