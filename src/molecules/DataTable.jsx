@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import CaretAsc from "../assets/icons/Caret_Asc";
 import CaretDesc from "../assets/icons/Caret_Desc";
 import CircleArrowLeft from "../assets/icons/CircleArrowLeft";
@@ -130,28 +130,32 @@ const DataTable = ({headers, data}) => {
         <DataContents data={data} />
       )
     } else {
-      console.log('dataContents', data.slice((currentPage - 1) * selectValue, currentPage * selectValue))
+      if(selectValue * currentPage > dataLenght) {
+        setCurrentPage(1);
+      }
       return (
         <DataContents data={data.slice((currentPage - 1) * selectValue, currentPage * selectValue)} />
       )
     }
-  }
+  };
   
+
   const DisplayShowingEntries = () => {
-    const display = (selectValue > dataLenght ? dataLenght : selectValue);
-    return (
-      <>
-        <p className="data-table_showing_entries_text">
-            Showing 1 to {display} of {dataLenght} entries
-        </p>
-      </>
-    )
-  }
+    if(selectValue > dataLenght) {
+      return (
+        <p className="data-table_showing_entries_text">Showing 1 to {dataLenght} of {dataLenght} entries</p>
+      )
+    } else {
+      return (
+        <p className="data-table_showing_entries_text">Showing {((currentPage - 1) * selectValue) + 1} to {selectValue * currentPage} of {dataLenght} entries</p>
+      )
+    }
+  };
 
   
 
   
-  //TODO display pagination
+  //TODO display pagination dots
   const DisplayPagination = () => {
     
 
@@ -207,7 +211,7 @@ const DataTable = ({headers, data}) => {
   useEffect(() => {
     setCurrentData(data); 
     setDataLenght(data.length);
-  }, [data]);
+  }, [data, data.length]);
   
 
 
