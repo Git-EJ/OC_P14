@@ -122,7 +122,7 @@ const EmployeeList = () => {
 
           <DataTable 
             headers={arrayOfEmployeesDataTitle} 
-            data={createEmployeeMockedData(arrayOfEmployeesDataContents, 57)} 
+            data={createEmployeeMockedData(arrayOfEmployeesDataContents, 17)} 
           />
 
           <SpheresButton 

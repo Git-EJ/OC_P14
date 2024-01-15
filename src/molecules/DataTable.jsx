@@ -15,12 +15,12 @@ const DataTable = ({headers, data}) => {
   const [isActiveCaretDesc, setIsActiveCaretDesc] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); 
   const [selectValue, setSelectValue] = useState(1);
-  const [dataLenght, setDataLenght] = useState(0);
+  const [dataLength, setDataLength] = useState(0);
 
-
-  // console.log('dataLenght', dataLenght);
-  // console.log('currentPage', currentPage);
-  // console.log('selectValue', selectValue);
+  console.log('currentData', currentData);
+  console.log('dataLength', dataLength);
+  console.log('currentPage', currentPage);
+  console.log('selectValue', selectValue);
 
   
 
@@ -110,6 +110,8 @@ const DataTable = ({headers, data}) => {
 
 
   const DataContents = ({data}) => {
+    console.log('DataContents', data);
+
     return data.map((content, index) => (
           
       <div className="data-table_content-line_container" key={`${index}_${content.firstName}-${content.lastName}`}>
@@ -124,34 +126,43 @@ const DataTable = ({headers, data}) => {
     ));
   };
 
+
+
   const DisplayDataContents = ({data}) => {
-    if (selectValue > dataLenght) {
+    if (selectValue >= dataLength) {
+      console.log('DisplayDataContents 1', data)
       return (
         <DataContents data={data} />
       )
     } else {
+      console.log('DisplayDataContents 3', data.slice((currentPage - 1) * selectValue, currentPage * selectValue))
       return (
-        <DataContents data={data.slice((currentPage - 1) * selectValue, currentPage * selectValue)} />
+        <DataContents data={data.slice((currentPage - 1) * selectValue, currentPage * selectValue )} />
       )
     }
   };
   
+
 
   const DisplayShowingEntries = () => {
 
-    if(selectValue > dataLenght) {
+    if(selectValue > dataLength) {
       return (
-        <p className="data-table_showing_entries_text">Showing 1 to {dataLenght} of {dataLenght} entries</p>
+        <p className="data-table_showing_entries_text">Showing 1 to {dataLength} of {dataLength} entries</p>
+      )
+    } else if (selectValue * currentPage > dataLength){
+      return (
+        <p className="data-table_showing_entries_text">Showing {((currentPage - 1) * selectValue) + 1} to {dataLength} of {dataLength} entries</p>
       )
     } else {
       return (
-        <p className="data-table_showing_entries_text">Showing {((currentPage - 1) * selectValue) + 1} to {selectValue * currentPage} of {dataLenght} entries</p>
+        <p className="data-table_showing_entries_text">Showing {((currentPage - 1) * selectValue) + 1} to {selectValue * currentPage} of {dataLength} entries</p>
       )
     }
   };
 
   
-  const totalPageCount = Math.ceil(dataLenght / selectValue);
+  const totalPageCount = Math.ceil(dataLength / selectValue);
   const dots = '...';
   const siblingCount = 1;
   const leftSiblingRange = Math.max(currentPage - siblingCount, 1); // throw max value if currentPage - siblingCount < 1
@@ -161,15 +172,15 @@ const DataTable = ({headers, data}) => {
 
   
   
-  console.log('totalPageCount', totalPageCount)
-  console.log('leftSiblingRange', leftSiblingRange)
-  console.log('rightSiblingRange', rightSiblingRange)
-  console.log('hasLeftDots', hasLeftDots)
-  console.log('hasRightDots', hasRightDots)
-  console.log('leftDots', hasLeftDots && dots)
-  console.log('rightDots', hasRightDots && dots)
+  // console.log('totalPageCount', totalPageCount)
+  // console.log('leftSiblingRange', leftSiblingRange)
+  // console.log('rightSiblingRange', rightSiblingRange)
+  // console.log('hasLeftDots', hasLeftDots)
+  // console.log('hasRightDots', hasRightDots)
+  // console.log('leftDots', hasLeftDots && dots)
+  // console.log('rightDots', hasRightDots && dots)
   
-  //TODO display pagination dots
+  //TODO display pagination change condition and sibling for display 7 items dots included
   const DisplayPagination = () => {
 
     const onPreviousPage = () => {
@@ -240,19 +251,6 @@ const DataTable = ({headers, data}) => {
       )
     }
 
-    // const paginationCounter = () => {
-    //   return range(1, totalPageCount).map( page => (
-    //     <button 
-    //       key={`pagination_button_${page}`} 
-    //       className= {`data-table_showing_pagination_button_${currentPage === page ? 'current' : 'not-current'}`}
-    //       onClick={() => setCurrentPage(page)}
-    //     >
-    //       {page}
-    //     </button>
-    //   ))
-    // }
-
-
     return (
       <>
         <button className="data-table_showing_pagination_button_previous" onClick={onPreviousPage}>
@@ -270,13 +268,8 @@ const DataTable = ({headers, data}) => {
   //TODO good pratice??
   useEffect(() => {
     setCurrentData(data); 
-    setDataLenght(data.length);
-      
-    //for showing entries update when selectValue change and currentPage is not in the range of data
-    if(selectValue * currentPage > dataLenght) {
-      setCurrentPage(1);
-    }
-  }, [data, data.lenght, dataLenght, selectValue, currentPage]);
+    setDataLength(data.length);
+  }, [data, data.lenght]);
   
 
 
@@ -295,6 +288,8 @@ const DataTable = ({headers, data}) => {
             onChange={(e) => setSelectValue(e.target.value)}
           >
             <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="5">5</option>
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50" >50</option>
