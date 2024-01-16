@@ -11,6 +11,7 @@ const initialState = {
   currentPage: 1,
   selectValue: 1,
   dataLength: 0,
+  totalPageCount: 0,
 };
 
 const reducer = (state, action) => {
@@ -49,6 +50,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         dataLength: action.payload,
+      };
+    case "SET_TOTAL_PAGE_COUNT":
+      return {
+        ...state,
+        totalPageCount: action.payload,
       };
     default:
       return state;

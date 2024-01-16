@@ -20,7 +20,8 @@ const DataTable = ({headers, data}) => {
     isActiveCaretDesc, 
     currentPage, 
     selectValue, 
-    dataLength
+    dataLength,
+    totalPageCount
   } = state;
   
   const setCurrentData = useCallback((payload = data) => dispatch({type: "SET_CURRENT_DATA", payload}), [dispatch, data]);
@@ -30,9 +31,13 @@ const DataTable = ({headers, data}) => {
   const setCurrentPage = useCallback((payload = 1) => dispatch({type: "SET_CURRENT_PAGE", payload}), [dispatch]);
   const setSelectValue = useCallback((payload = 1) => dispatch({type: "SET_SELECT_VALUE", payload}), [dispatch]);
   const setDataLength = useCallback((payload = 0) => dispatch({type: "SET_DATA_LENGTH", payload}), [dispatch]);
+  const setTotalPageCount = useCallback((payload = 0) => dispatch({type: "SET_TOTAL_PAGE_COUNT", payload}), [dispatch]);
   
-  const totalPageCount = Math.ceil(dataLength / selectValue);
-  
+  console.log('totalPageCount - DATATABLE', totalPageCount);
+  // console.log('currentPage - DATATABLE', currentPage);
+  // console.log('selectValue - DATATABLE', selectValue);
+  console.log('dataLength - DATATABLE', dataLength);
+
 
   //TODO sort issue when click for the second time after refresh nothing happend and after sort is inverted
   //TODO default sort by lastName asc
@@ -76,6 +81,7 @@ const DataTable = ({headers, data}) => {
         //TODO include ou === value?
         //TODO onChange or onBlur
         //TODO REGEX
+        //TODO issue when selectValue change after search
         employee.firstName.toLowerCase().includes(value) ||
         employee.lastName.toLowerCase().includes(value) ||
         employee.street.toLowerCase().includes(value) ||
@@ -227,8 +233,8 @@ const DataTable = ({headers, data}) => {
   //TODO good pratice??
   useEffect(() => {
     setCurrentData(data); 
-    setDataLength(data.length);
-  }, [data, setCurrentData, setDataLength]);
+    setTotalPageCount(Math.ceil(dataLength / selectValue));
+  }, [data, setCurrentData, setDataLength, setTotalPageCount, dataLength,selectValue]);
   
 
 
