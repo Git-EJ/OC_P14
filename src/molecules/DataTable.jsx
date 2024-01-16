@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import Context from "../context/Context";
 import CaretAsc from "../assets/icons/Caret_Asc";
 import CaretDesc from "../assets/icons/Caret_Desc";
 import CircleArrowLeft from "../assets/icons/CircleArrowLeft";
@@ -8,21 +9,28 @@ import CircleArrowRight from "../assets/icons/CircleArrowRight";
 
 const DataTable = ({headers, data}) => {
 
-  const [currentData, setCurrentData] = useState(data);
 
-  const [activeSortIndex, setActiveSortIndex] = useState(null);
-  const [isActiveCaretAsc, setIsActiveCaretAsc] = useState(false);
-  const [isActiveCaretDesc, setIsActiveCaretDesc] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1); 
-  const [selectValue, setSelectValue] = useState(1);
-  const [dataLength, setDataLength] = useState(0);
+const {state, dispatch} = useContext(Context);
 
-  console.log('currentData', currentData);
-  console.log('dataLength', dataLength);
-  console.log('currentPage', currentPage);
-  console.log('selectValue', selectValue);
+const {
+  currentData, 
+  activeSortIndex, 
+  isActiveCaretAsc, 
+  isActiveCaretDesc, 
+  currentPage, 
+  selectValue, 
+  dataLength
+} = state;
 
+const setCurrentData = useCallback((payload = data) => dispatch({type: "SET_CURRENT_DATA", payload}), [dispatch, data]);
+const setActiveSortIndex = useCallback((payload = null) => dispatch({type: "SET_ACTIVE_SORT_INDEX", payload}), [dispatch]);
+const setIsActiveCaretAsc = useCallback((payload = false) => dispatch({type: "SET_IS_ACTIVE_CARET_ASC", payload}), [dispatch]);
+const setIsActiveCaretDesc = useCallback((payload = false) => dispatch({type: "SET_IS_ACTIVE_CARET_DESC", payload}), [dispatch]);
+const setCurrentPage = useCallback((payload = 1) => dispatch({type: "SET_CURRENT_PAGE", payload}), [dispatch]);
+const setSelectValue = useCallback((payload = 1) => dispatch({type: "SET_SELECT_VALUE", payload}), [dispatch]);
+const setDataLength = useCallback((payload = 0) => dispatch({type: "SET_DATA_LENGTH", payload}), [dispatch]);
   
+
 
   //TODO sort issue when click for the second time after refresh nothing happend and after sort is inverted
   //TODO default sort by lastName asc
@@ -110,7 +118,6 @@ const DataTable = ({headers, data}) => {
 
 
   const DataContents = ({data}) => {
-    console.log('DataContents', data);
 
     return data.map((content, index) => (
           
@@ -130,12 +137,10 @@ const DataTable = ({headers, data}) => {
 
   const DisplayDataContents = ({data}) => {
     if (selectValue >= dataLength) {
-      console.log('DisplayDataContents 1', data)
       return (
         <DataContents data={data} />
       )
     } else {
-      console.log('DisplayDataContents 3', data.slice((currentPage - 1) * selectValue, currentPage * selectValue))
       return (
         <DataContents data={data.slice((currentPage - 1) * selectValue, currentPage * selectValue )} />
       )
@@ -164,23 +169,12 @@ const DataTable = ({headers, data}) => {
   
   const totalPageCount = Math.ceil(dataLength / selectValue);
   const dots = '...';
-  const siblingCount = 1;
+  const siblingCount = 2;
   const leftSiblingRange = Math.max(currentPage - siblingCount, 1); // throw max value if currentPage - siblingCount < 1
   const rightSiblingRange = Math.min(currentPage + siblingCount, totalPageCount); // throw min value if currentPage + siblingCount > totalPageCount
   const hasLeftDots = leftSiblingRange > 2; // if leftSiblingRange > 2 then we have left dots
   const hasRightDots = (totalPageCount - rightSiblingRange) > 1; // if (totalPageCount - rightSiblingRange) > 1 then we have right dots
 
-  
-  
-  // console.log('totalPageCount', totalPageCount)
-  // console.log('leftSiblingRange', leftSiblingRange)
-  // console.log('rightSiblingRange', rightSiblingRange)
-  // console.log('hasLeftDots', hasLeftDots)
-  // console.log('hasRightDots', hasRightDots)
-  // console.log('leftDots', hasLeftDots && dots)
-  // console.log('rightDots', hasRightDots && dots)
-  
-  //TODO display pagination change condition and sibling for display 7 items dots included
   const DisplayPagination = () => {
 
     const onPreviousPage = () => {
@@ -226,7 +220,6 @@ const DataTable = ({headers, data}) => {
           {hasLeftDots && dots}
 
           {range(leftSiblingRange, rightSiblingRange).map( page => (
-            console.log('range', range(leftSiblingRange, rightSiblingRange)), //DEV
 
             (page !== 1 && page !== totalPageCount) && ( //condition for not display 1 and totalPageCount
               <button 
@@ -269,7 +262,7 @@ const DataTable = ({headers, data}) => {
   useEffect(() => {
     setCurrentData(data); 
     setDataLength(data.length);
-  }, [data, data.lenght]);
+  }, [data, setCurrentData, setDataLength]);
   
 
 
@@ -325,7 +318,7 @@ const DataTable = ({headers, data}) => {
 
       </div>
 
-      {/* TODO delete/modif employee with checkbox and button delete/modif ??*/}
+      {/* TODO delete/modif employee*/}
       
     </div>
   )
