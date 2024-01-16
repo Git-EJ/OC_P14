@@ -3,6 +3,8 @@ import SelectField from "../atoms/SelectField";
 import Modal from '../atoms/Modal';
 import SpheresButton from "./SpheresButton";
 
+
+// TODO REGEX INPUT
 const CreateEmployeeForm = () => { 
 
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -1,10 +1,11 @@
 import PropTypes from "prop-types";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import Context from "../context/Context";
 import CaretAsc from "../assets/icons/Caret_Asc";
 import CaretDesc from "../assets/icons/Caret_Desc";
 import CircleArrowLeft from "../assets/icons/CircleArrowLeft";
 import CircleArrowRight from "../assets/icons/CircleArrowRight";
+import PaginationCounter from "../atoms/PaginationCounter";
 
 
 const DataTable = ({headers, data}) => {
@@ -65,7 +66,7 @@ const setDataLength = useCallback((payload = 0) => dispatch({type: "SET_DATA_LEN
   }
 
 
-  const DisplayDataHeaders = ({ currentData, setCurrentData }) => {
+  const DisplayDataHeaders = () => {
 
   
     const handleSortClick = (index, direction) => {
@@ -168,13 +169,7 @@ const setDataLength = useCallback((payload = 0) => dispatch({type: "SET_DATA_LEN
 
   
   const totalPageCount = Math.ceil(dataLength / selectValue);
-  const dots = '...';
-  const siblingCount = 2;
-  const leftSiblingRange = Math.max(currentPage - siblingCount, 1); // throw max value if currentPage - siblingCount < 1
-  const rightSiblingRange = Math.min(currentPage + siblingCount, totalPageCount); // throw min value if currentPage + siblingCount > totalPageCount
-  const hasLeftDots = leftSiblingRange > 2; // if leftSiblingRange > 2 then we have left dots
-  const hasRightDots = (totalPageCount - rightSiblingRange) > 1; // if (totalPageCount - rightSiblingRange) > 1 then we have right dots
-
+ 
   const DisplayPagination = () => {
 
     const onPreviousPage = () => {
@@ -189,67 +184,12 @@ const setDataLength = useCallback((payload = 0) => dispatch({type: "SET_DATA_LEN
       }
     }
 
-    const range = (start, end) => {
-      const length = (end - start + 1);
-      return Array(length).fill().map((_, index) => start + index) 
-    }
-
-    const paginationCounter = () => {
-
-      if (totalPageCount <= 5) {
-        return range(1, totalPageCount).map( page => (
-          <button 
-            key={`pagination_button_${page}`} 
-            className= {`data-table_showing_pagination_button_${currentPage === page ? 'current' : 'not-current'}`}
-            onClick={() => setCurrentPage(page)}
-          >
-            {page}
-          </button>
-        ))
-      }
-
-      return (
-        <>
-          <button 
-            className= {`data-table_showing_pagination_button_${currentPage === 1 ? 'current' : 'not-current'}`}
-            onClick={() => setCurrentPage(1)}
-          >
-            1
-          </button>
-
-          {hasLeftDots && dots}
-
-          {range(leftSiblingRange, rightSiblingRange).map( page => (
-
-            (page !== 1 && page !== totalPageCount) && ( //condition for not display 1 and totalPageCount
-              <button 
-                key={`pagination_button_${page}`} 
-                className= {`data-table_showing_pagination_button_${currentPage === page ? 'current' : 'not-current'}`}
-                onClick={() => setCurrentPage(page)}
-              >
-                {page}
-              </button>
-            )
-          ))}
-
-          {hasRightDots && dots}
-
-          <button 
-              className= {`data-table_showing_pagination_button_${currentPage === totalPageCount ? 'current' : 'not-current'}`}
-              onClick={() => setCurrentPage(totalPageCount)}
-            >
-              {totalPageCount}
-          </button>
-        </>
-      )
-    }
-
     return (
       <>
         <button className="data-table_showing_pagination_button_previous" onClick={onPreviousPage}>
           <CircleArrowLeft color1={'#1494B9'} color2={'#0E3C55'} rayon={70}/>
         </button>
-        {paginationCounter()}
+        <PaginationCounter />
         <button className="data-table_showing_pagination_button_next" onClick={onNextPage}>
           <CircleArrowRight color1={'#1494B9'} color2={'#0E3C55'} rayon={70} />
         </button>
@@ -291,15 +231,15 @@ const setDataLength = useCallback((payload = 0) => dispatch({type: "SET_DATA_LEN
           <label htmlFor="data-table_entries">entries</label>
         </div>
 
-        {/* TODO search component */}
+        {/* TODO search component + regex*/}
         <div className="data-table_options_search">
           <label htmlFor="data-table_search">Search:</label>
-          <input id="data-table_search" type="text" placeholder="" />
+          <input id="data-table_search" type="text" placeholder=""/>
         </div>
       </div>
 
       <div className="data-table_titles_container">
-        <DisplayDataHeaders currentData={currentData} setCurrentData={setCurrentData} />
+        <DisplayDataHeaders />
       </div>
 
       <div className="data-table_content-lines_container">
