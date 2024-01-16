@@ -94,6 +94,10 @@ th {
   src: url("/src/fonts/Tektur-Regular.ttf") format("truetype");
 }
 @font-face {
+  font-family: "Tektur_semi-bold";
+  src: url("/src/fonts/Tektur-SemiBold.ttf") format("truetype");
+}
+@font-face {
   font-family: "Tektur_bold";
   src: url("/src/fonts/Tektur-Bold.ttf") format("truetype");
 }
@@ -511,33 +515,28 @@ body ::-webkit-scrollbar {
   justify-content: space-between;
   width: 100%;
   height: auto;
-  border: 1px solid red;
-  font-size: 0.8rem;
+  font-family: "Tektur_Semi-Bold", sans-serif;
+  font-size: 0.9rem;
 }
-.data-table_options_entries {
+.data-table_options-entries, .data-table_options_search {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
   width: fit-content;
   height: auto;
 }
 .data-table_options_entries > select {
-  border: 1px solid black;
+  border: 2px solid #1494B9;
   margin: 0 0.2rem;
   cursor: pointer;
-}
-.data-table_options_search {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: fit-content;
-  height: auto;
 }
 .data-table_options_search > label {
   margin-right: 0.5rem;
 }
 .data-table_options_search > input {
-  border: 1px solid black;
+  border: 2px solid #1494B9;
   width: 100%;
 }
 .data-table_titles_container {
@@ -548,15 +547,26 @@ body ::-webkit-scrollbar {
   justify-content: space-between;
   align-items: stretch;
   width: 100%;
-  border: 1px solid orange;
   margin-top: 1rem;
+}
+.data-table_titles_container > div:first-child {
+  border-radius: 10px 0 0 0;
+  border: 2px solid #1494B9;
+  border-bottom: none;
+}
+.data-table_titles_container > div:nth-child(n+2) {
+  border: 2px solid #1494B9;
+  border-left: none;
+  border-bottom: none;
+}
+.data-table_titles_container > div:last-child {
+  border-radius: 0 10px 0 0;
 }
 .data-table_title_item_0, .data-table_title_item_1, .data-table_title_item_2, .data-table_title_item_3, .data-table_title_item_4, .data-table_title_item_5, .data-table_title_item_6, .data-table_title_item_7, .data-table_title_item_8 {
   display: flex;
   justify-content: center;
   align-items: center;
   justify-content: space-around;
-  border: 1px solid green;
 }
 .data-table_title_item_0, .data-table_title_item_1, .data-table_title_item_3, .data-table_title_item_5, .data-table_title_item_6 {
   width: 13%;
@@ -611,7 +621,14 @@ body ::-webkit-scrollbar {
   flex-direction: column;
   width: 100%;
   height: auto;
-  border: 1px solid yellow;
+  border: 2px solid #1494B9;
+  border-radius: 0 0 10px 10px;
+}
+.data-table_content-lines_container > div:first-child {
+  border-top: 2px solid #1494B9;
+}
+.data-table_content-lines_container > div:last-child {
+  border-bottom: none;
 }
 .data-table_content-line_container {
   display: flex;
@@ -621,14 +638,16 @@ body ::-webkit-scrollbar {
   justify-content: space-between;
   align-items: stretch;
   width: 100%;
-  border: 1px solid blue;
+  border-bottom: 2px solid #1494B9;
+}
+.data-table_content-line_container:nth-child(even) {
+  background: rgba(14, 60, 85, 0.2);
 }
 .data-table_content-line_item_0, .data-table_content-line_item_1, .data-table_content-line_item_2, .data-table_content-line_item_3, .data-table_content-line_item_4, .data-table_content-line_item_5, .data-table_content-line_item_6, .data-table_content-line_item_7, .data-table_content-line_item_8 {
   display: flex;
   justify-content: center;
   align-items: center;
   justify-content: space-around;
-  border: 1px solid green;
 }
 .data-table_content-line_item_0, .data-table_content-line_item_1, .data-table_content-line_item_3, .data-table_content-line_item_5, .data-table_content-line_item_6 {
   width: 13%;
@@ -658,7 +677,6 @@ body ::-webkit-scrollbar {
   justify-content: space-between;
   width: 100%;
   height: auto;
-  border: 1px solid red;
   margin-top: 0.5rem;
 }
 .data-table_showing_entries_container {
@@ -669,13 +687,16 @@ body ::-webkit-scrollbar {
   justify-content: space-between;
   max-width: 45%;
   height: auto;
-  border: 1px solid lime;
   cursor: default;
 }
 .data-table_showing_entries_text {
-  border: 1px solid black;
   width: fit-content;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+  font-family: "Tektur_Bold", sans-serif;
+  background: linear-gradient(to right, #1494B9, #0E3C55);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 .data-table_showing_pagination_container {
   display: flex;
@@ -697,8 +718,8 @@ body ::-webkit-scrollbar {
   cursor: pointer;
 }
 .data-table_showing_pagination_button_previous > svg, .data-table_showing_pagination_button_next > svg, .data-table_showing_pagination_button_current > svg, .data-table_showing_pagination_button_not-current > svg {
-  width: 3rem;
-  height: 3rem;
+  width: 2rem;
+  height: 2rem;
 }
 @supports (fill: url(#svg_radial-gradient)) {
   .data-table_showing_pagination_button_previous > svg > path, .data-table_showing_pagination_button_next > svg > path, .data-table_showing_pagination_button_current > svg > path, .data-table_showing_pagination_button_not-current > svg > path {

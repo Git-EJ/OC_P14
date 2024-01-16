@@ -28,8 +28,7 @@
 @mixin data_table_contents_width {
   &_0, &_1, &_2, &_3, &_4, &_5 ,&_6, &_7, &_8 {
     @include flex_center;
-    justify-content: space-around;
-    border: 1px solid green;
+    justify-content: space-around;  
   }
 
   &_0, &_1, &_3, &_5, &_6 {

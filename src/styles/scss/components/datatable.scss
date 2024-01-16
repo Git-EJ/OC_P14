@@ -15,33 +15,33 @@
       justify-content: space-between;
       width: 100%;
       height: auto;
-      border: 1px solid red;
-      font-size: 0.8rem;
+      font-family: 'Tektur_Semi-Bold', sans-serif;
+      font-size: 0.9rem;
+    }
+
+    &-entries,
+    &_search {
+      @include flex_center_row;
+      justify-content: space-between;
+      width: fit-content;
+      height: auto;
     }
 
     &_entries {
-      @include flex_center;
-      width: fit-content;
-      height: auto;
-
       >select {
-        border: 1px solid black;
+        border: 2px solid $primary-color;
         margin: 0 0.2rem;
         cursor: pointer;
       }
     }
 
     &_search {
-      @include flex_center;
-      width: fit-content;
-      height: auto;
-
       >label {
         margin-right: 0.5rem;
       }
 
       >input {
-        border: 1px solid black;
+        border: 2px solid $primary-color;
         width: 100%;
       }
     }
@@ -53,8 +53,23 @@
     justify-content: space-between;
     align-items: stretch;
     width: 100%;
-    border: 1px solid orange;
     margin-top: 1rem;
+    
+    >div:first-child {
+      border-radius: 10px 0 0 0;
+      border: 2px solid $primary-color;
+      border-bottom: none;
+    }
+
+    >div:nth-child(n+2) {
+      border: 2px solid $primary-color;
+      border-left: none;
+      border-bottom: none;
+    }
+
+    >div:last-child {
+      border-radius: 0 10px 0 0;
+    }
   }
 
   &_title {
@@ -62,6 +77,7 @@
     &_item {
       @include data_table_contents_width;
       
+
       &_value {
         width: fit-content;
         text-align: center;
@@ -103,7 +119,16 @@
     @include flex_center_column;
     width: 100%;
     height: auto;
-    border: 1px solid yellow;
+    border: 2px solid $primary-color;
+    border-radius: 0 0 10px 10px;
+
+    >div:first-child {
+      border-top: 2px solid $primary-color;
+    }
+
+    >div:last-child {
+      border-bottom: none;
+    }
   }
 
   &_content-line {
@@ -113,7 +138,11 @@
       justify-content: space-between;
       align-items: stretch;
       width: 100%;
-      border: 1px solid blue;
+      border-bottom: 2px solid $primary-color;
+
+      &:nth-child(even) {
+        background: rgba(14, 60, 85, 0.200);
+      }
     }
     
     &_item {
@@ -136,7 +165,6 @@
     justify-content: space-between;
     width: 100%;
     height: auto;
-    border: 1px solid red;
     margin-top: 0.5rem;
   }
 
@@ -147,14 +175,14 @@
       justify-content: space-between;
       max-width: 45%;
       height: auto;
-      border: 1px solid lime;
       cursor: default;
     }
 
     &_text {
-      border: 1px solid black;
       width: fit-content;
-      font-size: 0.8rem;
+      font-size: 0.9rem;
+      font-family: 'Tektur_Bold', sans-serif;
+      @include gradient_text($secondary_linear-gradient);
     }
   }
 
@@ -165,7 +193,6 @@
       justify-content: space-between;
       max-width: 45%;
       height: auto;
-      // border: 1px solid  black;
       gap: 0.5rem;
     }
     
@@ -182,8 +209,8 @@
         cursor: pointer;
         
         >svg {
-          width: 3rem;
-          height: 3rem;
+          width: 2rem;
+          height: 2rem;
 
           @supports (fill: url(#svg_radial-gradient)) {
             >path {

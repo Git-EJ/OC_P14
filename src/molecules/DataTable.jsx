@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useCallback, useContext, useEffect, useMemo } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import Context from "../context/Context";
 import CaretAsc from "../assets/icons/Caret_Asc";
 import CaretDesc from "../assets/icons/Caret_Desc";
@@ -11,6 +11,7 @@ import PaginationCounter from "../atoms/PaginationCounter";
 const DataTable = ({headers, data}) => {
   
   
+  const [isFiltering, setIsFiltering] = useState(false);
   const {state, dispatch} = useContext(Context);
   
   const {
@@ -24,19 +25,15 @@ const DataTable = ({headers, data}) => {
     totalPageCount
   } = state;
   
-  const setCurrentData = useCallback((payload = data) => dispatch({type: "SET_CURRENT_DATA", payload}), [dispatch, data]);
-  const setActiveSortIndex = useCallback((payload = null) => dispatch({type: "SET_ACTIVE_SORT_INDEX", payload}), [dispatch]);
-  const setIsActiveCaretAsc = useCallback((payload = false) => dispatch({type: "SET_IS_ACTIVE_CARET_ASC", payload}), [dispatch]);
-  const setIsActiveCaretDesc = useCallback((payload = false) => dispatch({type: "SET_IS_ACTIVE_CARET_DESC", payload}), [dispatch]);
-  const setCurrentPage = useCallback((payload = 1) => dispatch({type: "SET_CURRENT_PAGE", payload}), [dispatch]);
-  const setSelectValue = useCallback((payload = 1) => dispatch({type: "SET_SELECT_VALUE", payload}), [dispatch]);
-  const setDataLength = useCallback((payload = 0) => dispatch({type: "SET_DATA_LENGTH", payload}), [dispatch]);
-  const setTotalPageCount = useCallback((payload = 0) => dispatch({type: "SET_TOTAL_PAGE_COUNT", payload}), [dispatch]);
+  const setCurrentData = useCallback((payload) => dispatch({type: "SET_CURRENT_DATA", payload}), [dispatch]);
+  const setActiveSortIndex = useCallback((payload) => dispatch({type: "SET_ACTIVE_SORT_INDEX", payload}), [dispatch]);
+  const setIsActiveCaretAsc = useCallback((payload) => dispatch({type: "SET_IS_ACTIVE_CARET_ASC", payload}), [dispatch]);
+  const setIsActiveCaretDesc = useCallback((payload) => dispatch({type: "SET_IS_ACTIVE_CARET_DESC", payload}), [dispatch]);
+  const setCurrentPage = useCallback((payload) => dispatch({type: "SET_CURRENT_PAGE", payload}), [dispatch]);
+  const setSelectValue = useCallback((payload) => dispatch({type: "SET_SELECT_VALUE", payload}), [dispatch]);
+  const setDataLength = useCallback((payload) => dispatch({type: "SET_DATA_LENGTH", payload}), [dispatch]);
+  const setTotalPageCount = useCallback((payload) => dispatch({type: "SET_TOTAL_PAGE_COUNT", payload}), [dispatch]);
   
-  console.log('totalPageCount - DATATABLE', totalPageCount);
-  // console.log('currentPage - DATATABLE', currentPage);
-  // console.log('selectValue - DATATABLE', selectValue);
-  console.log('dataLength - DATATABLE', dataLength);
 
 
   //TODO sort issue when click for the second time after refresh nothing happend and after sort is inverted
@@ -96,12 +93,13 @@ const DataTable = ({headers, data}) => {
     });
     setCurrentData(filteredData);
     setDataLength(filteredData.length);
-  }, [data, setCurrentData, setDataLength]);
-
-
-  const DisplayDataHeaders = () => {
-
+    setIsFiltering(true);
+  }, [data, setCurrentData, setDataLength, setIsFiltering]);
   
+  
+  
+  const DisplayDataHeaders = () => {
+    
     const handleSortClick = (index, direction) => {
 
       const entry = headers[index];
@@ -112,14 +110,14 @@ const DataTable = ({headers, data}) => {
       if (direction === 'asc') {
         setIsActiveCaretAsc(isActiveCaretAsc ? false : true)
         setIsActiveCaretDesc(isActiveCaretAsc ? true : false)
-    
+        
       } else if (direction === 'desc'){
         setIsActiveCaretDesc(isActiveCaretDesc ? false : true)
         setIsActiveCaretAsc(isActiveCaretDesc ? true : false)
       }
     };
-
-
+    
+    
     return (
       headers.map((entry, index) => (
         <div className={`data-table_title_item_${index}`} key={`${index}_${entry.value}`}>
@@ -131,7 +129,7 @@ const DataTable = ({headers, data}) => {
                 activeSortIndex === index && isActiveCaretAsc ? 'caret_active' : ''
               }`}
               onClick={() => handleSortClick(index, 'asc')}
-            >
+              >
               {activeSortIndex === index && isActiveCaretDesc ? null : <CaretAsc />}
             </div>
             
@@ -140,19 +138,18 @@ const DataTable = ({headers, data}) => {
                 activeSortIndex === index && isActiveCaretDesc ? 'caret_active' : ''
               }`}
               onClick={() => handleSortClick(index, 'desc')}
-            >
+              >
               {activeSortIndex === index && isActiveCaretAsc ? null : <CaretDesc />}
             </div>
             
           </div>
         </div>
       ))
-    );
-  };
+      );
+    };
 
-
+    
   const DataContents = ({data}) => {
-
     return data.map((content, index) => (
           
       <div className="data-table_content-line_container" key={`${index}_${content.firstName}-${content.lastName}`}>
@@ -167,14 +164,14 @@ const DataTable = ({headers, data}) => {
     ));
   };
 
-
-
+  
+  
   const DisplayDataContents = ({data}) => {
     if (selectValue >= dataLength) {
       return (
         <DataContents data={data} />
-      )
-    } else {
+        )
+      } else {
       return (
         <DataContents data={data.slice((currentPage - 1) * selectValue, currentPage * selectValue )} />
       )
@@ -182,26 +179,26 @@ const DataTable = ({headers, data}) => {
   };
   
 
-
+  
   const DisplayShowingEntries = () => {
-
+    
     if(selectValue > dataLength) {
       return (
         <p className="data-table_showing_entries_text">Showing {dataLength === 0 ? 0 : 1} to {dataLength} of {dataLength} entries</p>
-      )
-    } else if (selectValue * currentPage > dataLength){
-      return (
-        <p className="data-table_showing_entries_text">Showing {((currentPage - 1) * selectValue) + 1} to {dataLength} of {dataLength} entries</p>
-      )
-    } else {
-      return (
-        <p className="data-table_showing_entries_text">Showing {((currentPage - 1) * selectValue) + 1} to {selectValue * currentPage} of {dataLength} entries</p>
-      )
-    }
-  };
+        )
+      } else if (selectValue * currentPage > dataLength){
+        return (
+          <p className="data-table_showing_entries_text">Showing {((currentPage - 1) * selectValue) + 1} to {dataLength} of {dataLength} entries</p>
+          )
+        } else {
+          return (
+            <p className="data-table_showing_entries_text">Showing {((currentPage - 1) * selectValue) + 1} to {selectValue * currentPage} of {dataLength} entries</p>
+            )
+          }
+        };
 
-  
- 
+        
+        
   const DisplayPagination = () => {
 
     const onPreviousPage = () => {
@@ -209,13 +206,13 @@ const DataTable = ({headers, data}) => {
         setCurrentPage(currentPage - 1);
       }
     }
-
+    
     const onNextPage = () => {
       if (currentPage < totalPageCount) {
         setCurrentPage(currentPage + 1);
       }
     }
-
+    
     return (
       <>
         <button className="data-table_showing_pagination_button_previous" onClick={onPreviousPage}>
@@ -228,18 +225,22 @@ const DataTable = ({headers, data}) => {
       </>
     )
   }
-
   
-  //TODO good pratice??
+  
+  // TODO good pratice??
   useEffect(() => {
-    setCurrentData(data); 
+    if (!isFiltering) {
+      setCurrentData(data);  // Update currentData when data change
+      setDataLength(data.length);
+    }
     setTotalPageCount(Math.ceil(dataLength / selectValue));
-  }, [data, setCurrentData, setDataLength, setTotalPageCount, dataLength,selectValue]);
+  }, [isFiltering, data, setCurrentData, dataLength ,setDataLength, selectValue, setTotalPageCount]);
   
 
 
+  //START DataTable RETURN
   return (
-
+    
     <div className="data-table_wrapper">
 
       <div className="data-table_options_container">

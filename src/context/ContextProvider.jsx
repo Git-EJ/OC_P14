@@ -9,7 +9,7 @@ const initialState = {
   isActiveCaretAsc: false,
   isActiveCaretDesc: false,
   currentPage: 1,
-  selectValue: 1,
+  selectValue: 5,
   dataLength: 0,
   totalPageCount: 0,
 };
