@@ -65,6 +65,29 @@ const setDataLength = useCallback((payload = 0) => dispatch({type: "SET_DATA_LEN
     }
   }
 
+  const searchEmployee = (e) => {
+    
+    const value = e.target.value.toLowerCase();
+    const filteredData = data.filter((employee) => {
+
+      return (
+        //TODO include ou === value?
+        //TODO onChange or onBlur
+        employee.firstName.toLowerCase().includes(value) ||
+        employee.lastName.toLowerCase().includes(value) ||
+        employee.street.toLowerCase().includes(value) ||
+        employee.startDate.toLowerCase().includes(value) ||
+        employee.department.toLowerCase().includes(value) ||
+        employee.dateOfBirth.toLowerCase().includes(value) ||
+        employee.street.toLowerCase().includes(value) ||
+        employee.city.toLowerCase().includes(value) ||
+        employee.state.toLowerCase().includes(value) ||
+        employee.zipCode.toLowerCase().includes(value)
+      );
+    });
+    setCurrentData(filteredData);
+  };
+
 
   const DisplayDataHeaders = () => {
 
@@ -231,10 +254,9 @@ const setDataLength = useCallback((payload = 0) => dispatch({type: "SET_DATA_LEN
           <label htmlFor="data-table_entries">entries</label>
         </div>
 
-        {/* TODO search component + regex*/}
         <div className="data-table_options_search">
           <label htmlFor="data-table_search">Search:</label>
-          <input id="data-table_search" type="text" placeholder=""/>
+          <input id="data-table_search" type="text" placeholder="" onChange={searchEmployee}/>
         </div>
       </div>
 
