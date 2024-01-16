@@ -2,6 +2,8 @@ import Header from "../molecules/Header";
 import DataTable from "../molecules/DataTable";
 import SpheresButton from "../molecules/SpheresButton";
 import { useNavigate } from "react-router-dom";
+import Context from "../context/Context";
+import ContextProvider from "../context/ContextProvider";
 
 
 const arrayOfEmployeesDataTitle = [
@@ -115,7 +117,7 @@ const EmployeeList = () => {
   }
 
   return (
-    <>
+    <ContextProvider>
       <Header navigateButton_1='/employee-create' textButton_1='Create Employee' />
       <main className="main_wrapper">
         <h2 className="current-employee_page-title">Employee List</h2>
@@ -132,7 +134,7 @@ const EmployeeList = () => {
           />
 
       </main>
-    </>
+    </ContextProvider>
   );
 };
 
