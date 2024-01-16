@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useContext, useEffect, useMemo } from "react";
 import Context from "../context/Context";
 import CaretAsc from "../assets/icons/Caret_Asc";
 import CaretDesc from "../assets/icons/Caret_Desc";
@@ -9,29 +9,30 @@ import PaginationCounter from "../atoms/PaginationCounter";
 
 
 const DataTable = ({headers, data}) => {
-
-
-const {state, dispatch} = useContext(Context);
-
-const {
-  currentData, 
-  activeSortIndex, 
-  isActiveCaretAsc, 
-  isActiveCaretDesc, 
-  currentPage, 
-  selectValue, 
-  dataLength
-} = state;
-
-const setCurrentData = useCallback((payload = data) => dispatch({type: "SET_CURRENT_DATA", payload}), [dispatch, data]);
-const setActiveSortIndex = useCallback((payload = null) => dispatch({type: "SET_ACTIVE_SORT_INDEX", payload}), [dispatch]);
-const setIsActiveCaretAsc = useCallback((payload = false) => dispatch({type: "SET_IS_ACTIVE_CARET_ASC", payload}), [dispatch]);
-const setIsActiveCaretDesc = useCallback((payload = false) => dispatch({type: "SET_IS_ACTIVE_CARET_DESC", payload}), [dispatch]);
-const setCurrentPage = useCallback((payload = 1) => dispatch({type: "SET_CURRENT_PAGE", payload}), [dispatch]);
-const setSelectValue = useCallback((payload = 1) => dispatch({type: "SET_SELECT_VALUE", payload}), [dispatch]);
-const setDataLength = useCallback((payload = 0) => dispatch({type: "SET_DATA_LENGTH", payload}), [dispatch]);
   
-
+  
+  const {state, dispatch} = useContext(Context);
+  
+  const {
+    currentData, 
+    activeSortIndex, 
+    isActiveCaretAsc, 
+    isActiveCaretDesc, 
+    currentPage, 
+    selectValue, 
+    dataLength
+  } = state;
+  
+  const setCurrentData = useCallback((payload = data) => dispatch({type: "SET_CURRENT_DATA", payload}), [dispatch, data]);
+  const setActiveSortIndex = useCallback((payload = null) => dispatch({type: "SET_ACTIVE_SORT_INDEX", payload}), [dispatch]);
+  const setIsActiveCaretAsc = useCallback((payload = false) => dispatch({type: "SET_IS_ACTIVE_CARET_ASC", payload}), [dispatch]);
+  const setIsActiveCaretDesc = useCallback((payload = false) => dispatch({type: "SET_IS_ACTIVE_CARET_DESC", payload}), [dispatch]);
+  const setCurrentPage = useCallback((payload = 1) => dispatch({type: "SET_CURRENT_PAGE", payload}), [dispatch]);
+  const setSelectValue = useCallback((payload = 1) => dispatch({type: "SET_SELECT_VALUE", payload}), [dispatch]);
+  const setDataLength = useCallback((payload = 0) => dispatch({type: "SET_DATA_LENGTH", payload}), [dispatch]);
+  
+  const totalPageCount = Math.ceil(dataLength / selectValue);
+  
 
   //TODO sort issue when click for the second time after refresh nothing happend and after sort is inverted
   //TODO default sort by lastName asc
@@ -63,9 +64,10 @@ const setDataLength = useCallback((payload = 0) => dispatch({type: "SET_DATA_LEN
     } else {
       return [...data].sort((a, b) => (a[key].localeCompare(b[key])) * (sortBy === "desc" ? -1 : 1))
     }
-  }
+  };
 
-  const searchEmployee = (e) => {
+  
+  const searchEmployee = useCallback((e) => {
     
     const value = e.target.value.toLowerCase();
     const filteredData = data.filter((employee) => {
@@ -73,6 +75,7 @@ const setDataLength = useCallback((payload = 0) => dispatch({type: "SET_DATA_LEN
       return (
         //TODO include ou === value?
         //TODO onChange or onBlur
+        //TODO REGEX
         employee.firstName.toLowerCase().includes(value) ||
         employee.lastName.toLowerCase().includes(value) ||
         employee.street.toLowerCase().includes(value) ||
@@ -86,7 +89,8 @@ const setDataLength = useCallback((payload = 0) => dispatch({type: "SET_DATA_LEN
       );
     });
     setCurrentData(filteredData);
-  };
+    setDataLength(filteredData.length);
+  }, [data, setCurrentData, setDataLength]);
 
 
   const DisplayDataHeaders = () => {
@@ -177,7 +181,7 @@ const setDataLength = useCallback((payload = 0) => dispatch({type: "SET_DATA_LEN
 
     if(selectValue > dataLength) {
       return (
-        <p className="data-table_showing_entries_text">Showing 1 to {dataLength} of {dataLength} entries</p>
+        <p className="data-table_showing_entries_text">Showing {dataLength === 0 ? 0 : 1} to {dataLength} of {dataLength} entries</p>
       )
     } else if (selectValue * currentPage > dataLength){
       return (
@@ -191,7 +195,6 @@ const setDataLength = useCallback((payload = 0) => dispatch({type: "SET_DATA_LEN
   };
 
   
-  const totalPageCount = Math.ceil(dataLength / selectValue);
  
   const DisplayPagination = () => {
 
