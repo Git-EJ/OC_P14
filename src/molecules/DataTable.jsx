@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import Context from "../context/Context";
 import CaretAsc from "../assets/icons/Caret_Asc";
 import CaretDesc from "../assets/icons/Caret_Desc";
@@ -10,8 +10,6 @@ import PaginationCounter from "../atoms/PaginationCounter";
 
 const DataTable = ({headers, data}) => {
   
-  
-  const [isFiltering, setIsFiltering] = useState(false);
   const {state, dispatch} = useContext(Context);
   
   const {
@@ -22,7 +20,8 @@ const DataTable = ({headers, data}) => {
     currentPage, 
     selectValue, 
     dataLength,
-    totalPageCount
+    totalPageCount,
+    isFiltering,
   } = state;
   
   const setCurrentData = useCallback((payload) => dispatch({type: "SET_CURRENT_DATA", payload}), [dispatch]);
@@ -33,7 +32,7 @@ const DataTable = ({headers, data}) => {
   const setSelectValue = useCallback((payload) => dispatch({type: "SET_SELECT_VALUE", payload}), [dispatch]);
   const setDataLength = useCallback((payload) => dispatch({type: "SET_DATA_LENGTH", payload}), [dispatch]);
   const setTotalPageCount = useCallback((payload) => dispatch({type: "SET_TOTAL_PAGE_COUNT", payload}), [dispatch]);
-  
+  const setIsFiltering = useCallback((payload) => dispatch({type: "SET_IS_FILTERING", payload}), [dispatch]);
 
 
   //TODO sort issue when click for the second time after refresh nothing happend and after sort is inverted

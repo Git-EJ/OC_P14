@@ -12,6 +12,7 @@ const initialState = {
   selectValue: 5,
   dataLength: 0,
   totalPageCount: 0,
+  isFiltering: false,
 };
 
 const reducer = (state, action) => {
@@ -55,6 +56,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         totalPageCount: action.payload,
+      };
+    case "SET_IS_FILTERING":
+      return {
+        ...state,
+        isFiltering: action.payload,
       };
     default:
       return state;
