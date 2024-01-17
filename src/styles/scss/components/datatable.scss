@@ -212,15 +212,16 @@
           width: 2rem;
           height: 2rem;
 
+          //#svg_radial-gradient in props => DataTable.jsx/DisplayPagination() 
           @supports (fill: url(#svg_radial-gradient)) {
             >path {
-              fill: url(#svg_radial-gradient); //gradient colors in props => DataTable/paginationCounter() 
+              fill: url(#svg_radial-gradient); 
             }
           }
 
           @supports not (fill: url(#svg_radial-gradient)) {
             >path {
-              fill: $primary-color; //gradient colors in props => DataTable/paginationCounter() 
+              fill: $primary-color;
             }
           }
         }

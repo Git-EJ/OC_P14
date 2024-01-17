@@ -36,8 +36,8 @@ const DataTable = ({headers, data}) => {
 
 
   //TODO sort issue when click for the second time after refresh nothing happend and after sort is inverted
-  //TODO default sort by lastName asc
   //TODO sort by street fix issue sort by street name not number
+  //TODO save sort when filtering
   const sort = (entry, data, sortBy='asc') => {
     const key = entry.key;
 
@@ -102,6 +102,9 @@ const DataTable = ({headers, data}) => {
     const handleSortClick = (index, direction) => {
 
       const entry = headers[index];
+      console.log('entry', entry)
+      console.log('currentData', currentData)
+      console.log('direction', direction)
 
       setCurrentData(sort(entry, currentData, direction));
       setActiveSortIndex(index);
@@ -229,7 +232,7 @@ const DataTable = ({headers, data}) => {
   // TODO good pratice??
   useEffect(() => {
     if (!isFiltering) {
-      setCurrentData(data);  // Update currentData when data change
+      setCurrentData(sort({key: 'lastName', value: 'LastName'}, data, 'asc'));
       setDataLength(data.length);
     }
     setTotalPageCount(Math.ceil(dataLength / selectValue));
