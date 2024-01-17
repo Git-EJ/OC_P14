@@ -17,6 +17,7 @@
       height: auto;
       font-family: 'Tektur_Semi-Bold', sans-serif;
       font-size: 0.9rem;
+      gap: 1rem;
     }
 
     &-entries,
@@ -160,20 +161,26 @@
   }
 
 
-  &_showing_container {
+  &_below_container {
     @include flex_center_row;
     justify-content: space-between;
     width: 100%;
     height: auto;
     margin-top: 0.5rem;
+    gap: 1rem;
   }
 
-  &_showing_entries {
+  &_below_left_container {
+    @include flex_center_column;
+    align-items: flex-start;
+    max-width: 45%;
+    height: auto;
+  }
+
+  &_below_showing_entries {
 
     &_container {
-      @include flex_center_row;
-      justify-content: space-between;
-      max-width: 45%;
+      max-width: 100%;
       height: auto;
       cursor: default;
     }
@@ -186,7 +193,27 @@
     }
   }
 
-  &_showing_pagination {
+  &_below_reset_container {
+    @include flex_center;
+    width: 100%;
+    height: auto;
+    margin-top: 0.5rem;
+  }
+
+  &_below_reset_button {
+    width: fit-content;
+    height: auto;
+    font-size: 0.9rem;
+    font-family: 'Tektur_Bold', sans-serif;
+    @include gradient_text($secondary_linear-gradient);
+    cursor: pointer;
+    border: 4px solid $primary-color;
+    border-radius: 50px 15px;
+    padding: 0.5rem 1rem;
+    box-shadow: inset 0 0 20px $primary-color;
+  }
+
+  &_below_pagination {
     
     &_container {
       @include flex_center_row;

@@ -2,7 +2,6 @@ import Header from "../molecules/Header";
 import DataTable from "../molecules/DataTable";
 import SpheresButton from "../molecules/SpheresButton";
 import { useNavigate } from "react-router-dom";
-import Context from "../context/Context";
 import ContextProvider from "../context/ContextProvider";
 
 

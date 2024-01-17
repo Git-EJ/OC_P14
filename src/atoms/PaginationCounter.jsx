@@ -34,7 +34,7 @@ const PaginationCounter = () => {
     return range(1, totalPageCount).map( page => (
       <button 
         key={`pagination_button_${page}`} 
-        className= {`data-table_showing_pagination_button_${currentPage === page ? 'current' : 'not-current'}`}
+        className= {`data-table_below_pagination_button_${currentPage === page ? 'current' : 'not-current'}`}
         onClick={() => setCurrentPage(page)}
       >
         {page}
@@ -45,7 +45,7 @@ const PaginationCounter = () => {
     return (
       <>
         <button 
-          className= {`data-table_showing_pagination_button_${currentPage === 1 ? 'current' : 'not-current'}`}
+          className= {`data-table_below_pagination_button_${currentPage === 1 ? 'current' : 'not-current'}`}
           onClick={() => setCurrentPage(1)}
         >
           1
@@ -58,7 +58,7 @@ const PaginationCounter = () => {
           (page !== 1 && page !== totalPageCount) && ( //condition for not display 1 and totalPageCount
             <button 
               key={`pagination_button_${page}`} 
-              className= {`data-table_showing_pagination_button_${currentPage === page ? 'current' : 'not-current'}`}
+              className= {`data-table_below_pagination_button_${currentPage === page ? 'current' : 'not-current'}`}
               onClick={() => setCurrentPage(page)}
             >
               {page}
@@ -69,7 +69,7 @@ const PaginationCounter = () => {
         {hasRightDots && dots}
 
         <button 
-            className= {`data-table_showing_pagination_button_${currentPage === totalPageCount ? 'current' : 'not-current'}`}
+            className= {`data-table_below_pagination_button_${currentPage === totalPageCount ? 'current' : 'not-current'}`}
             onClick={() => setCurrentPage(totalPageCount)}
           >
             {totalPageCount}

@@ -13,6 +13,8 @@ const initialState = {
   dataLength: 0,
   totalPageCount: 0,
   isFiltering: false,
+  isSorting: false,
+  searchValue: "",
 };
 
 const reducer = (state, action) => {
@@ -62,6 +64,20 @@ const reducer = (state, action) => {
         ...state,
         isFiltering: action.payload,
       };
+    case "SET_IS_SORTING":
+      return {
+        ...state,
+        isSorting: action.payload,
+      };
+    case "SET_SEARCH_VALUE":
+      return {
+        ...state,
+        searchValue: action.payload,
+      };
+    case "SET_RESET_STATE":
+      return {
+        ...initialState,
+      };
     default:
       return state;
   }
@@ -70,8 +86,6 @@ const reducer = (state, action) => {
 
 const ContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-
-
 
   return (
     <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>

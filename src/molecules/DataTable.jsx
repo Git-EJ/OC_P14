@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useContext, useEffect, useMemo } from "react";
 import Context from "../context/Context";
 import CaretAsc from "../assets/icons/Caret_Asc";
 import CaretDesc from "../assets/icons/Caret_Desc";
@@ -22,6 +22,9 @@ const DataTable = ({headers, data}) => {
     dataLength,
     totalPageCount,
     isFiltering,
+    isSorting,
+    searchValue,
+
   } = state;
   
   const setCurrentData = useCallback((payload) => dispatch({type: "SET_CURRENT_DATA", payload}), [dispatch]);
@@ -33,80 +36,83 @@ const DataTable = ({headers, data}) => {
   const setDataLength = useCallback((payload) => dispatch({type: "SET_DATA_LENGTH", payload}), [dispatch]);
   const setTotalPageCount = useCallback((payload) => dispatch({type: "SET_TOTAL_PAGE_COUNT", payload}), [dispatch]);
   const setIsFiltering = useCallback((payload) => dispatch({type: "SET_IS_FILTERING", payload}), [dispatch]);
+  const setIsSorting = useCallback((payload) => dispatch({type: "SET_IS_SORTING", payload}), [dispatch]);
+  const setSearchValue = useCallback((payload) => dispatch({type: "SET_SEARCH_VALUE", payload}), [dispatch]);
+  const setResetState = useCallback((payload) => dispatch({type: "SET_RESET_STATE", payload}), [dispatch]);
 
 
   //TODO sort issue when click for the second time after refresh nothing happend and after sort is inverted 
   //TODO save sort when filtering
   const sort = (entry, data, sortBy='asc') => {
+
+    setIsSorting(true);
     const key = entry.key;
 
-    if (entry.sort) {
-      return [...data].sort((a, b) => entry.sort(a, b, sortBy==='desc' ? -1 : 1)) // for future dev (librairy)
+  
+      if (entry.sort) {
+        return [...data].sort((a, b) => entry.sort(a, b, sortBy==='desc' ? -1 : 1)) // for future dev (librairy)
 
-    } else if (entry.type === 'number') {
-      return [...data].sort((a, b) => (+a[key] - +b[key]) * (sortBy === "desc" ? -1 : 1))
+      } else if (entry.type === 'number') {
+        return [...data].sort((a, b) => (+a[key] - +b[key]) * (sortBy === "desc" ? -1 : 1))
 
-    } else if (entry.type === 'date') {
-      return [...data].sort((a, b) => (new Date(a[key]) - new Date(b[key])) * (sortBy === "desc" ? -1 : 1))
+      } else if (entry.type === 'date') {
+        return [...data].sort((a, b) => (new Date(a[key]) - new Date(b[key])) * (sortBy === "desc" ? -1 : 1))
 
-    } else if (entry.type === 'street') {
-      return [...data].sort((a, b) => {
-        const extractStreetData = (address) => {
+      } else if (entry.type === 'street') {
+        return [...data].sort((a, b) => {
 
-          const parts = address.split(' ');
+          const extractStreetData = (address) => {
 
-          // Extract street number 
-          // parsInt convert string to number('10'to 10) ; 
-          // .shift() throw away the first element of the array and return it : 
-          // example => ['10', 'rue', 'du', 'code'] => throw '10' and change the array for  ['rue', 'du', 'code']
-          const number = parseInt(parts.shift(), 10); 
+            const parts = address.split(' ');
 
-          //Extract street name
-          // .join(' ') convert array to string
-          // example => ['rue', 'du', 'code'] => 'rue du code'
-          const streetName = parts.join(' ');
+            // Extract street number 
+            // parsInt convert string to number('10'to 10) ; 
+            // .shift() throw away the first element of the array and return it : 
+            // example => ['10', 'rue', 'du', 'code'] => throw '10' and change the array for  ['rue', 'du', 'code']
+            const number = parseInt(parts.shift(), 10); 
 
-          return { number, streetName };
-        };
-      
-        // aData and bData are objects with number and streetName properties
-        // example => { number: 10, streetName: 'rue du code' }
-        const aData = extractStreetData(a[key]);
-        const bData = extractStreetData(b[key]);
+            //Extract street name
+            // .join(' ') convert array to string
+            // example => ['rue', 'du', 'code'] => 'rue du code'
+            const streetName = parts.join(' ');
+
+            return { number, streetName };
+          };
+        
+          // aData and bData are objects with number and streetName properties
+          // example => { number: 10, streetName: 'rue du code' }
+          const aData = extractStreetData(a[key]);
+          const bData = extractStreetData(b[key]);
 
 
-        // Sort by street name
-        // throw 0 if a === b ; -1 if a < b ; 1 if a > b
-        const nameCompare = aData.streetName.localeCompare(bData.streetName);
+          // Sort by street name
+          // throw 0 if a === b ; -1 if a < b ; 1 if a > b
+          const nameCompare = aData.streetName.localeCompare(bData.streetName);
 
-        if (nameCompare !== 0) {
-          return nameCompare * (sortBy === "desc" ? -1 : 1);
-        }
-      
-        // if street names are equal, sort by street number
-        return (aData.number - bData.number) * (sortBy === "desc" ? -1 : 1); //with .number 03 before 10
-      });
+          if (nameCompare !== 0) {
+            return nameCompare * (sortBy === "desc" ? -1 : 1);
+          }
+        
+          // if street names are equal, sort by street number
+          return (aData.number - bData.number) * (sortBy === "desc" ? -1 : 1); //with .number 03 before 10
+        });
 
-    // } else if (entry.type === 'street') {
-    //   return [...data].sort((a, b) => {
-    //     const v0 = a[key].split(' ')
-    //     const v1 =  b[key].split(' ')
-    //     console.log('a', a[key])
-    //     console.log('v0', v0)
-    //     console.log('v1', v1)
-    //     console.log('Z', (+v0[0]) + '')
-    //     console.log('Y', (+v1[0]) + '')
+      // } else if (entry.type === 'street') {
+      //   return [...data].sort((a, b) => {
+      //     const v0 = a[key].split(' ')
+      //     const v1 =  b[key].split(' ')
 
-    //     if ((v0[0] === (+v0[0]) + '') && (v1[0] === (+v1[0]) + '')) {
-    //       return (+v0[0] - +v1[0]) * (sortBy === "desc" ? -1 : 1)
-    //     }
+      //     if ((v0[0] === (+v0[0]) + '') && (v1[0] === (+v1[0]) + '')) {
+      //       return (+v0[0] - +v1[0]) * (sortBy === "desc" ? -1 : 1)
+      //     }
 
-    //     return (a[key].localeCompare(b[key])) * (sortBy === "desc" ? -1 : 1)
-    //   })
+      //     return (a[key].localeCompare(b[key])) * (sortBy === "desc" ? -1 : 1)
+      //   })
 
-    } else {
-      return [...data].sort((a, b) => (a[key].localeCompare(b[key])) * (sortBy === "desc" ? -1 : 1))
-    }
+      } else {
+        return [...data].sort((a, b) => (a[key].localeCompare(b[key])) * (sortBy === "desc" ? -1 : 1))
+      }
+
   };
 
   
@@ -119,7 +125,7 @@ const DataTable = ({headers, data}) => {
         //TODO include ou === value?
         //TODO onChange or onBlur
         //TODO REGEX
-        //TODO issue when selectValue change after search
+        //TODO issue when selectValue change after search like jean and change selectValue for 10
         employee.firstName.toLowerCase().includes(value) ||
         employee.lastName.toLowerCase().includes(value) ||
         employee.street.toLowerCase().includes(value) ||
@@ -135,7 +141,8 @@ const DataTable = ({headers, data}) => {
     setCurrentData(filteredData);
     setDataLength(filteredData.length);
     setIsFiltering(true);
-  }, [data, setCurrentData, setDataLength, setIsFiltering]);
+    setSearchValue(value);
+  }, [data, setCurrentData, setDataLength, setIsFiltering, setSearchValue]);
   
   
   
@@ -225,15 +232,15 @@ const DataTable = ({headers, data}) => {
     
     if(selectValue > dataLength) {
       return (
-        <p className="data-table_showing_entries_text">Showing {dataLength === 0 ? 0 : 1} to {dataLength} of {dataLength} entries</p>
+        <p className="data-table_below_showing_entries_text">Showing {dataLength === 0 ? 0 : 1} to {dataLength} of {dataLength} entries</p>
         )
       } else if (selectValue * currentPage > dataLength){
         return (
-          <p className="data-table_showing_entries_text">Showing {((currentPage - 1) * selectValue) + 1} to {dataLength} of {dataLength} entries</p>
+          <p className="data-table_below_showing_entries_text">Showing {((currentPage - 1) * selectValue) + 1} to {dataLength} of {dataLength} entries</p>
           )
         } else {
           return (
-            <p className="data-table_showing_entries_text">Showing {((currentPage - 1) * selectValue) + 1} to {selectValue * currentPage} of {dataLength} entries</p>
+            <p className="data-table_below_showing_entries_text">Showing {((currentPage - 1) * selectValue) + 1} to {selectValue * currentPage} of {dataLength} entries</p>
             )
           }
         };
@@ -256,17 +263,17 @@ const DataTable = ({headers, data}) => {
     
     return (
       <>
-        <button className="data-table_showing_pagination_button_previous" onClick={onPreviousPage}>
+        <button className="data-table_below_pagination_button_previous" onClick={onPreviousPage}>
           <CircleArrowLeft color1={'#1494B9'} color2={'#0E3C55'} rayon={70}/>
         </button>
         <PaginationCounter />
-        <button className="data-table_showing_pagination_button_next" onClick={onNextPage}>
+        <button className="data-table_below_pagination_button_next" onClick={onNextPage}>
           <CircleArrowRight color1={'#1494B9'} color2={'#0E3C55'} rayon={70} />
         </button>
       </>
     )
   }
-  
+
   
   // TODO good pratice??
   useEffect(() => {
@@ -307,7 +314,12 @@ const DataTable = ({headers, data}) => {
 
         <div className="data-table_options_search">
           <label htmlFor="data-table_search">Search:</label>
-          <input id="data-table_search" type="text" placeholder="" onChange={searchEmployee}/>
+          <input id="data-table_search" 
+            type="text" 
+            placeholder="" 
+            value={searchValue} 
+            onChange={(e) => searchEmployee(e)}
+          />
         </div>
       </div>
 
@@ -319,13 +331,20 @@ const DataTable = ({headers, data}) => {
         <DisplayDataContents data={currentData} />
       </div>
 
-      <div className="data-table_showing_container">
+      <div className="data-table_below_container">
+        <div className="data-table_below_left_container">
 
-        <div className="data-table_showing_entries_container">
-          <DisplayShowingEntries />
+          <div className="data-table_below_showing_entries_container">
+            <DisplayShowingEntries />
+          </div>
+
+          <div className="data-table_below_reset_container">
+            <button className="data-table_below_reset_button" onClick={() => setResetState(true)}>Fait Reset</button>
+          </div>
+
         </div>
 
-        <div className="data-table_showing_pagination_container">
+        <div className="data-table_below_pagination_container">
           <DisplayPagination />
         </div>
 
