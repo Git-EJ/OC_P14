@@ -242,9 +242,9 @@ body ::-webkit-scrollbar {
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   box-shadow: inset 0 0 40px #1494B9;
+  transition: all 0.2s ease-in-out;
 }
 .spheres-button_button:hover {
-  border: 9px solid #1494B9;
   transform: translateY(6px) scale(0.98);
   box-shadow: inset 0 0 40px #1494B9, 0 0 8px 3px rgba(48, 47, 47, 0.37);
 }
@@ -715,6 +715,7 @@ body ::-webkit-scrollbar {
 .data-table_below_reset_button {
   width: fit-content;
   height: auto;
+  padding: 0.5rem 1rem;
   font-size: 0.9rem;
   font-family: "Tektur_Bold", sans-serif;
   background: linear-gradient(to right, #1494B9, #0E3C55);
@@ -724,8 +725,12 @@ body ::-webkit-scrollbar {
   cursor: pointer;
   border: 4px solid #1494B9;
   border-radius: 50px 15px;
-  padding: 0.5rem 1rem;
-  box-shadow: inset 0 0 20px #1494B9;
+  box-shadow: inset 0 0 15px #1494B9;
+  transition: all 0.2s ease-in-out;
+}
+.data-table_below_reset_button:hover {
+  transform: translateY(6px) scale(0.98);
+  box-shadow: inset 0 0 15px #1494B9, 0 0 8px 3px rgba(48, 47, 47, 0.2);
 }
 .data-table_below_pagination_container {
   display: flex;
@@ -761,11 +766,11 @@ body ::-webkit-scrollbar {
   }
 }
 .data-table_below_pagination_button_current {
-  background: #1494B9;
-  border-radius: 50%;
-  color: #fff;
   width: 1.5rem;
   height: 1.5rem;
+  background: #1494B9;
+  color: #fff;
+  border-radius: 50%;
 }
 
 .caret_active path {

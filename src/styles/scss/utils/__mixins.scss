@@ -47,3 +47,13 @@
     width: 8%;
   }
 }
+
+// blurRadius value with px
+@mixin button_hover_push-effect($blurRadius, $opacity) {
+  box-shadow: inset 0 0 $blurRadius $primary-color;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    transform: translateY(6px) scale(0.98);
+    box-shadow: inset 0 0 $blurRadius $primary-color, 0 0 8px 3px (rgba(48, 47, 47, $opacity));
+  }
+}
