@@ -1,5 +1,5 @@
 import { useCallback, useContext } from "react";
-import Context from "../context/Context";
+import Context from "../context/dataTable/DataTableContext";
 
 
 const PaginationCounter = () => {

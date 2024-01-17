@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
-import { useCallback, useContext, useEffect, useMemo } from "react";
-import Context from "../context/Context";
+import { useCallback, useContext, useEffect } from "react";
+import DataTableContext from "../context/dataTable/DataTableContext";
 import CaretAsc from "../assets/icons/Caret_Asc";
 import CaretDesc from "../assets/icons/Caret_Desc";
 import CircleArrowLeft from "../assets/icons/CircleArrowLeft";
@@ -10,7 +10,7 @@ import PaginationCounter from "../atoms/PaginationCounter";
 
 const DataTable = ({headers, data}) => {
   
-  const {state, dispatch} = useContext(Context);
+  const {state, dispatch} = useContext(DataTableContext);
   
   const {
     currentData, 

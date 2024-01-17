@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import { useReducer } from "react";
-import Context from "./Context";
+import DataTableContext from "./DataTableContext";
 
 
-const initialState = {
+const dataTableInitialState = {
   currentData: [],
   activeSortIndex: null,
   isActiveCaretAsc: false,
@@ -17,7 +17,7 @@ const initialState = {
   searchValue: "",
 };
 
-const reducer = (state, action) => {
+const dataTableReducer = (state, action) => {
   switch (action.type) {
     case "SET_CURRENT_DATA":
       return {
@@ -76,7 +76,7 @@ const reducer = (state, action) => {
       };
     case "SET_RESET_STATE":
       return {
-        ...initialState,
+        ...dataTableInitialState,
       };
     default:
       return state;
@@ -84,15 +84,15 @@ const reducer = (state, action) => {
 };
 
 
-const ContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+const DataTableContextProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(dataTableReducer, dataTableInitialState);
 
   return (
-    <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>
+    <DataTableContext.Provider value={{ state, dispatch }}>{children}</DataTableContext.Provider>
   );
 };
-export default ContextProvider;
+export default DataTableContextProvider;
 
-ContextProvider.propTypes = {
+DataTableContextProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
