@@ -35,8 +35,7 @@ const DataTable = ({headers, data}) => {
   const setIsFiltering = useCallback((payload) => dispatch({type: "SET_IS_FILTERING", payload}), [dispatch]);
 
 
-  //TODO sort issue when click for the second time after refresh nothing happend and after sort is inverted
-  //TODO sort by street fix issue sort by street name not number
+  //TODO sort issue when click for the second time after refresh nothing happend and after sort is inverted 
   //TODO save sort when filtering
   const sort = (entry, data, sortBy='asc') => {
     const key = entry.key;
@@ -52,15 +51,58 @@ const DataTable = ({headers, data}) => {
 
     } else if (entry.type === 'street') {
       return [...data].sort((a, b) => {
-        const v0 = a[key].split(' ')
-        const v1 =  b[key].split(' ')
+        const extractStreetData = (address) => {
 
-        if ((v0[0] === (+v0[0]) + '') && (v1[0] === (+v1[0]) + '')) {
-          return (+v0[0] - +v1[0]) * (sortBy === "desc" ? -1 : 1)
+          const parts = address.split(' ');
+
+          // Extract street number 
+          // parsInt convert string to number('10'to 10) ; 
+          // .shift() throw away the first element of the array and return it : 
+          // example => ['10', 'rue', 'du', 'code'] => throw '10' and change the array for  ['rue', 'du', 'code']
+          const number = parseInt(parts.shift(), 10); 
+
+          //Extract street name
+          // .join(' ') convert array to string
+          // example => ['rue', 'du', 'code'] => 'rue du code'
+          const streetName = parts.join(' ');
+
+          return { number, streetName };
+        };
+      
+        // aData and bData are objects with number and streetName properties
+        // example => { number: 10, streetName: 'rue du code' }
+        const aData = extractStreetData(a[key]);
+        const bData = extractStreetData(b[key]);
+
+
+        // Sort by street name
+        // throw 0 if a === b ; -1 if a < b ; 1 if a > b
+        const nameCompare = aData.streetName.localeCompare(bData.streetName);
+
+        if (nameCompare !== 0) {
+          return nameCompare * (sortBy === "desc" ? -1 : 1);
         }
+      
+        // if street names are equal, sort by street number
+        return (aData.number - bData.number) * (sortBy === "desc" ? -1 : 1); //with .number 03 before 10
+      });
 
-        return (a[key].localeCompare(b[key])) * (sortBy === "desc" ? -1 : 1)
-      })
+    // } else if (entry.type === 'street') {
+    //   return [...data].sort((a, b) => {
+    //     const v0 = a[key].split(' ')
+    //     const v1 =  b[key].split(' ')
+    //     console.log('a', a[key])
+    //     console.log('v0', v0)
+    //     console.log('v1', v1)
+    //     console.log('Z', (+v0[0]) + '')
+    //     console.log('Y', (+v1[0]) + '')
+
+    //     if ((v0[0] === (+v0[0]) + '') && (v1[0] === (+v1[0]) + '')) {
+    //       return (+v0[0] - +v1[0]) * (sortBy === "desc" ? -1 : 1)
+    //     }
+
+    //     return (a[key].localeCompare(b[key])) * (sortBy === "desc" ? -1 : 1)
+    //   })
 
     } else {
       return [...data].sort((a, b) => (a[key].localeCompare(b[key])) * (sortBy === "desc" ? -1 : 1))
@@ -102,9 +144,6 @@ const DataTable = ({headers, data}) => {
     const handleSortClick = (index, direction) => {
 
       const entry = headers[index];
-      console.log('entry', entry)
-      console.log('currentData', currentData)
-      console.log('direction', direction)
 
       setCurrentData(sort(entry, currentData, direction));
       setActiveSortIndex(index);
