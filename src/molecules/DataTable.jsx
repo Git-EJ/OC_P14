@@ -198,9 +198,14 @@ const DataTable = ({headers, data}) => {
 
     
   const DataContents = ({data}) => {
-    return data.map((content, index) => (
-          
-      <div className="data-table_content-line_container" key={`${index}_${content.firstName}-${content.lastName}`}>
+    return data.map((content, i) => (
+        
+      //TODO onClick function for retrieval of employee data for modification or deletion
+      <div className="data-table_content-line_container"
+        id={`data-table_content-line_container_${i}`}
+        key={`${i}_${content.firstName}-${content.lastName}`}
+        onClick={() => console.log(`click-line_${i}`, content)}
+      >
        
         {Object.values(content).map((value, i) => (
           <div className={`data-table_content-line_item_${i}`} key={`item_${i}_${value}`}>

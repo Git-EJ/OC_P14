@@ -1,13 +1,23 @@
-import React, { useState } from "react";
+import React, { useCallback, useContext } from "react";
+import CreateEmployeeContext from "../context/createEmployee/CreateEmployeeContext"
 import SelectField from "../atoms/SelectField";
 import Modal from '../atoms/Modal';
 import SpheresButton from "./SpheresButton";
 
 
+
 // TODO REGEX INPUT
 const CreateEmployeeForm = () => { 
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const {state, dispatch} = useContext(CreateEmployeeContext);
+
+  const {
+    isModalOpen,
+  } = state;
+
+  const setIsModalOpen = useCallback((payload) => { dispatch({ type: "SET_IS_MODAL_OPEN", payload }) }, [dispatch]);
+
+  
 
   const formFieldsets = [
   

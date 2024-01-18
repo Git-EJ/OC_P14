@@ -88,10 +88,14 @@ const DataTableContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(dataTableReducer, dataTableInitialState);
 
   return (
-    <DataTableContext.Provider value={{ state, dispatch }}>{children}</DataTableContext.Provider>
+    <DataTableContext.Provider value={{ state, dispatch }}>
+      {children}
+    </DataTableContext.Provider>
   );
 };
+
 export default DataTableContextProvider;
+
 
 DataTableContextProvider.propTypes = {
   children: PropTypes.node.isRequired,

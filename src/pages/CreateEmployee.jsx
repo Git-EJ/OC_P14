@@ -1,15 +1,15 @@
 import Header from "../molecules/Header";
 import CreateEmployeeForm from "../molecules/CreateEmployeeForm";
-
+import CreateEmployeeContextProvider from "../context/createEmployee/CreateEmployeeContextProvider";
 
 const CreateEmployee = () => {
   document.title = "HRnet | CreateEmployee";
 
   return (
-    <>
+    <CreateEmployeeContextProvider>
       <Header navigateButton_1='/employee-list' textButton_1='Employee List' />
       <CreateEmployeeForm />
-    </>
+    </CreateEmployeeContextProvider>
   );
 };
 
