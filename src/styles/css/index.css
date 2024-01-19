@@ -249,6 +249,47 @@ body ::-webkit-scrollbar {
   box-shadow: inset 0 0 40px #1494B9, 0 0 8px 3px rgba(48, 47, 47, 0.37);
 }
 
+.pagination_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: 45%;
+  height: auto;
+  gap: 0.5rem;
+}
+.pagination_button_previous, .pagination_button_next, .pagination_button_current, .pagination_button_not-current {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  background: none;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.pagination_button_previous > svg, .pagination_button_next > svg, .pagination_button_current > svg, .pagination_button_not-current > svg {
+  width: 2rem;
+  height: 2rem;
+}
+@supports (fill: url(#svg_radial-gradient)) {
+  .pagination_button_previous > svg > path, .pagination_button_next > svg > path, .pagination_button_current > svg > path, .pagination_button_not-current > svg > path {
+    fill: url(#svg_radial-gradient);
+  }
+}
+@supports not (fill: url(#svg_radial-gradient)) {
+  .pagination_button_previous > svg > path, .pagination_button_next > svg > path, .pagination_button_current > svg > path, .pagination_button_not-current > svg > path {
+    fill: #1494B9;
+  }
+}
+.pagination_button_current {
+  width: 1.5rem;
+  height: 1.5rem;
+  background: #1494B9;
+  color: #fff;
+  border-radius: 50%;
+}
+
 .header_wrapper {
   display: flex;
   justify-content: center;
@@ -639,7 +680,6 @@ body ::-webkit-scrollbar {
   justify-content: space-between;
   align-items: stretch;
   width: 100%;
-  border-bottom: 2px solid #1494B9;
 }
 .data-table_content-line_container:nth-child(even) {
   background: rgba(14, 60, 85, 0.2);
@@ -731,46 +771,6 @@ body ::-webkit-scrollbar {
 .data-table_below_reset_button:hover {
   transform: translateY(6px) scale(0.98);
   box-shadow: inset 0 0 15px #1494B9, 0 0 8px 3px rgba(48, 47, 47, 0.2);
-}
-.data-table_below_pagination_container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-  max-width: 45%;
-  height: auto;
-  gap: 0.5rem;
-}
-.data-table_below_pagination_button_previous, .data-table_below_pagination_button_next, .data-table_below_pagination_button_current, .data-table_below_pagination_button_not-current {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: fit-content;
-  background: none;
-  font-size: 0.8rem;
-  cursor: pointer;
-}
-.data-table_below_pagination_button_previous > svg, .data-table_below_pagination_button_next > svg, .data-table_below_pagination_button_current > svg, .data-table_below_pagination_button_not-current > svg {
-  width: 2rem;
-  height: 2rem;
-}
-@supports (fill: url(#svg_radial-gradient)) {
-  .data-table_below_pagination_button_previous > svg > path, .data-table_below_pagination_button_next > svg > path, .data-table_below_pagination_button_current > svg > path, .data-table_below_pagination_button_not-current > svg > path {
-    fill: url(#svg_radial-gradient);
-  }
-}
-@supports not (fill: url(#svg_radial-gradient)) {
-  .data-table_below_pagination_button_previous > svg > path, .data-table_below_pagination_button_next > svg > path, .data-table_below_pagination_button_current > svg > path, .data-table_below_pagination_button_not-current > svg > path {
-    fill: #1494B9;
-  }
-}
-.data-table_below_pagination_button_current {
-  width: 1.5rem;
-  height: 1.5rem;
-  background: #1494B9;
-  color: #fff;
-  border-radius: 50%;
 }
 
 .caret_active path {

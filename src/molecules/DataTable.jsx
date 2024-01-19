@@ -1,51 +1,201 @@
 import PropTypes from "prop-types";
-import { useCallback, useContext, useEffect } from "react";
-import DataTableContext from "../context/dataTable/DataTableContext";
+import { useCallback, useEffect, useRef, useState } from "react";
 import CaretAsc from "../assets/icons/Caret_Asc";
 import CaretDesc from "../assets/icons/Caret_Desc";
-import CircleArrowLeft from "../assets/icons/CircleArrowLeft";
-import CircleArrowRight from "../assets/icons/CircleArrowRight";
-import PaginationCounter from "../atoms/PaginationCounter";
+import Pagination from "../atoms/Pagination";
 
 
-const DataTable = ({headers, data}) => {
+const DisplayDataHeaders = ({
+  headers,
+  data,
+  setData = () => {},
+  sort = () => {},
   
-  const {state, dispatch} = useContext(DataTableContext);
-  
-  const {
-    currentData, 
-    activeSortIndex, 
-    isActiveCaretAsc, 
-    isActiveCaretDesc, 
-    currentPage, 
-    selectValue, 
-    dataLength,
-    totalPageCount,
-    isFiltering,
-    isSorting,
-    searchValue,
+  setActiveSortIndex = () => {},
+  activeSortIndex,
+}) => {
 
-  } = state;
-  
-  const setCurrentData = useCallback((payload) => dispatch({type: "SET_CURRENT_DATA", payload}), [dispatch]);
-  const setActiveSortIndex = useCallback((payload) => dispatch({type: "SET_ACTIVE_SORT_INDEX", payload}), [dispatch]);
-  const setIsActiveCaretAsc = useCallback((payload) => dispatch({type: "SET_IS_ACTIVE_CARET_ASC", payload}), [dispatch]);
-  const setIsActiveCaretDesc = useCallback((payload) => dispatch({type: "SET_IS_ACTIVE_CARET_DESC", payload}), [dispatch]);
-  const setCurrentPage = useCallback((payload) => dispatch({type: "SET_CURRENT_PAGE", payload}), [dispatch]);
-  const setSelectValue = useCallback((payload) => dispatch({type: "SET_SELECT_VALUE", payload}), [dispatch]);
-  const setDataLength = useCallback((payload) => dispatch({type: "SET_DATA_LENGTH", payload}), [dispatch]);
-  const setTotalPageCount = useCallback((payload) => dispatch({type: "SET_TOTAL_PAGE_COUNT", payload}), [dispatch]);
-  const setIsFiltering = useCallback((payload) => dispatch({type: "SET_IS_FILTERING", payload}), [dispatch]);
-  const setIsSorting = useCallback((payload) => dispatch({type: "SET_IS_SORTING", payload}), [dispatch]);
-  const setSearchValue = useCallback((payload) => dispatch({type: "SET_SEARCH_VALUE", payload}), [dispatch]);
-  const setResetState = useCallback((payload) => dispatch({type: "SET_RESET_STATE", payload}), [dispatch]);
+  const [isActiveCaretAsc, setIsActiveCaretAsc] = useState(false);
+  const [isActiveCaretDesc, setIsActiveCaretDesc] = useState(false);
 
+  const handleSortClick = useCallback((index, direction) => {
+
+    const entry = headers[index];
+
+    setData(sort(entry, data, direction));
+    setActiveSortIndex(index);
+
+    if (direction === 'asc') {
+      setIsActiveCaretAsc(isActiveCaretAsc ? false : true)
+      setIsActiveCaretDesc(isActiveCaretAsc ? true : false)
+      
+    } else if (direction === 'desc'){
+      setIsActiveCaretDesc(isActiveCaretDesc ? false : true)
+      setIsActiveCaretAsc(isActiveCaretDesc ? true : false)
+    }
+  }, [
+    headers,
+    data,
+    setData,
+    sort,
+    setActiveSortIndex,
+    isActiveCaretAsc,
+    isActiveCaretDesc,
+    setIsActiveCaretAsc,
+    setIsActiveCaretDesc
+  ])
+  
+  
+  return (
+    headers.map((entry, index) => (
+      <div className={`data-table_title_item_${index}`} key={`${index}_${entry.value}`}>
+        <p className="data-table_title_item_value">{entry.value}</p>
+        
+        <div className="data-table_title_item_sorting_container">
+          <div
+            className={`data-table_title_item_sorting_icon-asc ${
+              activeSortIndex === index && isActiveCaretAsc ? 'caret_active' : ''
+            }`}
+            onClick={() => handleSortClick(index, 'asc')}
+            >
+            {activeSortIndex === index && isActiveCaretDesc ? null : <CaretAsc />}
+          </div>
+          
+          <div
+            className={`data-table_title_item_sorting_icon-desc ${
+              activeSortIndex === index && isActiveCaretDesc ? 'caret_active' : ''
+            }`}
+            onClick={() => handleSortClick(index, 'desc')}
+            >
+            {activeSortIndex === index && isActiveCaretAsc ? null : <CaretDesc />}
+          </div>
+          
+        </div>
+      </div>
+    ))
+  );
+};
+
+DisplayDataHeaders.propTypes = {
+  headers: PropTypes.arrayOf(PropTypes.object),
+  data: PropTypes.arrayOf(PropTypes.object),
+  setData: PropTypes.func,
+  setActiveSortIndex: PropTypes.func,
+  sort: PropTypes.func,
+  activeSortIndex: PropTypes.number,
+  isActiveCaretAsc: PropTypes.bool,
+  isActiveCaretDesc: PropTypes.bool,
+  setIsActiveCaretAsc: PropTypes.func,
+  setIsActiveCaretDesc: PropTypes.func,
+};
+
+
+const DisplayShowingEntries = ({selectValue, dataLength, currentPage}) => {
+  if(selectValue > dataLength) {
+    return (
+      <p className="data-table_below_showing_entries_text">Showing {dataLength === 0 ? 0 : 1} to {dataLength} of {dataLength} entries</p>
+    )
+  } else if (selectValue * currentPage > dataLength){
+      return (
+        <p className="data-table_below_showing_entries_text">Showing {((currentPage - 1) * selectValue) + 1} to {dataLength} of {dataLength} entries</p>
+      )
+  } else {
+    return (
+      <p className="data-table_below_showing_entries_text">Showing {((currentPage - 1) * selectValue) + 1} to {selectValue * currentPage} of {dataLength} entries</p>
+    )
+  }
+}
+
+DisplayShowingEntries.propTypes = {
+  selectValue: PropTypes.number,
+  dataLength: PropTypes.number,
+  currentPage: PropTypes.number,
+};
+
+
+const DataContents = ({data}) => {
+  return data.map((content, i) => (
+      
+    //TODO onClick function for retrieval of employee data for modification or deletion
+    <div className="data-table_content-line_container"
+      id={`data-table_content-line_container_${i}`}
+      key={`${i}_${content.firstName}-${content.lastName}`}
+      // onClick={() => console.log(`click-line_${i}`, content)}
+    >
+     
+      {Object.values(content).map((value, i) => (
+        <div className={`data-table_content-line_item_${i}`} key={`item_${i}_${value}`}>
+          <p className="data-table_content-line_item_value">{value}</p>
+        </div>
+      ))}
+
+    </div>
+  ));
+};
+
+
+const DisplayDataContents = ({data, selectValue, dataLength, currentPage}) => {
+  return (
+    <DataContents
+      data={(selectValue >= dataLength) ? data : data.slice((currentPage - 1) * selectValue, currentPage * selectValue )}
+    />)
+}
+
+DisplayDataContents.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object),
+  selectValue: PropTypes.number,
+  dataLength: PropTypes.number,
+  currentPage: PropTypes.number,
+};
+
+
+
+const DataTable = ({
+  headers,
+  data,
+  // onEditRequest = () => {},
+  // onChange = () => {},
+  onResetData = () => {},
+  onResetSettings = () => {},
+  resetSettings = false,
+  itemsPerPage = 5,
+  IconLeft = ()=>{return (<></>)},
+  IconRight = ()=>{return (<></>)},
+}) => {
+
+
+  const searchRef = useRef({value:""})
+  const [displayData, setDisplayData] = useState(data);
+  const [activeSortIndex, setActiveSortIndex] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectValue, setSelectValue] = useState(itemsPerPage);
+  const [dataLength, setDataLength] = useState(0);
+  const [totalPageCount, setTotalPageCount] = useState(0);
+  const [lastSearch, setLastSearch] = useState('');
+  const [searchTimeout, setSearchTimeout] = useState(0);
+
+
+  const setResetSettings = useCallback(() => {
+    setActiveSortIndex(null);
+    setCurrentPage(1);
+    setSelectValue(itemsPerPage);
+    searchRef.current && (searchRef.current.value = "")
+    setDisplayData(data);
+  }, [
+    itemsPerPage,
+    setActiveSortIndex,
+    setCurrentPage,
+    setSelectValue,
+    setDisplayData,
+    data,
+  ]);
+
+  
 
   //TODO sort issue when click for the second time after refresh nothing happend and after sort is inverted 
   //TODO save sort when filtering
-  const sort = (entry, data, sortBy='asc') => {
+  const sort = useCallback((entry, data, sortBy='asc') => {
 
-    setIsSorting(true);
     const key = entry.key;
 
   
@@ -97,35 +247,20 @@ const DataTable = ({headers, data}) => {
           return (aData.number - bData.number) * (sortBy === "desc" ? -1 : 1); //with .number 03 before 10
         });
 
-      // } else if (entry.type === 'street') {
-      //   return [...data].sort((a, b) => {
-      //     const v0 = a[key].split(' ')
-      //     const v1 =  b[key].split(' ')
-
-      //     if ((v0[0] === (+v0[0]) + '') && (v1[0] === (+v1[0]) + '')) {
-      //       return (+v0[0] - +v1[0]) * (sortBy === "desc" ? -1 : 1)
-      //     }
-
-      //     return (a[key].localeCompare(b[key])) * (sortBy === "desc" ? -1 : 1)
-      //   })
-
       } else {
         return [...data].sort((a, b) => (a[key].localeCompare(b[key])) * (sortBy === "desc" ? -1 : 1))
       }
 
-  };
+  },[]);
 
-  
-  const searchEmployee = useCallback((e) => {
-    
+
+  const searchEmployeeDebounced = useCallback((e) => {
     const value = e.target.value.toLowerCase();
-    const filteredData = data.filter((employee) => {
+    if (value === lastSearch) return;
 
-      return (
-        //TODO include ou === value?
-        //TODO onChange or onBlur
+    setDisplayData(data.filter((employee) => 
+        //TODO dropdown for search by headers or keywords
         //TODO REGEX
-        //TODO issue when selectValue change after search like jean and change selectValue for 10
         employee.firstName.toLowerCase().includes(value) ||
         employee.lastName.toLowerCase().includes(value) ||
         employee.street.toLowerCase().includes(value) ||
@@ -136,159 +271,47 @@ const DataTable = ({headers, data}) => {
         employee.city.toLowerCase().includes(value) ||
         employee.state.toLowerCase().includes(value) ||
         employee.zipCode.toLowerCase().includes(value)
-      );
-    });
-    setCurrentData(filteredData);
-    setDataLength(filteredData.length);
-    setIsFiltering(true);
-    setSearchValue(value);
-  }, [data, setCurrentData, setDataLength, setIsFiltering, setSearchValue]);
+    ))
+    setLastSearch(value);
+
+  }, [data, setDisplayData, lastSearch, setLastSearch]);
   
-  
-  
-  const DisplayDataHeaders = () => {
-    
-    const handleSortClick = (index, direction) => {
-
-      const entry = headers[index];
-
-      setCurrentData(sort(entry, currentData, direction));
-      setActiveSortIndex(index);
-
-      if (direction === 'asc') {
-        setIsActiveCaretAsc(isActiveCaretAsc ? false : true)
-        setIsActiveCaretDesc(isActiveCaretAsc ? true : false)
-        
-      } else if (direction === 'desc'){
-        setIsActiveCaretDesc(isActiveCaretDesc ? false : true)
-        setIsActiveCaretAsc(isActiveCaretDesc ? true : false)
-      }
-    };
-    
-    
-    return (
-      headers.map((entry, index) => (
-        <div className={`data-table_title_item_${index}`} key={`${index}_${entry.value}`}>
-          <p className="data-table_title_item_value">{entry.value}</p>
-          
-          <div className="data-table_title_item_sorting_container">
-            <div
-              className={`data-table_title_item_sorting_icon-asc ${
-                activeSortIndex === index && isActiveCaretAsc ? 'caret_active' : ''
-              }`}
-              onClick={() => handleSortClick(index, 'asc')}
-              >
-              {activeSortIndex === index && isActiveCaretDesc ? null : <CaretAsc />}
-            </div>
-            
-            <div
-              className={`data-table_title_item_sorting_icon-desc ${
-                activeSortIndex === index && isActiveCaretDesc ? 'caret_active' : ''
-              }`}
-              onClick={() => handleSortClick(index, 'desc')}
-              >
-              {activeSortIndex === index && isActiveCaretAsc ? null : <CaretDesc />}
-            </div>
-            
-          </div>
-        </div>
-      ))
-      );
-    };
-
-    
-  const DataContents = ({data}) => {
-    return data.map((content, i) => (
-        
-      //TODO onClick function for retrieval of employee data for modification or deletion
-      <div className="data-table_content-line_container"
-        id={`data-table_content-line_container_${i}`}
-        key={`${i}_${content.firstName}-${content.lastName}`}
-        onClick={() => console.log(`click-line_${i}`, content)}
-      >
-       
-        {Object.values(content).map((value, i) => (
-          <div className={`data-table_content-line_item_${i}`} key={`item_${i}_${value}`}>
-            <p className="data-table_content-line_item_value">{value}</p>
-          </div>
-        ))}
-
-      </div>
-    ));
-  };
-
-  
-  
-  const DisplayDataContents = ({data}) => {
-    if (selectValue >= dataLength) {
-      return (
-        <DataContents data={data} />
-        )
-      } else {
-      return (
-        <DataContents data={data.slice((currentPage - 1) * selectValue, currentPage * selectValue )} />
-      )
+  const searchEmployee = useCallback((e) => {
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
     }
-  };
-  
-
-  
-  const DisplayShowingEntries = () => {
-    
-    if(selectValue > dataLength) {
-      return (
-        <p className="data-table_below_showing_entries_text">Showing {dataLength === 0 ? 0 : 1} to {dataLength} of {dataLength} entries</p>
-        )
-      } else if (selectValue * currentPage > dataLength){
-        return (
-          <p className="data-table_below_showing_entries_text">Showing {((currentPage - 1) * selectValue) + 1} to {dataLength} of {dataLength} entries</p>
-          )
-        } else {
-          return (
-            <p className="data-table_below_showing_entries_text">Showing {((currentPage - 1) * selectValue) + 1} to {selectValue * currentPage} of {dataLength} entries</p>
-            )
-          }
-        };
-
-        
-        
-  const DisplayPagination = () => {
-
-    const onPreviousPage = () => {
-      if (currentPage > 1) {
-        setCurrentPage(currentPage - 1);
-      }
-    }
-    
-    const onNextPage = () => {
-      if (currentPage < totalPageCount) {
-        setCurrentPage(currentPage + 1);
-      }
-    }
-    
-    return (
-      <>
-        <button className="data-table_below_pagination_button_previous" onClick={onPreviousPage}>
-          <CircleArrowLeft color1={'#1494B9'} color2={'#0E3C55'} rayon={70}/>
-        </button>
-        <PaginationCounter />
-        <button className="data-table_below_pagination_button_next" onClick={onNextPage}>
-          <CircleArrowRight color1={'#1494B9'} color2={'#0E3C55'} rayon={70} />
-        </button>
-      </>
+    setSearchTimeout(
+      setTimeout(() => {
+        searchEmployeeDebounced(e);
+        setSearchTimeout(0);
+      }, 500)
     )
-  }
+  }, [searchEmployeeDebounced, searchTimeout]);
+  
+
 
   
-  // TODO good pratice??
+  // on mount
   useEffect(() => {
-    if (!isFiltering) {
-      setCurrentData(sort({key: 'lastName', value: 'LastName'}, data, 'asc'));
-      setDataLength(data.length);
+    if (data && data.length > 0) {
+      setDisplayData(data);
     }
-    setTotalPageCount(Math.ceil(dataLength / selectValue));
-  }, [isFiltering, data, setCurrentData, dataLength ,setDataLength, selectValue, setTotalPageCount]);
+  }, [data, setDisplayData]);
+
+
+  useEffect(() => {
+    setDataLength(displayData.length);
+  }, [displayData, setDataLength]);
   
+  useEffect(() => {
+    setTotalPageCount(Math.ceil(dataLength / selectValue));
+  }, [dataLength ,selectValue, setTotalPageCount]);
+
+  useEffect(() => {
+    setResetSettings();
+  }, [resetSettings, setResetSettings]);
+
+
 
 
   //START DataTable RETURN
@@ -304,7 +327,7 @@ const DataTable = ({headers, data}) => {
           <select 
             id="data-table_entries" 
             value={selectValue}
-            onChange={(e) => setSelectValue(e.target.value)}
+            onChange={(e) => setSelectValue(+e.target.value)}
           >
             <option value="1">1</option>
             <option value="2">2</option>
@@ -319,39 +342,62 @@ const DataTable = ({headers, data}) => {
 
         <div className="data-table_options_search">
           <label htmlFor="data-table_search">Search:</label>
-          <input id="data-table_search" 
+          <input
+            ref={searchRef}
+            id="data-table_search"
             type="text" 
-            placeholder="" 
-            value={searchValue} 
+            placeholder=""
             onChange={(e) => searchEmployee(e)}
           />
         </div>
       </div>
 
       <div className="data-table_titles_container">
-        <DisplayDataHeaders />
+        <DisplayDataHeaders
+          headers={headers}
+          data={displayData}
+          setData={setDisplayData}
+          setActiveSortIndex={setActiveSortIndex}
+          sort={sort}
+          activeSortIndex={activeSortIndex}
+        />
       </div>
 
       <div className="data-table_content-lines_container">
-        <DisplayDataContents data={currentData} />
+        <DisplayDataContents
+          data={displayData}
+          selectValue={selectValue}
+          dataLength={dataLength}
+          currentPage={currentPage}
+        />
       </div>
 
       <div className="data-table_below_container">
         <div className="data-table_below_left_container">
 
           <div className="data-table_below_showing_entries_container">
-            <DisplayShowingEntries />
+            <DisplayShowingEntries
+              selectValue={selectValue}
+              dataLength={dataLength}
+              currentPage={currentPage}
+            />
           </div>
 
           <div className="data-table_below_reset_container">
-            <button className="data-table_below_reset_button" onClick={() => setResetState(true)}>Fait Reset</button>
+            <button className="data-table_below_reset_button" onClick={() => {onResetData(); onResetSettings()}}>Fait Reset</button>
           </div>
 
         </div>
 
-        <div className="data-table_below_pagination_container">
-          <DisplayPagination />
-        </div>
+        <>
+          <Pagination
+            totalPageCount={totalPageCount}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            IconLeft={IconLeft}
+            IconRight={IconRight}
+          />
+        </>
 
       </div>
 
@@ -366,4 +412,12 @@ export default DataTable;
 DataTable.propTypes = {
   headers: PropTypes.arrayOf(PropTypes.object),
   data: PropTypes.arrayOf(PropTypes.object),
+  itemsPerPage: PropTypes.number,
+  onEditRequest: PropTypes.func,
+  onChange: PropTypes.func,
+  onResetData: PropTypes.func,
+  onResetSettings: PropTypes.func,
+  resetSettings: PropTypes.bool,
+  IconLeft: PropTypes.func,
+  IconRight: PropTypes.func,
 };

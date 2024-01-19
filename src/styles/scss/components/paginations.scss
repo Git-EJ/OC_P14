@@ -1,0 +1,50 @@
+.pagination {
+      
+  &_container {
+    @include flex_center_row;
+    justify-content: space-between;
+    max-width: 45%;
+    height: auto;
+    gap: 0.5rem;
+  }
+  
+  &_button {
+    
+    &_previous,
+    &_next,
+    &_current,
+    &_not-current{
+      @include flex_center;
+      width: fit-content;
+      background: none;
+      font-size: 0.8rem;
+      cursor: pointer;
+      
+      >svg {
+        width: 2rem;
+        height: 2rem;
+
+        //#svg_radial-gradient in props => DataTable.jsx/DisplayPagination() 
+        @supports (fill: url(#svg_radial-gradient)) {
+          >path {
+            fill: url(#svg_radial-gradient); 
+          }
+        }
+
+        @supports not (fill: url(#svg_radial-gradient)) {
+          >path {
+            fill: $primary-color;
+          }
+        }
+      }
+    }
+
+    &_current {
+      width:1.5rem;
+      height: 1.5rem;
+      background: $primary-color;
+      color: #fff;
+      border-radius: 50%;
+    }
+  }
+}

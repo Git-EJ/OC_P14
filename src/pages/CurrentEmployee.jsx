@@ -1,15 +1,18 @@
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import EmployeesDataContext from "../context/employeesData/EmployeesDataContext";
 import Header from "../molecules/Header";
 import DataTable from "../molecules/DataTable";
 import SpheresButton from "../molecules/SpheresButton";
-import { useNavigate } from "react-router-dom";
-import DataTableContextProvider from "../context/dataTable/DataTableContextProvider";
-
+import CircleArrowLeft from "../assets/icons/CircleArrowLeft";
+import CircleArrowRight from "../assets/icons/CircleArrowRight";
 
 const arrayOfEmployeesDataTitle = [
   //for editing the data create date read only or not
   {
     key: "firstName",
     value: "FirstName",
+    editable: true,
   },
   {
     key: "lastName",
@@ -47,7 +50,7 @@ const arrayOfEmployeesDataTitle = [
     value: "ZipCode",
     type: 'number'
   },
-];
+]
 
 const arrayOfEmployeesDataContents = [
   {
@@ -116,36 +119,70 @@ const arrayOfEmployeesDataContents = [
     state: "VC",
     zipCode: "00011",
   },
-];
+]
 
-
-const createEmployeeMockedData = (arrayOfEmployeesDataContents, nbreOfEmployee) => {
-  let arrayOfEmployeesDataContentsCopy = [...arrayOfEmployeesDataContents];
-  for (let i = 0; i < nbreOfEmployee; i++) {
-    arrayOfEmployeesDataContentsCopy.push(arrayOfEmployeesDataContentsCopy[i]);
+const generateMockedData = (nbEmployees) =>{
+  let out = [];
+  for (let i = 0; i < nbEmployees; i++) {
+    out.push(arrayOfEmployeesDataContents[i % arrayOfEmployeesDataContents.length]);
   }
-  return arrayOfEmployeesDataContentsCopy;
+  return out;
 }
 
-
 const EmployeeList = () => {
+  // TODO : document.title dans un useEffect pour s'assurer du rendu du composant et donc affichage après rendu?
   document.title =   document.title = "HRnet | Employee List";
   
   const navigate = useNavigate();
+  const {state, dispatch} = useContext(EmployeesDataContext);
+
+  const { 
+    employeesData,
+  } = state;
+
+
+  const [resetSettings, setResetSettings] = useState(false);
+
+  const originalEmployeesData = useMemo(() => generateMockedData(51), []);
+
+
+  const onResetSettings = useCallback(() => {
+    setResetSettings(currentState => !currentState)
+  }, [setResetSettings]);
+
+  const setEmployeesData = useCallback((payload) => { dispatch({ type: "SET_EMPLOYEES_DATA", payload }) }, [dispatch]);
   
   const addEmployeeLink = () => {
     navigate('/employee-create');
   }
 
+  useEffect(() => {
+    setEmployeesData(originalEmployeesData)
+  }, [setEmployeesData, originalEmployeesData])
+
+
+
+  const onResetData = useCallback(() => {
+    setEmployeesData(originalEmployeesData)
+  },[setEmployeesData, originalEmployeesData]);
+
+
+
+
   return (
-    <DataTableContextProvider>
+    <>
       <Header navigateButton_1='/employee-create' textButton_1='Create Employee' />
       <main className="main_wrapper">
         <h2 className="current-employee_page-title">Employee List</h2>
 
           <DataTable 
             headers={arrayOfEmployeesDataTitle} 
-            data={createEmployeeMockedData(arrayOfEmployeesDataContents, 17)} 
+            data={employeesData}
+            onResetData={onResetData}
+            onResetSettings={onResetSettings}
+            resetSettings={resetSettings}
+            IconLeft={()=><CircleArrowLeft color1={'#1494B9'} color2={'#0E3C55'} rayon={70}/>}
+            IconRight={()=><CircleArrowRight color1={'#1494B9'} color2={'#0E3C55'} rayon={70} />}
           />
 
           <SpheresButton 
@@ -155,7 +192,7 @@ const EmployeeList = () => {
           />
 
       </main>
-    </DataTableContextProvider>
+    </>
   );
 };
 
