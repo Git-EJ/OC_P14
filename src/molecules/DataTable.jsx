@@ -7,45 +7,11 @@ import Pagination from "../atoms/Pagination";
 
 const DisplayDataHeaders = ({
   headers,
-  data,
-  setData = () => {},
-  sort = () => {},
-  
-  setActiveSortIndex = () => {},
-  activeSortIndex,
+  sortingState,
+  handleSortClick,
 }) => {
 
-  const [isActiveCaretAsc, setIsActiveCaretAsc] = useState(false);
-  const [isActiveCaretDesc, setIsActiveCaretDesc] = useState(false);
 
-  const handleSortClick = useCallback((index, direction) => {
-
-    const entry = headers[index];
-
-    setData(sort(entry, data, direction));
-    setActiveSortIndex(index);
-
-    if (direction === 'asc') {
-      setIsActiveCaretAsc(isActiveCaretAsc ? false : true)
-      setIsActiveCaretDesc(isActiveCaretAsc ? true : false)
-      
-    } else if (direction === 'desc'){
-      setIsActiveCaretDesc(isActiveCaretDesc ? false : true)
-      setIsActiveCaretAsc(isActiveCaretDesc ? true : false)
-    }
-  }, [
-    headers,
-    data,
-    setData,
-    sort,
-    setActiveSortIndex,
-    isActiveCaretAsc,
-    isActiveCaretDesc,
-    setIsActiveCaretAsc,
-    setIsActiveCaretDesc
-  ])
-  
-  
   return (
     headers.map((entry, index) => (
       <div className={`data-table_title_item_${index}`} key={`${index}_${entry.value}`}>
@@ -54,20 +20,20 @@ const DisplayDataHeaders = ({
         <div className="data-table_title_item_sorting_container">
           <div
             className={`data-table_title_item_sorting_icon-asc ${
-              activeSortIndex === index && isActiveCaretAsc ? 'caret_active' : ''
+              sortingState.activeSortIndex === index && sortingState.direction === 'asc' ? 'caret_active' : ''
             }`}
             onClick={() => handleSortClick(index, 'asc')}
             >
-            {activeSortIndex === index && isActiveCaretDesc ? null : <CaretAsc />}
+            {sortingState.activeSortIndex === index && sortingState.direction === 'desc' ? null : <CaretAsc />}
           </div>
           
           <div
             className={`data-table_title_item_sorting_icon-desc ${
-              activeSortIndex === index && isActiveCaretDesc ? 'caret_active' : ''
+              sortingState.activeSortIndex === index && sortingState.direction === 'desc' ? 'caret_active' : ''
             }`}
             onClick={() => handleSortClick(index, 'desc')}
             >
-            {activeSortIndex === index && isActiveCaretAsc ? null : <CaretDesc />}
+            {sortingState.activeSortIndex === index && sortingState.direction === 'asc' ? null : <CaretDesc />}
           </div>
           
         </div>
@@ -80,13 +46,11 @@ DisplayDataHeaders.propTypes = {
   headers: PropTypes.arrayOf(PropTypes.object),
   data: PropTypes.arrayOf(PropTypes.object),
   setData: PropTypes.func,
-  setActiveSortIndex: PropTypes.func,
-  sort: PropTypes.func,
   activeSortIndex: PropTypes.number,
-  isActiveCaretAsc: PropTypes.bool,
-  isActiveCaretDesc: PropTypes.bool,
-  setIsActiveCaretAsc: PropTypes.func,
-  setIsActiveCaretDesc: PropTypes.func,
+  setActiveSortIndex: PropTypes.func,
+  sortingState: PropTypes.object,
+  setSortingState: PropTypes.func,
+  sort: PropTypes.func,
 };
 
 
@@ -163,35 +127,41 @@ const DataTable = ({
   IconRight = ()=>{return (<></>)},
 }) => {
 
-
+  
+  
   const searchRef = useRef({value:""})
   const [displayData, setDisplayData] = useState(data);
-  const [activeSortIndex, setActiveSortIndex] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectValue, setSelectValue] = useState(itemsPerPage);
   const [dataLength, setDataLength] = useState(0);
   const [totalPageCount, setTotalPageCount] = useState(0);
   const [lastSearch, setLastSearch] = useState('');
   const [searchTimeout, setSearchTimeout] = useState(0);
+  const [sortingState, setSortingState] = useState({
+    activeSortIndex: null,
+    direction: null,
+  });
 
 
   const setResetSettings = useCallback(() => {
-    setActiveSortIndex(null);
     setCurrentPage(1);
     setSelectValue(itemsPerPage);
     searchRef.current && (searchRef.current.value = "")
     setDisplayData(data);
+    setSortingState({
+      activeSortIndex: null,
+      direction: null,
+    });
   }, [
     itemsPerPage,
-    setActiveSortIndex,
     setCurrentPage,
     setSelectValue,
     setDisplayData,
     data,
+    setSortingState,
   ]);
 
   
-
   //TODO sort issue when click for the second time after refresh nothing happend and after sort is inverted 
   //TODO save sort when filtering
   const sort = useCallback((entry, data, sortBy='asc') => {
@@ -253,6 +223,33 @@ const DataTable = ({
 
   },[]);
 
+  
+  const handleSortClick = useCallback((index, direction) => {
+    setSortingState(prevState => {
+
+      if (prevState.activeSortIndex === index) {
+        const newDirection = prevState.direction === 'asc' ? 'desc' : 'asc'
+        const sortedData = sort(headers[index], data, newDirection);
+        setDisplayData(sortedData);
+  
+        return {
+          ...prevState,
+          direction: newDirection,
+        };
+
+      } else {
+        const sortedData = sort(headers[index], data, direction);
+        setDisplayData(sortedData);
+  
+        return {
+          activeSortIndex: index,
+          direction,
+        };
+      }
+    });
+  
+  }, [sort, headers, data, setSortingState]);
+
 
   const searchEmployeeDebounced = useCallback((e) => {
     const value = e.target.value.toLowerCase();
@@ -276,6 +273,7 @@ const DataTable = ({
 
   }, [data, setDisplayData, lastSearch, setLastSearch]);
   
+
   const searchEmployee = useCallback((e) => {
     if (searchTimeout) {
       clearTimeout(searchTimeout);
@@ -355,11 +353,8 @@ const DataTable = ({
       <div className="data-table_titles_container">
         <DisplayDataHeaders
           headers={headers}
-          data={displayData}
-          setData={setDisplayData}
-          setActiveSortIndex={setActiveSortIndex}
-          sort={sort}
-          activeSortIndex={activeSortIndex}
+          sortingState={sortingState}
+          handleSortClick={handleSortClick}
         />
       </div>
 
