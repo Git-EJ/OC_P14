@@ -101,6 +101,10 @@ th {
   font-family: "Tektur_bold";
   src: url("/src/fonts/Tektur-Bold.ttf") format("truetype");
 }
+@font-face {
+  font-family: "Roboto_regular_italic";
+  src: url("/src/fonts/Roboto-Italic.ttf") format("truetype");
+}
 @keyframes dynamic_border_bottom_linear {
   0% {
     background-position: 0 0;
@@ -255,8 +259,8 @@ body ::-webkit-scrollbar {
   align-items: center;
   flex-direction: row;
   justify-content: space-between;
+  align-items: stretch;
   max-width: 45%;
-  height: auto;
   gap: 2rem;
 }
 .pagination_jump_container {
@@ -267,17 +271,35 @@ body ::-webkit-scrollbar {
   width: 100%;
   height: auto;
   gap: 0.2rem;
+}
+.pagination_jump_container > input {
+  height: 100%;
+  text-align: center;
+  border: 2px solid #1494B9;
+  border-radius: 0.2rem;
+  padding: 0.2rem 0;
+}
+.pagination_jump_container > input::selection {
+  background: transparent;
+}
+.pagination_jump_text-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  width: fit-content;
+  height: auto;
+}
+.pagination_jump_text-label > label {
   font-size: 0.9rem;
   font-family: "Tektur_Semi-Bold", sans-serif;
-}
-.pagination_jump_container > label {
   width: fit-content;
   margin-right: 0.5rem;
 }
-.pagination_jump_container > input {
-  text-align: center;
-  border: 2px solid #1494B9;
-  padding: 0.2rem 0;
+.pagination_jump_text-label > p {
+  font-size: 0.7rem;
+  font-family: "Roboto_regular_italic", sans-serif;
 }
 .pagination_buttons_container {
   display: flex;

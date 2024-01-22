@@ -92,6 +92,7 @@ const Pagination = ({
   
   //for input value update
   const [inpuValue, setInputValue] = useState(currentPage);
+  const [inputTimeout, setInputTimeout] = useState(0);
 
   useEffect(() => {
     setInputValue(currentPage);
@@ -112,14 +113,29 @@ const Pagination = ({
   }, [currentPage, totalPageCount, setCurrentPage]);
 
 
+  const onJumpPageDebounced = useCallback((value) => {
+    if (!isNaN(value) && value > 0 && value <= totalPageCount) {
+      setCurrentPage(value);
+    }
+  }, [totalPageCount, setCurrentPage]);
+
+
   const onJumpPage = useCallback((e) => {
     const value = +e.target.value;
     setInputValue(value > totalPageCount ? '' : value); //authorise user to enter value < totalPageCount
     
-    if (!isNaN(value) && value > 0 && value <= totalPageCount) {
-      setCurrentPage(value);
+    if (inputTimeout) {
+      clearTimeout(inputTimeout);
     }
-  }, [setCurrentPage, totalPageCount]);
+    setInputTimeout(
+      setTimeout(() => {
+        onJumpPageDebounced(value);
+        setInputTimeout(0);
+        e.target.select(); //after timeout user can enter value without delete the current value
+      }, 1000)
+    );
+  }, [inputTimeout, onJumpPageDebounced, totalPageCount, setInputValue]);
+
 
   const onKeyDownPage = useCallback((e) => {
     if (e.key === 'ArrowRight') {
@@ -135,13 +151,25 @@ const Pagination = ({
     }
   }, [currentPage]);
 
-  
+  useEffect(() => {
+    console.log('Pagination render-------------------');
+    console.log('currentPage', currentPage);
+    console.log('totalPageCount', totalPageCount);
+    console.log('inputValue', inpuValue);
+    console.log('inputTimeout', inputTimeout);
+    console.log('Pagination render-------------------');
+  }, [currentPage, totalPageCount, inpuValue, inputTimeout]);
 
   return (
     <div className="pagination_container">
 
       <div className="pagination_jump_container">
-        <label htmlFor='Jump to Page'>Jump to page:</label>
+        <div className="pagination_jump_text-label">
+          <label htmlFor='Jump to Page'>Jump to page:</label>
+          <p>value = {totalPageCount === 0 ? '' : `1 to ${totalPageCount}`}</p>
+        </div>
+        
+        {/* TODO Regex */}
         <input type="number"
           id="Jump to Page"
           min="1" 
@@ -150,6 +178,7 @@ const Pagination = ({
           onChange={(e) => onJumpPage(e)}
           onKeyDown={(e) => onKeyDownPage(e)}
           onBlur={(e) => onBlurPage(e)}
+          onFocus={(e) => e.target.select()} //user can enter value without delete the current value
         />
       </div>
 

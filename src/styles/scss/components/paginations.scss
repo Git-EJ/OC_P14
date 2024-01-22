@@ -3,8 +3,8 @@
   &_container {
     @include flex_center_row;
     justify-content: space-between;
+    align-items: stretch;
     max-width: 45%;
-    height: auto;
     gap: 2rem;
   }
 
@@ -14,21 +14,38 @@
       width: 100%;
       height: auto;
       gap: 0.2rem;
-      font-size: 0.9rem;
-      font-family: 'Tektur_Semi-Bold', sans-serif;
-
-      >label {
-        width: fit-content;
-        margin-right: 0.5rem;
-
-      }
-
+      
       >input {
+        height: 100%;
         text-align: center;
         border: 2px solid $primary-color;
+        border-radius: 0.2rem;
         padding: 0.2rem 0;
+        
+        &::selection { //for input value when focus on
+          background: transparent;
+        }
       }
-    }
+    }  
+    
+    &_text-label {
+      @include flex_center_column;
+      align-items: flex-start;
+      width: fit-content;
+      height: auto;
+
+      >label {
+        font-size: 0.9rem;
+        font-family: 'Tektur_Semi-Bold', sans-serif;
+        width: fit-content;
+        margin-right: 0.5rem;
+      }
+
+      >p {
+        font-size: 0.7rem;
+        font-family: 'Roboto_regular_italic', sans-serif;
+      }
+    }  
   }
 
   &_buttons_container {
