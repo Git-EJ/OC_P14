@@ -55,24 +55,24 @@ DisplayDataHeaders.propTypes = {
 };
 
 
-const DisplayShowingEntries = ({selectValue, dataLength, currentPage}) => {
-  if(selectValue > dataLength) {
+const DisplayShowingEntries = ({entriesSelectValue, dataLength, currentPage}) => {
+  if(entriesSelectValue > dataLength) {
     return (
       <p className="data-table_below_showing_entries_text">Showing {dataLength === 0 ? 0 : 1} to {dataLength} of {dataLength} entries</p>
     )
-  } else if (selectValue * currentPage > dataLength){
+  } else if (entriesSelectValue * currentPage > dataLength){
       return (
-        <p className="data-table_below_showing_entries_text">Showing {((currentPage - 1) * selectValue) + 1} to {dataLength} of {dataLength} entries</p>
+        <p className="data-table_below_showing_entries_text">Showing {((currentPage - 1) * entriesSelectValue) + 1} to {dataLength} of {dataLength} entries</p>
       )
   } else {
     return (
-      <p className="data-table_below_showing_entries_text">Showing {((currentPage - 1) * selectValue) + 1} to {selectValue * currentPage} of {dataLength} entries</p>
+      <p className="data-table_below_showing_entries_text">Showing {((currentPage - 1) * entriesSelectValue) + 1} to {entriesSelectValue * currentPage} of {dataLength} entries</p>
     )
   }
 }
 
 DisplayShowingEntries.propTypes = {
-  selectValue: PropTypes.number,
+  entriesSelectValue: PropTypes.number,
   dataLength: PropTypes.number,
   currentPage: PropTypes.number,
 };
@@ -99,22 +99,23 @@ const DataContents = ({data}) => {
 };
 
 
-const DisplayDataContents = ({data, selectValue, dataLength, currentPage}) => {
+const DisplayDataContents = ({data, entriesSelectValue, dataLength, currentPage}) => {
   return (
     <DataContents
-      data={(selectValue >= dataLength) ? data : data.slice((currentPage - 1) * selectValue, currentPage * selectValue )}
+      data={(entriesSelectValue >= dataLength) ? data : data.slice((currentPage - 1) * entriesSelectValue, currentPage * entriesSelectValue )}
     />)
 }
 
 DisplayDataContents.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object),
-  selectValue: PropTypes.number,
+  entriesSelectValue: PropTypes.number,
   dataLength: PropTypes.number,
   currentPage: PropTypes.number,
 };
 
 
-
+//TODO onResetData
+//TODO icons in component datatable
 const DataTable = ({
   headers,
   data,
@@ -124,6 +125,7 @@ const DataTable = ({
   onResetSettings = () => {},
   resetSettings = false,
   itemsPerPage = 5,
+  itemsSearchSelectValue = 'all',
   IconLeft = ()=>{return (<></>)},
   IconRight = ()=>{return (<></>)},
 }) => {
@@ -133,33 +135,36 @@ const DataTable = ({
   const searchRef = useRef({value:""})
   const [displayData, setDisplayData] = useState(data);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectValue, setSelectValue] = useState(itemsPerPage);
+  const [entriesSelectValue, setEntrieSelectValue] = useState(itemsPerPage);
   const [dataLength, setDataLength] = useState(0);
   const [totalPageCount, setTotalPageCount] = useState(0);
   const [lastSearch, setLastSearch] = useState('');
   const [searchTimeout, setSearchTimeout] = useState(0);
-  const [sortingState, setSortingState] = useState({
-    activeSortIndex: null,
-    direction: null,
-  });
+  const [sortingState, setSortingState] = useState({ activeSortIndex: null, direction: null, });
+  const [searchSelectValue, setSearchSelectValue] = useState(itemsSearchSelectValue);
 
 
   const setResetSettings = useCallback(() => {
-    setCurrentPage(1);
-    setSelectValue(itemsPerPage);
-    searchRef.current && (searchRef.current.value = "")
     setDisplayData(data);
+    setCurrentPage(1);
+    setEntrieSelectValue(itemsPerPage);
+    searchRef.current && (searchRef.current.value = "")
+    setLastSearch('');
     setSortingState({
       activeSortIndex: null,
       direction: null,
     });
+    setSearchSelectValue(itemsSearchSelectValue);
   }, [
-    itemsPerPage,
-    setCurrentPage,
-    setSelectValue,
     setDisplayData,
     data,
+    setCurrentPage,
+    setEntrieSelectValue,
+    itemsPerPage,
+    setLastSearch,
     setSortingState,
+    setSearchSelectValue,
+    itemsSearchSelectValue,
   ]);
 
   
@@ -175,13 +180,13 @@ const DataTable = ({
       } else if (entry.type === 'number') {
         return [...data].sort((a, b) => (+a[key] - +b[key]) * (sortBy === "desc" ? -1 : 1))
 
-        // date entry format needs to be : dd/mm/yyyy
+       
       } else if (entry.type === 'date') {
         return [...data].sort((a, b) => {
-          const formatDate = (dateStr) => {
+         
+          const formatDate = (dateStr) => { // date entry format needs to be : 'dd/mm/yyyy'
             const parts = dateStr.split('/');
-            // yyyy, mm, dd => month -1 because month start at 0 in JS
-            return new Date(parts[2], parts[1] - 1, parts[0]);
+            return new Date(parts[2], parts[1] - 1, parts[0]); // yyyy, mm, dd => month -1 because month start at 0 in JS
           };
       
           const dateA = formatDate(a[key]);
@@ -263,43 +268,59 @@ const DataTable = ({
   }, [sort, headers, data, setSortingState]);
 
 
-  // // apply, if sort is active, sort on search result
+  // TODO apply, if sort is active, sort on search result
   // const applySort = useCallback((data) => {
   //   if(!sortingState.activeSortIndex) return data;
   //   return sort(headers[sortingState.activeSortIndex], data, sortingState.direction);
   // }, [sortingState, sort, headers]);
 
 
-  const searchEmployeeDebounced = useCallback((e) => {
-    const value = e.target.value.toLowerCase();
-    if (value === lastSearch) return;
+  const searchBySelectValue = useCallback((value, employee) => {
+    switch(searchSelectValue) {
 
-    // const filteredData = data.filter((employee) =>
-    setDisplayData(data.filter((employee) =>
-        //TODO dropdown for search by headers or keywords
-        //TODO REGEX
-        employee.firstName.toLowerCase().includes(value) ||
-        employee.lastName.toLowerCase().includes(value) ||
-        employee.street.toLowerCase().includes(value) ||
-        employee.startDate.toLowerCase().includes(value) ||
-        employee.department.toLowerCase().includes(value) ||
-        employee.dateOfBirth.toLowerCase().includes(value) ||
-        employee.street.toLowerCase().includes(value) ||
-        employee.city.toLowerCase().includes(value) ||
-        employee.state.toLowerCase().includes(value) ||
-        employee.zipCode.toLowerCase().includes(value)
+      case 'all':
+        return Object.keys(employee).some((key) => employee[key].toLowerCase().includes(value));
 
-    // );
+      case 'firstName':
+        return employee.firstName.toLowerCase().includes(value);
+      case 'lastName':
+        return employee.lastName.toLowerCase().includes(value);
+      case 'startDate':
+        return employee.startDate.toLowerCase().includes(value);
+      case 'department':
+        return employee.department.toLowerCase().includes(value);
+      case 'dateOfBirth':
+        return employee.dateOfBirth.toLowerCase().includes(value);
+      case 'street':
+        return employee.street.toLowerCase().includes(value);
+      case 'city':
+        return employee.city.toLowerCase().includes(value);
+      case 'state':
+        return employee.state.toLowerCase().includes(value);
+      case 'zipCode':
+        return employee.zipCode.toLowerCase().includes(value);
+      default:
+        return Object.keys(employee).some((key) => employee[key].toLowerCase().includes(value));
+    }
+    },[searchSelectValue]); 
+
+    // const filteredData = data.filter((employee) => search(value, employee));
     // const sortedFilteredData = applySort(filteredData);
     // setDisplayData(sortedFilteredData);
     // setLastSearch(value);
-  // }, [data, setDisplayData, lastSearch, setLastSearch, applySort]);
+    // }, [data, setDisplayData, lastSearch, setLastSearch, applySort, searchSelectValue]);
 
-
-   ));
+  //TODO REGEX
+  const searchEmployeeDebounced = useCallback((e) => {
+    const value = e.target.value.toLowerCase();
+    if (value === lastSearch) return;
+    setDisplayData(data.filter((employee) => searchBySelectValue(value, employee)))
     setLastSearch(value);
-  }, [data, setDisplayData, lastSearch, setLastSearch]);
-
+  }, [lastSearch, setLastSearch, searchBySelectValue, data, setDisplayData]);
+  
+  useEffect(() => {
+    setDisplayData(data.filter((employee) => searchBySelectValue(lastSearch, employee)))
+  }, [data, searchBySelectValue, lastSearch, setDisplayData]);
 
 
   const searchEmployee = useCallback((e) => {
@@ -310,7 +331,7 @@ const DataTable = ({
       setTimeout(() => {
         searchEmployeeDebounced(e);
         setSearchTimeout(0);
-      }, 500)
+      }, 300)
     )
   }, [searchEmployeeDebounced, searchTimeout]);
   
@@ -330,8 +351,8 @@ const DataTable = ({
   }, [displayData, setDataLength]);
   
   useEffect(() => {
-    setTotalPageCount(Math.ceil(dataLength / selectValue));
-  }, [dataLength ,selectValue, setTotalPageCount]);
+    setTotalPageCount(Math.ceil(dataLength / entriesSelectValue));
+  }, [dataLength ,entriesSelectValue, setTotalPageCount]);
 
   useEffect(() => {
     setResetSettings();
@@ -352,8 +373,8 @@ const DataTable = ({
           <label htmlFor="data-table_entries">Show</label>
           <select 
             id="data-table_entries" 
-            value={selectValue}
-            onChange={(e) => setSelectValue(+e.target.value)}
+            value={entriesSelectValue}
+            onChange={(e) => setEntrieSelectValue(+e.target.value)}
           >
             <option value="1">1</option>
             <option value="2">2</option>
@@ -366,17 +387,40 @@ const DataTable = ({
           <label htmlFor="data-table_entries">entries</label>
         </div>
 
-        <div className="data-table_options_search">
-          <label htmlFor="data-table_search">Search:</label>
-          <input
-            ref={searchRef}
-            id="data-table_search"
-            type="text" 
-            placeholder=""
-            onChange={(e) => searchEmployee(e)}
-          />
+        <div className="data-table_options_search_container">
+
+          <div className="data-table_options_search_select">
+            <label htmlFor="data-table_search-select">Search by:</label>
+            <select
+              id="data-table_search-select"
+              value={searchSelectValue}
+              onChange={(e) => setSearchSelectValue(e.target.value)}
+            >
+              <option value="all">All</option>
+              <option value="firstName">FirstName</option>
+              <option value="lastName">LastName</option>
+              <option value="startDate">StartDate</option>
+              <option value="department">Department</option>
+              <option value="dateOfBirth">Date of Birth</option>
+              <option value="street">Street</option>
+              <option value="city">City</option>
+              <option value="state">State</option>
+              <option value="zipCode">Zip Code</option>
+            </select>
+          </div>
+
+          <div className="data-table_options_search_input">
+            <label htmlFor="data-table_search-input">Search:</label>
+            <input
+              ref={searchRef}
+              id="data-table_search-input"
+              type="text" 
+              placeholder=""
+              onChange={(e) => searchEmployee(e)}
+            />
+          </div>
         </div>
-      </div>
+      </div> 
 
       <div className="data-table_titles_container">
         <DisplayDataHeaders
@@ -389,7 +433,7 @@ const DataTable = ({
       <div className="data-table_content-lines_container">
         <DisplayDataContents
           data={displayData}
-          selectValue={selectValue}
+          entriesSelectValue={entriesSelectValue}
           dataLength={dataLength}
           currentPage={currentPage}
         />
@@ -400,7 +444,7 @@ const DataTable = ({
 
           <div className="data-table_below_showing_entries_container">
             <DisplayShowingEntries
-              selectValue={selectValue}
+              entriesSelectValue={entriesSelectValue}
               dataLength={dataLength}
               currentPage={currentPage}
             />
@@ -443,4 +487,5 @@ DataTable.propTypes = {
   resetSettings: PropTypes.bool,
   IconLeft: PropTypes.func,
   IconRight: PropTypes.func,
+  itemsSearchSelectValue: PropTypes.string,
 };

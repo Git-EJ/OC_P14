@@ -19,16 +19,25 @@
       font-size: 0.9rem;
       gap: 1rem;
     }
+    
+    &_search_container {
+      @include flex_center_row;
+      width: fit-content;
+      height: auto;
+      gap: 1rem;
+    }
 
     &-entries,
-    &_search {
+    &_search_select,
+    &_search_input {
       @include flex_center_row;
       justify-content: space-between;
       width: fit-content;
       height: auto;
     }
 
-    &_entries {
+    &_entries,
+    &_search_select {
       >select {
         border: 2px solid $primary-color;
         margin: 0 0.2rem;
@@ -36,11 +45,14 @@
       }
     }
 
-    &_search {
+    &_search_select,
+    &_search_input {
       >label {
         margin-right: 0.5rem;
       }
+    }
 
+    &_search_input {
       >input {
         border: 2px solid $primary-color;
         width: 100%;
