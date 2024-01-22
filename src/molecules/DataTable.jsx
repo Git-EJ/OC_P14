@@ -5,6 +5,7 @@ import CaretDesc from "../assets/icons/Caret_Desc";
 import Pagination from "../atoms/Pagination";
 
 
+
 const DisplayDataHeaders = ({
   headers,
   sortingState,
@@ -162,8 +163,7 @@ const DataTable = ({
   ]);
 
   
-  //TODO sort issue when click for the second time after refresh nothing happend and after sort is inverted 
-  //TODO save sort when filtering
+  //TODO save sort when filtering not working
   const sort = useCallback((entry, data, sortBy='asc') => {
 
     const key = entry.key;
@@ -175,8 +175,20 @@ const DataTable = ({
       } else if (entry.type === 'number') {
         return [...data].sort((a, b) => (+a[key] - +b[key]) * (sortBy === "desc" ? -1 : 1))
 
+        // date entry format needs to be : dd/mm/yyyy
       } else if (entry.type === 'date') {
-        return [...data].sort((a, b) => (new Date(a[key]) - new Date(b[key])) * (sortBy === "desc" ? -1 : 1))
+        return [...data].sort((a, b) => {
+          const formatDate = (dateStr) => {
+            const parts = dateStr.split('/');
+            // yyyy, mm, dd => month -1 because month start at 0 in JS
+            return new Date(parts[2], parts[1] - 1, parts[0]);
+          };
+      
+          const dateA = formatDate(a[key]);
+          const dateB = formatDate(b[key]);
+      
+          return (dateA - dateB) * (sortBy === "desc" ? -1 : 1);
+        });
 
       } else if (entry.type === 'street') {
         return [...data].sort((a, b) => {
@@ -223,7 +235,7 @@ const DataTable = ({
 
   },[]);
 
-  
+
   const handleSortClick = useCallback((index, direction) => {
     setSortingState(prevState => {
 
@@ -251,11 +263,19 @@ const DataTable = ({
   }, [sort, headers, data, setSortingState]);
 
 
+  // // apply, if sort is active, sort on search result
+  // const applySort = useCallback((data) => {
+  //   if(!sortingState.activeSortIndex) return data;
+  //   return sort(headers[sortingState.activeSortIndex], data, sortingState.direction);
+  // }, [sortingState, sort, headers]);
+
+
   const searchEmployeeDebounced = useCallback((e) => {
     const value = e.target.value.toLowerCase();
     if (value === lastSearch) return;
 
-    setDisplayData(data.filter((employee) => 
+    // const filteredData = data.filter((employee) =>
+    setDisplayData(data.filter((employee) =>
         //TODO dropdown for search by headers or keywords
         //TODO REGEX
         employee.firstName.toLowerCase().includes(value) ||
@@ -268,11 +288,19 @@ const DataTable = ({
         employee.city.toLowerCase().includes(value) ||
         employee.state.toLowerCase().includes(value) ||
         employee.zipCode.toLowerCase().includes(value)
-    ))
-    setLastSearch(value);
 
+    // );
+    // const sortedFilteredData = applySort(filteredData);
+    // setDisplayData(sortedFilteredData);
+    // setLastSearch(value);
+  // }, [data, setDisplayData, lastSearch, setLastSearch, applySort]);
+
+
+   ));
+    setLastSearch(value);
   }, [data, setDisplayData, lastSearch, setLastSearch]);
-  
+
+
 
   const searchEmployee = useCallback((e) => {
     if (searchTimeout) {
