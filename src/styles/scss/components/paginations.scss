@@ -30,7 +30,6 @@
     
     &_text-label {
       @include flex_center_column;
-      align-items: flex-start;
       width: fit-content;
       height: auto;
 
@@ -72,7 +71,7 @@
         width: 2rem;
         height: 2rem;
 
-        //#svg_radial-gradient in props => DataTable.jsx/DisplayPagination() 
+        //#svg_radial-gradient in props => in the currentEmployee.jsx return / DataTable props
         @supports (fill: url(#svg_radial-gradient)) {
           >path {
             fill: url(#svg_radial-gradient); 

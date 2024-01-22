@@ -122,7 +122,7 @@ const Pagination = ({
 
   const onJumpPage = useCallback((e) => {
     const value = +e.target.value;
-    setInputValue(value > totalPageCount ? '' : value); //authorise user to enter value < totalPageCount
+    setInputValue(value > totalPageCount ? '' : value); //allow user to enter value < totalPageCount
     
     if (inputTimeout) {
       clearTimeout(inputTimeout);
@@ -168,7 +168,7 @@ const Pagination = ({
           <label htmlFor='Jump to Page'>Jump to page:</label>
           <p>value = {totalPageCount === 0 ? '' : `1 to ${totalPageCount}`}</p>
         </div>
-        
+
         {/* TODO Regex */}
         <input type="number"
           id="Jump to Page"
@@ -183,16 +183,16 @@ const Pagination = ({
       </div>
 
       <div className="pagination_buttons_container">
-        <button className="pagination_button_previous" onClick={onPreviousPage}>
+        <button className="pagination_button_previous" onClick={totalPageCount === 0 ? null : onPreviousPage}>
           {currentPage === 1 ? null : IconLeft ? <IconLeft /> : "<"}
         </button>
-
+ 
         <Counter
           currentPage={currentPage}
           totalPageCount={totalPageCount}
           onPageChange={setCurrentPage}
         />
-        <button className="pagination_button_next" onClick={onNextPage}>
+        <button className="pagination_button_next" onClick={totalPageCount === 0 ? null : onNextPage}>
           {currentPage === totalPageCount ? null : IconRight ? <IconRight /> : ">"}
         </button>
       </div>

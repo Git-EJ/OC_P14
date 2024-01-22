@@ -168,8 +168,8 @@ const EmployeeList = () => {
             onResetData={onResetData}
             onResetSettings={onResetSettings}
             resetSettings={resetSettings}
-            IconLeft={()=><CircleArrowLeft color1={'#1494B9'} color2={'#0E3C55'} rayon={70}/>}
-            IconRight={()=><CircleArrowRight color1={'#1494B9'} color2={'#0E3C55'} rayon={70} />}
+            IconLeft={()=><CircleArrowLeft color1={'#1494B9'} color2={'#1494B9'} rayon={70}/>} //for future dev with background gradient on svg icon
+            IconRight={()=><CircleArrowRight color1={'#1494B9'} color2={'#1494B9'} rayon={70} />} //for future dev with background gradient on svg icon
           />
 
           <SpheresButton 
