@@ -257,6 +257,36 @@ body ::-webkit-scrollbar {
   justify-content: space-between;
   max-width: 45%;
   height: auto;
+  gap: 2rem;
+}
+.pagination_jump_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  height: auto;
+  gap: 0.2rem;
+  font-size: 0.9rem;
+  font-family: "Tektur_Semi-Bold", sans-serif;
+}
+.pagination_jump_container > label {
+  width: fit-content;
+  margin-right: 0.5rem;
+}
+.pagination_jump_container > input {
+  text-align: center;
+  border: 2px solid #1494B9;
+  padding: 0.2rem 0;
+}
+.pagination_buttons_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  width: fit-content;
+  height: auto;
   gap: 0.5rem;
 }
 .pagination_button_previous, .pagination_button_next, .pagination_button_current, .pagination_button_not-current {

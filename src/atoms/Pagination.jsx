@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 //TODO input entry for currentPage choice
@@ -67,7 +67,7 @@ const Counter = ({
         <button 
             className= {`pagination_button_${currentPage === totalPageCount ? 'current' : 'not-current'}`}
             onClick={() => onPageChange(totalPageCount)}
-          >
+            >
             {totalPageCount}
         </button>
       </>
@@ -89,6 +89,14 @@ const Pagination = ({
   IconLeft=null,
   IconRight=null,
 }) => {
+  
+  //for input value update
+  const [inpuValue, setInputValue] = useState(currentPage);
+
+  useEffect(() => {
+    setInputValue(currentPage);
+  }, [currentPage, totalPageCount]);
+
 
   const onPreviousPage = useCallback(() => {
     if (currentPage > 1) {
@@ -96,26 +104,69 @@ const Pagination = ({
     }
   }, [currentPage, setCurrentPage]);
   
+
   const onNextPage = useCallback(() => {
     if (currentPage < totalPageCount) {
       setCurrentPage(currentPage + 1);
     }
   }, [currentPage, totalPageCount, setCurrentPage]);
+
+
+  const onJumpPage = useCallback((e) => {
+    const value = +e.target.value;
+    setInputValue(value > totalPageCount ? '' : value); //authorise user to enter value < totalPageCount
+    
+    if (!isNaN(value) && value > 0 && value <= totalPageCount) {
+      setCurrentPage(value);
+    }
+  }, [setCurrentPage, totalPageCount]);
+
+  const onKeyDownPage = useCallback((e) => {
+    if (e.key === 'ArrowRight') {
+      onNextPage();
+    } else if (e.key === 'ArrowLeft') {
+      onPreviousPage();
+    }
+  }, [onNextPage, onPreviousPage]);
+
+  const onBlurPage = useCallback((e) => {
+    if(e.target.value === '') {
+      setInputValue(currentPage);
+    }
+  }, [currentPage]);
+
   
+
   return (
     <div className="pagination_container">
-      <button className="pagination_button_previous" onClick={onPreviousPage}>
-        {IconLeft ? <IconLeft /> : "<"}
-      </button>
 
-      <Counter
-        currentPage={currentPage}
-        totalPageCount={totalPageCount}
-        onPageChange={setCurrentPage}
-      />
-      <button className="pagination_button_next" onClick={onNextPage}>
-        {IconRight ? <IconRight /> : ">"}
-      </button>
+      <div className="pagination_jump_container">
+        <label htmlFor='Jump to Page'>Jump to page:</label>
+        <input type="number"
+          id="Jump to Page"
+          min="1" 
+          max={totalPageCount} 
+          value={inpuValue === 0 ? '' : inpuValue}
+          onChange={(e) => onJumpPage(e)}
+          onKeyDown={(e) => onKeyDownPage(e)}
+          onBlur={(e) => onBlurPage(e)}
+        />
+      </div>
+
+      <div className="pagination_buttons_container">
+        <button className="pagination_button_previous" onClick={onPreviousPage}>
+          {currentPage === 1 ? null : IconLeft ? <IconLeft /> : "<"}
+        </button>
+
+        <Counter
+          currentPage={currentPage}
+          totalPageCount={totalPageCount}
+          onPageChange={setCurrentPage}
+        />
+        <button className="pagination_button_next" onClick={onNextPage}>
+          {currentPage === totalPageCount ? null : IconRight ? <IconRight /> : ">"}
+        </button>
+      </div>
     </div>
   )
 }
