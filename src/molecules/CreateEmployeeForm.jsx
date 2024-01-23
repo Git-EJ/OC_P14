@@ -110,7 +110,7 @@ const CreateEmployeeForm = () => {
     {name: "Wyoming", abbreviation: "WY"}
   ];
 
-  // TODO call modal function here createEmployee, context for modal state, render of modal in app.jsx
+  
   const createEmployee = (e) => {
     e.preventDefault();
     setIsModalOpen(true);

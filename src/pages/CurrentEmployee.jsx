@@ -130,7 +130,7 @@ const EmployeeList = () => {
 
   const [resetSettings, setResetSettings] = useState(false);
 
-  const originalEmployeesData = useMemo(() => generateMockedData(51), []);
+  const originalEmployeesData = useMemo(() => generateMockedData(5000), []);
 
 
   const onResetSettings = useCallback(() => {

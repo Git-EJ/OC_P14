@@ -1,118 +1,16 @@
 import PropTypes from "prop-types";
-import { useCallback, useEffect, useRef, useState } from "react";
-import CaretAsc from "../assets/icons/Caret_Asc";
-import CaretDesc from "../assets/icons/Caret_Desc";
+import { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
+import DisplayDataHeaders from "../atoms/dataTable/DisplayHeaders";
 import Pagination from "../atoms/Pagination";
+import DisplayShowingEntries from "../atoms/dataTable/DisplayShowingEnrtries";
+// const DisplayDataContents = lazy(() => import("../atoms/dataTable/DataContents")
 
-
-
-const DisplayDataHeaders = ({
-  headers,
-  sortingState,
-  handleSortClick,
-}) => {
-
-
-  return (
-    headers.map((entry, index) => (
-      <div className={`data-table_title_item_${index}`} key={`${index}_${entry.value}`}>
-        <p className="data-table_title_item_value">{entry.value}</p>
-        
-        <div className="data-table_title_item_sorting_container">
-          <div
-            className={`data-table_title_item_sorting_icon-asc ${
-              sortingState.activeSortIndex === index && sortingState.direction === 'asc' ? 'caret_active' : ''
-            }`}
-            onClick={() => handleSortClick(index, 'asc')}
-            >
-            {sortingState.activeSortIndex === index && sortingState.direction === 'desc' ? null : <CaretAsc />}
-          </div>
-          
-          <div
-            className={`data-table_title_item_sorting_icon-desc ${
-              sortingState.activeSortIndex === index && sortingState.direction === 'desc' ? 'caret_active' : ''
-            }`}
-            onClick={() => handleSortClick(index, 'desc')}
-            >
-            {sortingState.activeSortIndex === index && sortingState.direction === 'asc' ? null : <CaretDesc />}
-          </div>
-          
-        </div>
-      </div>
-    ))
-  );
-};
-
-DisplayDataHeaders.propTypes = {
-  headers: PropTypes.arrayOf(PropTypes.object),
-  data: PropTypes.arrayOf(PropTypes.object),
-  setData: PropTypes.func,
-  activeSortIndex: PropTypes.number,
-  setActiveSortIndex: PropTypes.func,
-  sortingState: PropTypes.object,
-  setSortingState: PropTypes.func,
-  sort: PropTypes.func,
-};
-
-
-const DisplayShowingEntries = ({entriesSelectValue, dataLength, currentPage}) => {
-  if(entriesSelectValue > dataLength) {
-    return (
-      <p className="data-table_below_showing_entries_text">Showing {dataLength === 0 ? 0 : 1} to {dataLength} of {dataLength} entries</p>
-    )
-  } else if (entriesSelectValue * currentPage > dataLength){
-      return (
-        <p className="data-table_below_showing_entries_text">Showing {((currentPage - 1) * entriesSelectValue) + 1} to {dataLength} of {dataLength} entries</p>
-      )
-  } else {
-    return (
-      <p className="data-table_below_showing_entries_text">Showing {((currentPage - 1) * entriesSelectValue) + 1} to {entriesSelectValue * currentPage} of {dataLength} entries</p>
-    )
-  }
-}
-
-DisplayShowingEntries.propTypes = {
-  entriesSelectValue: PropTypes.number,
-  dataLength: PropTypes.number,
-  currentPage: PropTypes.number,
-};
-
-
-const DataContents = ({data}) => {
-  return data.map((content, i) => (
-      
-    //TODO onClick function for retrieval of employee data for modification or deletion
-    <div className="data-table_content-line_container"
-      id={`data-table_content-line_container_${i}`}
-      key={`${i}_${content.firstName}-${content.lastName}`}
-      // onClick={() => console.log(`click-line_${i}`, content)}
-    >
-     
-      {Object.values(content).map((value, i) => (
-        <div className={`data-table_content-line_item_${i}`} key={`item_${i}_${value}`}>
-          <p className="data-table_content-line_item_value">{value}</p>
-        </div>
-      ))}
-
-    </div>
-  ));
-};
-
-
-const DisplayDataContents = ({data, entriesSelectValue, dataLength, currentPage}) => {
-  return (
-    <DataContents
-      data={(entriesSelectValue >= dataLength) ? data : data.slice((currentPage - 1) * entriesSelectValue, currentPage * entriesSelectValue )}
-    />)
-}
-
-DisplayDataContents.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object),
-  entriesSelectValue: PropTypes.number,
-  dataLength: PropTypes.number,
-  currentPage: PropTypes.number,
-};
-
+//TODO DEV timeout
+const DisplayDataContents = lazy(() => 
+new Promise(resolve => {
+  setTimeout(() => resolve(import("../atoms/dataTable/DataContents")), 2000);
+})
+);
 
 //TODO onResetData
 //TODO icons in component datatable
@@ -142,7 +40,6 @@ const DataTable = ({
   const [searchTimeout, setSearchTimeout] = useState(0);
   const [sortingState, setSortingState] = useState({ activeSortIndex: null, direction: null, });
   const [searchSelectValue, setSearchSelectValue] = useState(itemsSearchSelectValue);
-
 
   const setResetSettings = useCallback(() => {
     setDisplayData(data);
@@ -336,13 +233,14 @@ const DataTable = ({
   }, [searchEmployeeDebounced, searchTimeout]);
   
 
-
-  
   // on mount
   useEffect(() => {
-    if (data && data.length > 0) {
-      setDisplayData(data);
-    }
+    //TODO DEV setTimeout
+    setTimeout(() => {
+      if (data && data.length > 0) {
+        setDisplayData(data);
+      }
+    }, 2000);
   }, [data, setDisplayData]);
 
 
@@ -357,9 +255,6 @@ const DataTable = ({
   useEffect(() => {
     setResetSettings();
   }, [resetSettings, setResetSettings]);
-
-
-
 
   //START DataTable RETURN
   return (
@@ -431,12 +326,22 @@ const DataTable = ({
       </div>
 
       <div className="data-table_content-lines_container">
-        <DisplayDataContents
-          data={displayData}
-          entriesSelectValue={entriesSelectValue}
-          dataLength={dataLength}
-          currentPage={currentPage}
-        />
+        <Suspense fallback={
+          <div className="data-table_content-lines_container_loading_container">
+            <p >Loading</p>
+            <span >.</span>
+            <span >.</span>
+            <span >.</span>
+          </div>
+        }>
+          <DisplayDataContents
+            data={displayData}
+            entriesSelectValue={entriesSelectValue}
+            dataLength={dataLength}
+            currentPage={currentPage}
+            />
+
+        </Suspense>
       </div>
 
       <div className="data-table_below_container">

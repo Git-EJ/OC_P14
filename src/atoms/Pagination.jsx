@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-//TODO input entry for currentPage choice
+
 const Counter = ({
   currentPage,
   totalPageCount,
@@ -151,14 +151,6 @@ const Pagination = ({
     }
   }, [currentPage]);
 
-  useEffect(() => {
-    console.log('Pagination render-------------------');
-    console.log('currentPage', currentPage);
-    console.log('totalPageCount', totalPageCount);
-    console.log('inputValue', inpuValue);
-    console.log('inputTimeout', inputTimeout);
-    console.log('Pagination render-------------------');
-  }, [currentPage, totalPageCount, inpuValue, inputTimeout]);
 
   return (
     <div className="pagination_container">

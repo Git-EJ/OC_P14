@@ -87,11 +87,12 @@
     }
 
     &_current {
-      width:1.5rem;
+      width:fit-content;
       height: 1.5rem;
       background: $primary-color;
       color: #fff;
       border-radius: 50%;
+      padding:0.2rem;
     }
   }
 }
