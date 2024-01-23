@@ -12,19 +12,21 @@ const FourSpheresLines = () => {
     <div className="home-main_all_spheres-lines_container">
       {arrayOfClassNames.map((className, index) => (
         <div className={`home-main_${className}`} key={`${className}_${index}`}>
+
           <div className="home-main_vertical-lines_container">
-            <SphereLine rotation="north" />
-            <SphereLine rotation="south" />
+            <SphereLine rotation={-90} width={80} height={80} numberOfSpheres={4}/>
+            <SphereLine rotation={90} width={80} height={80} numberOfSpheres={4}/>
           </div>
 
           <div className="home-main_horizontal-lines_container">
-            <SphereLine /> {/* default = rotation: west */}
-            <SphereLine rotation="east" />
+            <SphereLine rotation={180} width={80} height={80} numberOfSpheres={4}/>
+            <SphereLine rotation={0} width={80} height={80} numberOfSpheres={4}/>
           </div>
         </div>
       ))}
     </div>
   );
 };
+
 
 export default FourSpheresLines;

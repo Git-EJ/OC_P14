@@ -3,7 +3,7 @@ import { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react"
 import DisplayDataHeaders from "../atoms/dataTable/DisplayHeaders";
 import Pagination from "../atoms/Pagination";
 import DisplayShowingEntries from "../atoms/dataTable/DisplayShowingEnrtries";
-// const DisplayDataContents = lazy(() => import("../atoms/dataTable/DataContents")
+// const DisplayDataContents = lazy(() => import("../atoms/dataTable/DataContents"))
 
 //TODO DEV timeout
 const DisplayDataContents = lazy(() => 
@@ -235,12 +235,9 @@ const DataTable = ({
 
   // on mount
   useEffect(() => {
-    //TODO DEV setTimeout
-    setTimeout(() => {
-      if (data && data.length > 0) {
-        setDisplayData(data);
-      }
-    }, 2000);
+    if (data && data.length > 0) {
+      setDisplayData(data);
+    }
   }, [data, setDisplayData]);
 
 
@@ -339,7 +336,7 @@ const DataTable = ({
             entriesSelectValue={entriesSelectValue}
             dataLength={dataLength}
             currentPage={currentPage}
-            />
+          />
 
         </Suspense>
       </div>

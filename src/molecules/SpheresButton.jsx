@@ -6,9 +6,9 @@ const SpheresButton = ({ type, className, onClick, text }) => {
 
   return (
     <div className="spheres-button_container">
-      <SphereLine />
+      <SphereLine rotation={180} width={80} height={80} numberOfSpheres={4} />
       <button type={type} className={className} onClick={onClick} >{text}</button>
-      <SphereLine rotation={'east'} />
+      <SphereLine rotation={0} width={80} height={80} numberOfSpheres={4} />
     </div>
   )
 };

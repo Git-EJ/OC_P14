@@ -165,33 +165,17 @@ body ::-webkit-scrollbar {
 .spheres_container_north {
   transform: rotateZ(90deg);
 }
-.spheres_container_east {
-  transform: rotateZ(180deg);
-}
 .spheres_container_south {
   transform: rotateZ(-90deg);
 }
+.spheres_container_west {
+  transform: rotateZ(180deg);
+}
 
-.sphere_inside-circle, .sphere_middleIn-circle, .sphere_middleOut-circle, .sphere_outside-circle {
+.sphere {
   background: radial-gradient(circle at center, #1494B9 0%, #0E3C55 100%);
   border-radius: 50%;
   margin: 1px;
-}
-.sphere_inside-circle {
-  width: 80px;
-  height: 80px;
-}
-.sphere_middleIn-circle {
-  width: 65px;
-  height: 65px;
-}
-.sphere_middleOut-circle {
-  width: 50px;
-  height: 50px;
-}
-.sphere_outside-circle {
-  width: 35px;
-  height: 35px;
 }
 
 .sphere-pyramid_wrapper {
