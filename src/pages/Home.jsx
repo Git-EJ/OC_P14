@@ -1,4 +1,4 @@
-import FourSpheresLines from "../molecules/FourSpheresLines";
+import SphereLineWheel from "../molecules/SphereLineWheel";
 import Header from "../molecules/Header";
 
 
@@ -17,7 +17,7 @@ const Home = () => {
 
         <div className="home-main_container">
 
-          <FourSpheresLines />
+          <SphereLineWheel numberOfSphereLine={12} />
 
           <div className="home-main_logo_container">
             <img className="home-main_logo_img" src="/src/assets/logos/logo-circle-bg_hr-net.png" alt="Logo HR net" />
