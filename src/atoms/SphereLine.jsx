@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 
-const SphereLine = ({ rotation, width, height, sphereMargin, numberOfSpheres }) => {
+const SphereLine = ({ rotation, width, height, sphereMargin=1, numberOfSpheres }) => {
 
   const renderSpheres = (currentWidth, currentHeight, spheresLeft) => {
     if (spheresLeft === 0) {
@@ -14,7 +14,6 @@ const SphereLine = ({ rotation, width, height, sphereMargin, numberOfSpheres }) 
       margin: `${sphereMargin}px`,
     };
 
-    
     return (
       <>
         <div className="sphere" style={sphereDim}></div>
@@ -30,8 +29,8 @@ const SphereLine = ({ rotation, width, height, sphereMargin, numberOfSpheres }) 
       return 0;
     }
     return currentHeight + (sphereMargin * 2) + calculateTotalHeight(currentHeight * 0.8, spheresLeft - 1);
-  }
-  
+  };
+
   const heightForSpheresContainer = calculateTotalHeight(height, numberOfSpheres);
 
 
