@@ -159,23 +159,11 @@ body ::-webkit-scrollbar {
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  height: 238px;
-  width: fit-content;
-}
-.spheres_container_north {
-  transform: rotateZ(90deg);
-}
-.spheres_container_south {
-  transform: rotateZ(-90deg);
-}
-.spheres_container_west {
-  transform: rotateZ(180deg);
 }
 
 .sphere {
   background: radial-gradient(circle at center, #1494B9 0%, #0E3C55 100%);
   border-radius: 50%;
-  margin: 1px;
 }
 
 .sphere-pyramid_wrapper {

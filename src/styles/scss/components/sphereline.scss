@@ -1,24 +1,8 @@
-//no east because it's the default
 .spheres_container {
   @include flex_center_row;
-  height: calc(82px + 67px + 52px + 37px); // sphere sizes + margin
-  width: fit-content;
-
-  &_north {
-    transform: rotateZ(90deg);
-  }
-
-  &_south {
-    transform: rotateZ(-90deg);
-  }
-
-  &_west {
-    transform: rotateZ(180deg);
-  }
 }
 
 .sphere {
   background : $primary_radial-gradient;
   border-radius: 50%;
-  margin: 1px;
 }
