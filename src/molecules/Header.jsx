@@ -36,7 +36,7 @@ const Header = ({ navigateButton_1, textButton_1, navigateButton_2, textButton_2
 
           <div className="header_button_container">
             <div className="sphere-pyramid_wrapper">
-              <SpherePyramid />
+              <SpherePyramid arrayOfPattern={[7, 5, 3 ,2, 1]}/>
             </div>
 
               <button className="header_button_nav" onClick={handleClick_1}>{textButton_1}</button>
@@ -46,7 +46,7 @@ const Header = ({ navigateButton_1, textButton_1, navigateButton_2, textButton_2
               }
 
             <div className="sphere-pyramid_wrapper">
-              <SpherePyramid />
+              <SpherePyramid arrayOfPattern={[7, 5, 3 ,2, 1]}/>
             </div>
           </div>
         </div>

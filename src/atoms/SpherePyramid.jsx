@@ -1,10 +1,13 @@
-const SpherePyramid = () => {
-  // const arrayOfPyramidLevels = [1, 2, 3, 4, 3, 2, 1]; //diamond shape
-  const arrayOfPyramidLevels = [7, 5, 3, 1]; //arrow shape
+import PropTypes from "prop-types";
 
+// [1, 2, 3, 4, 3, 2, 1] => diamond shape
+// [7, 5, 3, 1] => arrow shape
+
+const SpherePyramid = ({arrayOfPattern = []}) => {
+  console.log(arrayOfPattern);
   return (
     <>
-      {arrayOfPyramidLevels.map((level, index) => {
+      {arrayOfPattern.map((level, index) => {
 
         return (
 
@@ -22,3 +25,8 @@ const SpherePyramid = () => {
 };
 
 export default SpherePyramid;
+
+SpherePyramid.propTypes = {
+  arrayOfPattern: PropTypes.arrayOf(PropTypes.number),
+};
+
