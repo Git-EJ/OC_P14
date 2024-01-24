@@ -1,10 +1,9 @@
 import PropTypes from "prop-types";
 import SphereLine from "../atoms/SphereLine";
 
-const SphereLineWheel = ({startAngle=0, numberOfSphereLine}) => {
+const SphereLineWheel = ({startAngle=0, numberOfSphereLine, animationSpeed, addClass}) => {
 
   const renderSpheresLines = (currentAngle, currentNumberOfSphereLine) => {
-    
     if (currentNumberOfSphereLine === 0) {
       return null;
     }
@@ -21,9 +20,12 @@ const SphereLineWheel = ({startAngle=0, numberOfSphereLine}) => {
       </>
     );
   }
-
+  
   return (
-    <div className="sphere-line-wheel_spheres-lines_wrapper">
+    // <div className={`sphere-line-wheel_spheres-lines_wrapper ${addClass ? addClass : ''}`} 
+    <div className="sphere-line-wheel_spheres-lines_wrapper"
+      style={{animationDuration: `${60 / animationSpeed}s`}} 
+    >
       {renderSpheresLines(startAngle, numberOfSphereLine)}
     </div>
   )
@@ -35,4 +37,6 @@ export default SphereLineWheel;
 SphereLineWheel.propTypes = {
   startAngle: PropTypes.number,
   numberOfSphereLine: PropTypes.number.isRequired,
+  animationSpeed: PropTypes.number,
+  addClass: PropTypes.string,
 };

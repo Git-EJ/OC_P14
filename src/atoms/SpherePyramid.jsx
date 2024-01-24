@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 // [7, 5, 3, 1] => arrow shape
 
 const SpherePyramid = ({arrayOfPattern = []}) => {
-  console.log(arrayOfPattern);
+
   return (
     <>
       {arrayOfPattern.map((level, index) => {

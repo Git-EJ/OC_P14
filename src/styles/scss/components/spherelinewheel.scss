@@ -6,9 +6,9 @@
       width: fit-content;
       height: fit-content;
       @include absolute_center;
-      animation: sphereline_home_rotation 60s linear infinite;
+      animation: sphereLineWheel_home_rotation 6s linear infinite;
     }
-      
+
     &_container {
       width: fit-content;
       height: fit-content;
@@ -22,4 +22,9 @@
       top: calc(50% - $logo_wheel_size);
     }
   }
+
+  //add to wrapper when click on logo during animation time
+  // &_logo_clicked {
+  //   animation: sphereLineWheel_home_acceleration 5s cubic-bezier(0,.99,0,.99);
+  // }
 }

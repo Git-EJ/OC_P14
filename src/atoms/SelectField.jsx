@@ -10,8 +10,9 @@ const SelectField = ({ label, menuItem }) => {
   const [fieldValue, setFieldValue] = useState('');
   const [open, setOpen] = useState(false);
 
-  const handleChange = (event) => {
-    setFieldValue(event.target.value);
+  const handleChange = (e) => {
+    setFieldValue(e.target.value);
+    console.log(e.target.name, e.target.value)
   };
 
   const handleClose = () => {
@@ -29,7 +30,8 @@ const SelectField = ({ label, menuItem }) => {
       <label htmlFor="select_field" className="form_input_label">{label}</label>
         <Select className='form_input_field'
           labelId="select_label"
-          id="select_field"
+          id="state"
+          name='state'
           open={open}
           onClose={handleClose}
           onOpen={handleOpen}

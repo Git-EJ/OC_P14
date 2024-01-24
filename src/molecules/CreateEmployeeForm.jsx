@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import CreateEmployeeContext from "../context/createEmployee/CreateEmployeeContext"
 import SelectField from "../atoms/SelectField";
 import Modal from '../atoms/Modal';
@@ -116,10 +116,9 @@ const CreateEmployeeForm = () => {
     setIsModalOpen(true);
   }
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsModalOpen(false);
-  }
-
+  }, [setIsModalOpen]);
 
   return (
     <>
@@ -137,7 +136,13 @@ const CreateEmployeeForm = () => {
                       <React.Fragment key={`input_${inputIndex}`}>
                         <div className="form_input_container">
                           <label htmlFor={input.id} className={input.labelClassName}>{input.label}</label>
-                          <input type={input.type} id={input.id} placeholder={input.placeholder} className={input.inputClassName} />
+                          <input type={input.type} 
+                            id={input.id} 
+                            name={input.id}
+                            placeholder={input.placeholder} 
+                            className={input.inputClassName} 
+                            onInput={(e) => {console.log(e.target.name, e.target.value)}} // TODO onInput or onBlur
+                          />
                         </div>
 
                         {fieldset.legend === "Employee Address" && input.id === "city" && (
