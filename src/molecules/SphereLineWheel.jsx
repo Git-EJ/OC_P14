@@ -22,7 +22,8 @@ const SphereLineWheel = ({startAngle=0, numberOfSphereLine, animationSpeed, addC
   }
   
   return (
-    // <div className={`sphere-line-wheel_spheres-lines_wrapper ${addClass ? addClass : ''}`} 
+    // <div className={`sphere-line-wheel_spheres-lines_wrapper ${addClass ? addClass : ''}`} //class + addClass
+    // <div className={addClass !== '' ? addClass : 'sphere-line-wheel_spheres-lines_wrapper'} // toggle class
     <div className="sphere-line-wheel_spheres-lines_wrapper"
       style={{animationDuration: `${60 / animationSpeed}s`}} 
     >

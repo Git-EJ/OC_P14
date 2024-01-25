@@ -53,6 +53,7 @@ const arrayOfEmployeesDataTitle = [
 ]
 
 //51 mocked employees data
+//TODO need ID per employee?
 const arrayOfEmployeesDataContents = [
 {'firstName': 'Diane', 'lastName': 'Pierce', 'startDate': '11/09/2021', 'department': 'IT', 'dateOfBirth': '23/01/1981', 'street': '017 Harris Plain', 'city': 'North Sharon', 'state': 'NC', 'zipCode': '12492'},
 {'firstName': 'Craig', 'lastName': 'Roth', 'startDate': '01/06/2021', 'department': 'HR', 'dateOfBirth': '08/07/1954', 'street': '7119 Leslie Spurs', 'city': 'Port Susanchester', 'state': 'FL', 'zipCode': '74557'},
@@ -127,30 +128,39 @@ const EmployeeList = () => {
     employeesData,
   } = state;
 
-
   const [resetSettings, setResetSettings] = useState(false);
 
-  const originalEmployeesData = useMemo(() => generateMockedData(5000), []);
+  const originalEmployeesData = useMemo(() => generateMockedData(51), []);
+
 
 
   const onResetSettings = useCallback(() => {
     setResetSettings(currentState => !currentState)
   }, [setResetSettings]);
 
+
   const setEmployeesData = useCallback((payload) => { dispatch({ type: "SET_EMPLOYEES_DATA", payload }) }, [dispatch]);
   
+
   const addEmployeeLink = () => {
     navigate('/employee-create');
   }
 
+
   useEffect(() => {
-    setEmployeesData(originalEmployeesData)
-  }, [setEmployeesData, originalEmployeesData])
+    // setEmployeesData(originalEmployeesData)
+    setEmployeesData(employeesData)
+    // setEmployeesData([...employeesData, originalEmployeesData])
+  }, [setEmployeesData, originalEmployeesData, employeesData])
+
+  useEffect(() => {
+    console.log('CE-employeesData', employeesData)
+  }, [employeesData]);
 
 
 
   const onResetData = useCallback(() => {
-    setEmployeesData(originalEmployeesData)
+    setEmployeesData(originalEmployeesData) //TODO not originalEmployeesData
   },[setEmployeesData, originalEmployeesData]);
 
 

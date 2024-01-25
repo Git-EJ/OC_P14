@@ -73,7 +73,38 @@ const Home = () => {
       clearInterval(intervalRef.current);
     };
   }, []);
+
+
+
   
+  // const [isClickLogo, setIsClickLogo] = useState(false);
+
+  // // with useRef we can store a value that will not change between renders, 
+  // // and it will not cause a re-render when it changes.
+  // const timeoutRef = useRef(null);
+
+  // const handleClickLogo = () => {
+
+  //   setIsClickLogo(!isClickLogo);
+  //   clearTimeout(timeoutRef.current);
+    
+  //   timeoutRef.current = setTimeout(() => {
+  //     setIsClickLogo(false);
+  //   }, 3000);
+  // };
+
+  // useEffect(() => {
+  //   // cancel timeout if the component is unmounted or before useEffect runs again, 
+  //   // operations do not continue to run on a component that not exists.
+  //   return () => {
+  //     clearTimeout(timeoutRef.current);
+  //   };
+  // }, []);
+  
+
+
+
+
   return (
     <>
       <Header 
@@ -90,7 +121,7 @@ const Home = () => {
         <SphereLineWheel 
           numberOfSphereLine={12}
           animationSpeed={animationSpeed}
-          addClass={isClickLogo ? 'sphere-line-wheel_logo_clicked' : ''} 
+          // addClass={isClickLogo ? 'sphere-line-wheel_logo_clicked' : ''} 
         />
 
           <div className="home-main_logo_container">

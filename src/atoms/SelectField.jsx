@@ -5,13 +5,18 @@ import Select from '@mui/material/Select';
 import { useState } from 'react';
 
 
-const SelectField = ({ label, menuItem }) => {
+
+
+const SelectField = ({ label, menuItem, name, onChange }) => {
 
   const [fieldValue, setFieldValue] = useState('');
   const [open, setOpen] = useState(false);
 
+
+
   const handleChange = (e) => {
     setFieldValue(e.target.value);
+    onChange(e.target.name, e.target.value);
     console.log(e.target.name, e.target.value)
   };
 
@@ -31,7 +36,7 @@ const SelectField = ({ label, menuItem }) => {
         <Select className='form_input_field'
           labelId="select_label"
           id="state"
-          name='state'
+          name={name}
           open={open}
           onClose={handleClose}
           onOpen={handleOpen}
@@ -64,4 +69,6 @@ SelectField.propTypes = {
       abbreviation: PropTypes.string.isRequired,
     })
   ).isRequired,
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };

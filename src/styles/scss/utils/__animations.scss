@@ -11,6 +11,10 @@
 }
 
 @keyframes sphereLineWheel_home_acceleration {
-  0% { transform: rotateZ(0deg); }
-  100% { transform: rotateZ(360deg); }
+  0% { 
+    transform: rotateZ(0deg); 
+  }
+  100% { 
+    transform: rotateZ(360deg);
+  }
 }

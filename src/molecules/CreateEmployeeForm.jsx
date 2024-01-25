@@ -1,41 +1,47 @@
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import employeesDataContext from "../context/employeesData/EmployeesDataContext";
 import CreateEmployeeContext from "../context/createEmployee/CreateEmployeeContext"
 import SelectField from "../atoms/SelectField";
 import Modal from '../atoms/Modal';
 import SpheresButton from "./SpheresButton";
 
 
-
 // TODO REGEX INPUT
 const CreateEmployeeForm = () => { 
+  
+  const [newArrayOfInputsValues, setNewArrayOfInputsValues] = useState({});
 
-  const {state, dispatch} = useContext(CreateEmployeeContext);
+  const { state: createEmployeeState, dispatch: createEmployeeDispatch } = useContext(CreateEmployeeContext);
+  const { state: employeesDataState, dispatch: employeesDataDispatch } = useContext(employeesDataContext);
 
   const {
     isModalOpen,
-  } = state;
+  } = createEmployeeState;
+  const setIsModalOpen = useCallback((payload) => { createEmployeeDispatch({ type: "SET_IS_MODAL_OPEN", payload }) }, [createEmployeeDispatch]);
 
-  const setIsModalOpen = useCallback((payload) => { dispatch({ type: "SET_IS_MODAL_OPEN", payload }) }, [dispatch]);
+  const {
+    employeesData,
+  } = employeesDataState;
+  const setEmployeesData = useCallback((payload) => { employeesDataDispatch({ type: "SET_EMPLOYEES_DATA", payload }) }, [employeesDataDispatch]);
 
-  
 
   const formFieldsets = [
   
     {
       legend: "Employee Informations",
       input: [
-        {label: "Lastname", id: "lastname", labelClassName: "form_input_label", type: "text", placeholder: "Lastname", inputClassName: "form_input_field"},
-        {label: "Firstname", id: "firstname", labelClassName: "form_input_label", type: "text", placeholder: "Firstname", inputClassName: "form_input_field"},
-        {label: "Date of Birth", id: "birthdate", labelClassName: "form_input_label", type: "date", placeholder: "Birthdate", inputClassName: "form_input_field"},
-        {label: "Start Date", id: "startDate", labelClassName: "form_input_label", type: "date", placeholder: "Start Date", inputClassName: "form_input_field"},
+        {label: "Lastname", id: "lastName", labelClassName: "form_input_label", type: "text", placeholder: "Lastname", inputClassName: "form_input_field", defaultValue: "Doe"},
+        {label: "Firstname", id: "firstName", labelClassName: "form_input_label", type: "text", placeholder: "Firstname", inputClassName: "form_input_field", defaultValue: "John"},
+        {label: "Date of Birth", id: "dateOfBirth", labelClassName: "form_input_label", type: "date", placeholder: "Birthdate", inputClassName: "form_input_field", defaultValue: "01/01/1970"},
+        {label: "Start Date", id: "startDate", labelClassName: "form_input_label", type: "date", placeholder: "Start Date", inputClassName: "form_input_field", defaultValue: "01/01/2021"},
       ],
     },
     {
       legend: "Employee Address",
       input: [
-        {label: "Street", id: "street", labelClassName: "form_input_label", type: "text", placeholder: "Street", inputClassName: "form_input_field"},
-        {label: "City", id: "city", labelClassName: "form_input_label", type: "text", placeholder: "City", inputClassName: "form_input_field"},
-        {label: "Zip Code", id: "zipCode", labelClassName: "form_input_label", type: "number", placeholder: "Zip Code", inputClassName: "form_input_field"},
+        {label: "Street", id: "street", labelClassName: "form_input_label", type: "text", placeholder: "Street", inputClassName: "form_input_field", defaultValue: "1234 Main St"},
+        {label: "City", id: "city", labelClassName: "form_input_label", type: "text", placeholder: "City", inputClassName: "form_input_field", defaultValue: "City"},
+        {label: "Zip Code", id: "zipCode", labelClassName: "form_input_label", type: "number", placeholder: "Zip Code", inputClassName: "form_input_field", defaultValue: "12345"},
       ],
     }
   ];
@@ -110,14 +116,73 @@ const CreateEmployeeForm = () => {
     {name: "Wyoming", abbreviation: "WY"}
   ];
 
+  // const formatDate = (date) => {
+
+    // if (isNaN(date)) {
+    //   return '';
+    // }
+
+  //   const dateArray = date.split('-');
+  //   const day = dateArray[2]
+  //   const month = dateArray[1];
+  //   const year = dateArray[0];
+  //   return `${day}-${month}-${year}`;
+  // }
+
+  function formatDate(inputDate) {
+    const date = new Date(inputDate);
+  
+    if (isNaN(date)) {
+      return '';
+    }
+  
+    const day = String(date.getDate()).padStart(2, '0'); //2 caracteres if only 1 add 0 at the beginning
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear());
+  
+    return `${day}-${month}-${year}`;
+  }
+
+  const selectedDepartmentChange = (name, value) => {
+    onInputValue({ target: {name, value } });
+  }
+  const selectedStateOnChange = (name, value) => {
+    onInputValue({ target: { name, value } });
+  }
+
+
+  const onInputValue = (e) => {
+    let key = e.target.name;
+    let value = e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1).toLowerCase(); //TODO for - and ''
+
+    if(e.target.name === "dateOfBirth" || e.target.name === "startDate") {
+      key = e.target.name;
+      value = formatDate(e.target.value);
+    } 
+
+    setNewArrayOfInputsValues({...newArrayOfInputsValues, [key]: value })
+  }
+  useEffect(() => {
+    console.log('newArrayOfInputsValues', newArrayOfInputsValues)
+  }, [newArrayOfInputsValues])
+
   
   const createEmployee = (e) => {
+    // TODO post request && data validation
+    //TODO how to use defaultValue of formFieldsets in case of empty input?
     e.preventDefault();
     setIsModalOpen(true);
+    setEmployeesData([...employeesData, newArrayOfInputsValues]);
   }
+  useEffect(() => {
+    console.log('employeesData', employeesData)
+  }, [employeesData])
+
 
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
+    // setEmployeesData([]);
+  // }, [setIsModalOpen, setEmployeesData]);
   }, [setIsModalOpen]);
 
   return (
@@ -141,20 +206,32 @@ const CreateEmployeeForm = () => {
                             name={input.id}
                             placeholder={input.placeholder} 
                             className={input.inputClassName} 
-                            onInput={(e) => {console.log(e.target.name, e.target.value)}} // TODO onInput or onBlur
+                            onInput={onInputValue} // TODO onInput or onBlur
                           />
                         </div>
 
                         {fieldset.legend === "Employee Address" && input.id === "city" && (
                           <div className="form_input_container">
-                            <SelectField label={'State'} menuItem={arrayOfStates} />
+                            <SelectField 
+                              label={'State'}
+                              name={'state'}
+                              menuItem={arrayOfStates} 
+                              onChange={selectedStateOnChange}
+                            />
                           </div>
                         )}
                       </React.Fragment>
                     )
                   })}
 
-                  {fieldset.legend === "Employee Informations" && <SelectField label={'Department'}  menuItem={arrayOfDepartments} />} 
+                  {fieldset.legend === "Employee Informations" && 
+                    <SelectField 
+                      label={'Department'}
+                      name={'department'}  
+                      menuItem={arrayOfDepartments} 
+                      onChange={selectedDepartmentChange}
+                    />
+                  } 
 
                 </fieldset>
               )

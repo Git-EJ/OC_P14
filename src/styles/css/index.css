@@ -181,7 +181,7 @@ body ::-webkit-scrollbar {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  animation: sphereLineWheel_home_rotation 6s linear infinite;
+  animation: sphereLineWheel_home_rotation 60s linear infinite;
 }
 .sphere-line-wheel_spheres-lines_container {
   width: fit-content;
