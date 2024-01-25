@@ -3,31 +3,7 @@
   &_spheres-lines {
   
     &_wrapper {
-      width: fit-content;
-      height: fit-content;
       @include absolute_center;
-      animation: sphereLineWheel_home_rotation 60s linear infinite;
-    }
-
-    &_container {
-      width: fit-content;
-      height: fit-content;
-      @include absolute_center;
-    }
-
-    &_item {
-      width: fit-content;
-      height: fit-content;
-      @include absolute_center;
-      top: calc(50% - $logo_wheel_size);
     }
   }
-
-  //add to wrapper when click on logo during animation time
-  // &_logo_clicked {
-  //   width: fit-content;
-  //   height: fit-content;
-  //   @include absolute_center;
-  //   animation: sphereLineWheel_home_acceleration 0.5s linear infinite;
-  // }
 }

@@ -5,16 +5,4 @@
   100% {background-position: 0 0;}
 }
 
-@keyframes sphereLineWheel_home_rotation {
-  0% { transform: rotateZ(0deg); }
-  100% { transform: rotateZ(360deg); }
-}
 
-@keyframes sphereLineWheel_home_acceleration {
-  0% { 
-    transform: rotateZ(0deg); 
-  }
-  100% { 
-    transform: rotateZ(360deg);
-  }
-}

@@ -9,7 +9,7 @@ const DataContents = ({data}) => {
     lastName: '',
     startDate: '',
     department: '',
-    dateOfBirth: '',
+    dateOfBirth: '',  
     street: '',
     city: '',
     state: '',

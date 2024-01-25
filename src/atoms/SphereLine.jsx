@@ -1,48 +1,38 @@
 import PropTypes from 'prop-types';
 
+const Sphere = ({radius}) => <div className="sphere" style={{
+  width: radius,
+  height: radius,
+}}/>
+Sphere.propTypes = {
+  radius: PropTypes.number.isRequired,
+};
 
-const SphereLine = ({ rotation, width, height, sphereMargin=1, numberOfSpheres }) => {
+const SphereLine = ({ innerRadius="0px", angle=0, radius, ratio=0.8, gap="1px", numberOfSpheres }) => {
 
-  const renderSpheres = (currentWidth, currentHeight, spheresLeft) => {
-    if (spheresLeft === 0) {
-      return null;
-    }
-
-    const sphereDim = {
-      width: `${currentWidth}px`,
-      height: `${currentHeight}px`,
-      margin: `${sphereMargin}px`,
-    };
-
+  const renderSpheres = (radius, spheresLeft) => {
     return (
       <>
-        <div className="sphere" style={sphereDim}></div>
-        {/* (currentWidth * 0.8 = 80% of currentWidth) === (currentWidth - 20% of currentWidth) */}
-        {renderSpheres(currentWidth * 0.8, currentHeight * 0.8, spheresLeft - 1)}
+        <Sphere radius={radius}/>
+        {spheresLeft>1 && renderSpheres(radius * ratio, spheresLeft - 1)}
       </>
     );
   };
 
-
-  const calculateTotalHeight = (currentHeight, spheresLeft) => {
-    if (spheresLeft === 0) {
-      return 0;
-    }
-    return currentHeight + (sphereMargin * 2) + calculateTotalHeight(currentHeight * 0.8, spheresLeft - 1);
-  };
-
-  const heightForSpheresContainer = calculateTotalHeight(height, numberOfSpheres);
-
-
   return (
-    <div className="spheres_container" 
-      style={{ 
-        width: "fit-content",
-        height: `${heightForSpheresContainer}px`,
-        transform: `rotateZ(${rotation}deg)` 
+    <div
+      style={{
+        position: "absolute",
+        transform: `rotate(${angle}deg)`,
       }}
     >
-    {renderSpheres(width, height, numberOfSpheres)}
+      <div className="spheres_container" style={{
+        transform: `translate(${innerRadius}, -50%)`,
+        gap:gap,
+        position: "absolute",
+      }}>
+        {renderSpheres(radius, numberOfSpheres)}
+      </div>
     </div>
   );
 };
@@ -50,9 +40,10 @@ const SphereLine = ({ rotation, width, height, sphereMargin=1, numberOfSpheres }
 export default SphereLine;
 
 SphereLine.propTypes = {
-  rotation: PropTypes.number.isRequired,
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
-  sphereMargin: PropTypes.number,
+  innerRadius: PropTypes.string,
+  angle: PropTypes.number,
+  radius: PropTypes.number.isRequired,
+  ratio: PropTypes.number,
+  gap: PropTypes.string,
   numberOfSpheres: PropTypes.number.isRequired,
 };

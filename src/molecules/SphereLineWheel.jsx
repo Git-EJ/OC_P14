@@ -1,43 +1,85 @@
 import PropTypes from "prop-types";
 import SphereLine from "../atoms/SphereLine";
+import { useEffect, useCallback, useState } from "react";
 
-const SphereLineWheel = ({startAngle=0, numberOfSphereLine, animationSpeed, addClass}) => {
 
-  const renderSpheresLines = (currentAngle, currentNumberOfSphereLine) => {
-    if (currentNumberOfSphereLine === 0) {
-      return null;
-    }
-
-    return (
-      <>
-        <div className="sphere-line-wheel_spheres-lines_container" style={{transform: `rotate(${currentAngle}deg)`}}>
-          <div className="sphere-line-wheel_spheres-lines_item" >
-            <SphereLine rotation={-90} width={80} height={80} sphereMargin={1} numberOfSpheres={4}/>
-          </div>
-        </div>
-
-        {renderSpheresLines(currentAngle + 30, currentNumberOfSphereLine - 1)}
-      </>
-    );
-  }
-  
+const RenderSpheresLines = ({innerRadius, angle}) => {
   return (
-    // <div className={`sphere-line-wheel_spheres-lines_wrapper ${addClass ? addClass : ''}`} //class + addClass
-    // <div className={addClass !== '' ? addClass : 'sphere-line-wheel_spheres-lines_wrapper'} // toggle class
+    <SphereLine radius={80} gap={"1px"} innerRadius={innerRadius} numberOfSpheres={4} angle={angle}/>
+  );
+}
+
+RenderSpheresLines.propTypes = {
+  innerRadius: PropTypes.string.isRequired,
+  angle: PropTypes.number.isRequired,
+};
+
+
+
+const SphereLineWheel = ({innerRadius="0px", startAngle=0, numberOfSphereLine, animationSpeed}) => {
+  
+  const array = new Array(numberOfSphereLine).fill(0)
+  const delta = 360 / numberOfSphereLine;
+
+  const [animation, setAnimation] = useState(null)
+  const [current, setCurrent] = useState(
+    {
+      angle: 0,
+      speed: animationSpeed,
+      target: animationSpeed,
+    }
+  );
+
+  
+  
+  const intervalAngle = useCallback(() => {
+    setCurrent(c => {
+      const dif = (c.target - c.speed)
+      if (Math.abs(dif) < 0.01) {
+        c.speed = c.target
+      } else {
+        c.speed = c.speed + (c.target - c.speed) / 100;
+      }
+      return {...c, angle: c.angle + c.speed}
+    })
+  }, [setCurrent])
+
+  useEffect(() => {
+    if (animationSpeed !== current.target) {
+      setCurrent(c=>({...c, target:animationSpeed}));
+    }
+  }, [animationSpeed, setCurrent, current])
+
+  useEffect(() => {
+    if (!animation) setAnimation (setInterval(intervalAngle, 30))
+    return () => {
+      if (animation) {
+        clearInterval(animation)
+        setAnimation(null)
+      }
+    }
+  }, [setAnimation, intervalAngle, animation])
+  
+
+  return (
     <div className="sphere-line-wheel_spheres-lines_wrapper"
-      style={{animationDuration: `${60 / animationSpeed}s`}} 
+      style={{
+        transform: `rotate(${current.angle}deg)`,
+        animationDuration: `${12 / animationSpeed}s`
+      }}
     >
-      {renderSpheresLines(startAngle, numberOfSphereLine)}
+      {array.map((_, i) =>
+        <RenderSpheresLines key={`sphere-line-${i}`} innerRadius={innerRadius} angle={startAngle + i * delta} />
+      )}
     </div>
   )
 };
 
-
 export default SphereLineWheel;
 
 SphereLineWheel.propTypes = {
+  innerRadius: PropTypes.string,
   startAngle: PropTypes.number,
   numberOfSphereLine: PropTypes.number.isRequired,
   animationSpeed: PropTypes.number,
-  addClass: PropTypes.string,
 };
