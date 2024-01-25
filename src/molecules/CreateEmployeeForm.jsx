@@ -4,6 +4,7 @@ import CreateEmployeeContext from "../context/createEmployee/CreateEmployeeConte
 import SelectField from "../atoms/SelectField";
 import Modal from '../atoms/Modal';
 import SpheresButton from "./SpheresButton";
+import { string } from "prop-types";
 
 
 // TODO REGEX INPUT
@@ -113,7 +114,11 @@ const CreateEmployeeForm = () => {
     {name: "Washington", abbreviation: "WA"},
     {name: "West Virginia", abbreviation: "WV"},
     {name: "Wisconsin", abbreviation: "WI"},
-    {name: "Wyoming", abbreviation: "WY"}
+    {name: "Wyoming", abbreviation: "WY"},
+    {name: "Test toUpperCase", abbreviation: "tu"},
+    {name: "Test notLetters", abbreviation: '123'},
+    {name: "Test length", abbreviation: 'TLH'},
+    // {name: "Test notString", abbreviation: 456},
   ];
 
   // const formatDate = (date) => {
@@ -143,6 +148,36 @@ const CreateEmployeeForm = () => {
     return `${day}-${month}-${year}`;
   }
 
+  function formatState(inputState) {
+    if( !inputState || inputState.length !== 2 || /*typeof inputState !== 'string' ||*/ !/^[a-zA-Z]+$/.test(inputState) ) {
+      return '';
+    }
+    inputState = inputState.toUpperCase();
+    return inputState;
+  }
+
+  function formatOthers(inputOthers) {
+    if(!inputOthers) {
+      return '';
+    } else if (/^\d+$/.test(inputOthers)) { //only numbers
+      return inputOthers
+    }
+    
+    const inputValue = inputOthers.replace(/\s+/g, ' '); //s for space, tab,line break, and others space characters
+
+    const formattedInputValue = inputValue.includes('-') ? 
+
+       inputValue.split(/[\s-]+/).map((word) => {
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      }).join('-') 
+    : 
+      inputValue.split(' ').map((word) => {
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      }).join(' ');
+
+    return formattedInputValue;
+  }
+
   const selectedDepartmentChange = (name, value) => {
     onInputValue({ target: {name, value } });
   }
@@ -152,10 +187,14 @@ const CreateEmployeeForm = () => {
 
 
   const onInputValue = (e) => {
-    let key = e.target.name;
-    let value = e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1).toLowerCase(); //TODO for - and ''
+    let key = e.target.name; //todo toLowerCase firstName && lastName
+    let value = formatOthers(e.target.value);
+    
+    if(e.target.name === "state") {
+      key = e.target.name;
+      value = formatState(e.target.value);
 
-    if(e.target.name === "dateOfBirth" || e.target.name === "startDate") {
+    } else if(e.target.name === "dateOfBirth" || e.target.name === "startDate") {
       key = e.target.name;
       value = formatDate(e.target.value);
     } 
