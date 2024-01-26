@@ -121,8 +121,9 @@ const Pagination = ({
 
 
   const onJumpPage = useCallback((e) => {
-    const value = +e.target.value;
-    setInputValue(value > totalPageCount ? '' : value); //allow user to enter value < totalPageCount
+    //if user enter value > totalPageCount then input value will be totalPageCount
+    const value = +e.target.value > totalPageCount ? totalPageCount : +e.target.value;
+    setInputValue(value); 
     
     if (inputTimeout) {
       clearTimeout(inputTimeout);
@@ -152,31 +153,51 @@ const Pagination = ({
   }, [currentPage]);
 
 
+  const jumpToPageText = () => {
+    if (totalPageCount === 0) {
+      return "there's no page";
+    } else if (totalPageCount === 1) {
+      return 'page = 1';
+    } else {
+      return `pages = 1 to ${totalPageCount}`;
+    }
+  }
+
+  useEffect(() => {
+    if(totalPageCount === 0) {
+      setInputValue(0);
+      setCurrentPage(0);
+    }
+  }, [totalPageCount, setCurrentPage])
+
+
   return (
     <div className="pagination_container">
 
       <div className="pagination_jump_container">
         <div className="pagination_jump_text-label">
-          <label htmlFor='Jump to Page'>Jump to page:</label>
-          <p>value = {totalPageCount === 0 ? '' : `1 to ${totalPageCount}`}</p>
+          <label htmlFor='Jump_to_Page'>Jump to page:</label>
+          <p>{jumpToPageText()}</p>
+
         </div>
 
         {/* TODO Regex */}
         <input type="number"
-          id="Jump to Page"
-          min="1" 
+          id="Jump_to_Page"
+          min="1"
           max={totalPageCount} 
           value={inpuValue === 0 ? '' : inpuValue}
           onChange={(e) => onJumpPage(e)}
           onKeyDown={(e) => onKeyDownPage(e)}
           onBlur={(e) => onBlurPage(e)}
           onFocus={(e) => e.target.select()} //user can enter value without delete the current value
+          {...(totalPageCount === 0 ? {disabled: true} : null)}
         />
       </div>
 
       <div className="pagination_buttons_container">
-        <button className="pagination_button_previous" onClick={totalPageCount === 0 ? null : onPreviousPage}>
-          {currentPage === 1 ? null : IconLeft ? <IconLeft /> : "<"}
+        <button className="pagination_button_previous" onClick={onPreviousPage}>
+          {currentPage === 1 || totalPageCount === 0 ? null : IconLeft ? <IconLeft /> : "<"}
         </button>
  
         <Counter
@@ -184,8 +205,8 @@ const Pagination = ({
           totalPageCount={totalPageCount}
           onPageChange={setCurrentPage}
         />
-        <button className="pagination_button_next" onClick={totalPageCount === 0 ? null : onNextPage}>
-          {currentPage === totalPageCount ? null : IconRight ? <IconRight /> : ">"}
+        <button className="pagination_button_next" onClick={onNextPage}>
+          {currentPage === totalPageCount || totalPageCount === 0 ? null : IconRight ? <IconRight /> : ">"}
         </button>
       </div>
     </div>

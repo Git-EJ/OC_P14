@@ -9,7 +9,7 @@ const Home = () => {
   const [animationSpeed, setAnimationSpeed] = useState(0.02);
 
   const handleClickLogo = () => {
-    setAnimationSpeed(c=>c*2);
+    setAnimationSpeed(c=>c*3);
     setTimeout(() => {
       setAnimationSpeed(0.02);
     }, 3000);

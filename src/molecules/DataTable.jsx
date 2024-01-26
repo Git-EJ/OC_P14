@@ -65,7 +65,8 @@ const DataTable = ({
   ]);
 
   
-  //TODO save sort when filtering not working
+  //TODO clean input search, sort when change selectSearch
+  //TODO clean sort when search
   const sort = useCallback((entry, data, sortBy='asc') => {
 
     const key = entry.key;
@@ -165,72 +166,43 @@ const DataTable = ({
   }, [sort, headers, data, setSortingState]);
 
 
-  // TODO apply, if sort is active, sort on search result
-  // const applySort = useCallback((data) => {
-  //   if(!sortingState.activeSortIndex) return data;
-  //   return sort(headers[sortingState.activeSortIndex], data, sortingState.direction);
-  // }, [sortingState, sort, headers]);
 
 
-  const searchBySelectValue = useCallback((value, employee) => {
-    switch(searchSelectValue) {
-
-      case 'all':
-        return Object.keys(employee).some((key) => employee[key].toLowerCase().includes(value));
-
-      case 'firstName':
-        return employee.firstName.toLowerCase().includes(value);
-      case 'lastName':
-        return employee.lastName.toLowerCase().includes(value);
-      case 'startDate':
-        return employee.startDate.toLowerCase().includes(value);
-      case 'department':
-        return employee.department.toLowerCase().includes(value);
-      case 'dateOfBirth':
-        return employee.dateOfBirth.toLowerCase().includes(value);
-      case 'street':
-        return employee.street.toLowerCase().includes(value);
-      case 'city':
-        return employee.city.toLowerCase().includes(value);
-      case 'state':
-        return employee.state.toLowerCase().includes(value);
-      case 'zipCode':
-        return employee.zipCode.toLowerCase().includes(value);
-      default:
-        return Object.keys(employee).some((key) => employee[key].toLowerCase().includes(value));
-    }
+  const searchBySelectValue = useCallback((value, entry) => {
+    if (searchSelectValue === 'all') return Object.keys(entry).some((key) => entry[key].toLowerCase().includes(value));
+    return entry[searchSelectValue].toLowerCase().includes(value)
     },[searchSelectValue]); 
 
-    // const filteredData = data.filter((employee) => search(value, employee));
-    // const sortedFilteredData = applySort(filteredData);
-    // setDisplayData(sortedFilteredData);
-    // setLastSearch(value);
-    // }, [data, setDisplayData, lastSearch, setLastSearch, applySort, searchSelectValue]);
 
   //TODO REGEX
-  const searchEmployeeDebounced = useCallback((e) => {
+  const searchEntryDebounced = useCallback((e) => {
     const value = e.target.value.toLowerCase();
     if (value === lastSearch) return;
-    setDisplayData(data.filter((employee) => searchBySelectValue(value, employee)))
+    setDisplayData( (searchSelectValue === 'all') ?
+      data.filter(entry => Object.keys(entry).some((key) => entry[key].toLowerCase().includes(value)))
+    :
+      data.filter(entry => entry[searchSelectValue].toLowerCase().includes(value))
+    )
+
     setLastSearch(value);
-  }, [lastSearch, setLastSearch, searchBySelectValue, data, setDisplayData]);
+  }, [lastSearch, setLastSearch, data, setDisplayData, searchSelectValue]);
   
   useEffect(() => {
-    setDisplayData(data.filter((employee) => searchBySelectValue(lastSearch, employee)))
+    setDisplayData(data.filter((entry) => searchBySelectValue(lastSearch, entry)))
   }, [data, searchBySelectValue, lastSearch, setDisplayData]);
 
 
-  const searchEmployee = useCallback((e) => {
+  const searchEntry = useCallback((e) => {
     if (searchTimeout) {
       clearTimeout(searchTimeout);
     }
     setSearchTimeout(
       setTimeout(() => {
-        searchEmployeeDebounced(e);
+        searchEntryDebounced(e);
         setSearchTimeout(0);
       }, 300)
     )
-  }, [searchEmployeeDebounced, searchTimeout]);
+  }, [searchEntryDebounced, searchTimeout]);
   
 
   // on mount
@@ -267,6 +239,7 @@ const DataTable = ({
             id="data-table_entries" 
             value={entriesSelectValue}
             onChange={(e) => setEntrieSelectValue(+e.target.value)}
+            {...(totalPageCount === 0 ? {disabled: true} : null)}
           >
             <option value="1">1</option>
             <option value="2">2</option>
@@ -287,17 +260,12 @@ const DataTable = ({
               id="data-table_search-select"
               value={searchSelectValue}
               onChange={(e) => setSearchSelectValue(e.target.value)}
+              {...(totalPageCount === 0 ? {disabled: true} : null)}
             >
               <option value="all">All</option>
-              <option value="firstName">FirstName</option>
-              <option value="lastName">LastName</option>
-              <option value="startDate">StartDate</option>
-              <option value="department">Department</option>
-              <option value="dateOfBirth">Date of Birth</option>
-              <option value="street">Street</option>
-              <option value="city">City</option>
-              <option value="state">State</option>
-              <option value="zipCode">Zip Code</option>
+              {headers.map((header, i) => (
+                <option key={`searchSelect_${i}_${header.key}`} value={header.key}>{header.value}</option>
+              ))}
             </select>
           </div>
 
@@ -308,7 +276,8 @@ const DataTable = ({
               id="data-table_search-input"
               type="text" 
               placeholder=""
-              onChange={(e) => searchEmployee(e)}
+              onChange={(e) => searchEntry(e)}
+              {...(totalPageCount === 0 ? {disabled: true} : null)}
             />
           </div>
         </div>
@@ -326,9 +295,9 @@ const DataTable = ({
         <Suspense fallback={
           <div className="data-table_content-lines_container_loading_container">
             <p >Loading</p>
-            <span >.</span>
-            <span >.</span>
-            <span >.</span>
+            <span>.</span>
+            <span>.</span>
+            <span>.</span>
           </div>
         }>
           <DisplayDataContents
@@ -370,7 +339,7 @@ const DataTable = ({
 
       </div>
 
-      {/* TODO delete/modif employee*/}
+      {/* TODO delete/modif entry*/}
       
     </div>
   )

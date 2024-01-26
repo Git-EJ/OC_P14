@@ -203,6 +203,9 @@ body ::-webkit-scrollbar {
   margin-top: 1rem;
   background: #fff;
 }
+.spheres-button_container > :nth-child(3) > :nth-child(1) {
+  transform: translate(4.25rem, -50%) !important;
+}
 .spheres-button_button {
   background: linear-gradient(to right, #1494B9, #0E3C55);
   -webkit-background-clip: text;
@@ -305,11 +308,11 @@ body ::-webkit-scrollbar {
   }
 }
 .pagination_button_current {
-  width: fit-content;
+  min-width: 1.5rem;
   height: 1.5rem;
   background: #1494B9;
   color: #fff;
-  border-radius: 50%;
+  border-radius: 15px;
   padding: 0.2rem;
 }
 
@@ -605,6 +608,12 @@ body ::-webkit-scrollbar {
   border: 2px solid #1494B9;
   margin: 0 0.2rem;
   cursor: pointer;
+}
+.data-table_options_entries > select:disabled, .data-table_options_search_select > select:disabled {
+  border: 2px solid #1494B9;
+  opacity: 1;
+  color: rgba(199, 189, 189, 0.938);
+  cursor: default;
 }
 .data-table_options_search_select > label, .data-table_options_search_input > label {
   margin-right: 0.5rem;

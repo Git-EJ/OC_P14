@@ -42,6 +42,13 @@
         border: 2px solid $primary-color;
         margin: 0 0.2rem;
         cursor: pointer;
+
+        &:disabled {
+          border: 2px solid $primary-color;
+          opacity: 1;
+          color:  rgba(199, 189, 189, 0.938);
+          cursor: default;
+        }
       }
     }
 
@@ -49,7 +56,6 @@
     &_search_input {
       >label {
         margin-right: 0.5rem;
-        
       }
     }
 

@@ -87,11 +87,11 @@
     }
 
     &_current {
-      width:fit-content;
+      min-width:1.5rem;
       height: 1.5rem;
       background: $primary-color;
       color: #fff;
-      border-radius: 50%;
+      border-radius: 15px;
       padding:0.2rem;
     }
   }
