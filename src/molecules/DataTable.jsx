@@ -41,11 +41,15 @@ const DataTable = ({
   const [entriesSelectValue, setEntrieSelectValue] = useState(itemsPerPage);
   
   const [sortingState, setSortingState] = useState({ activeSortIndex: null, direction: null, });
+  const [isSorting, setIsSorting] = useState(false);
+  const [sortedData, setSortedData] = useState(data);
   
   const searchRef = useRef({value:""})
   const [searchSelectValue, setSearchSelectValue] = useState(itemsSearchSelectValue);
+  const [searchInputValue, setSearchInputValue] = useState('');
   const [lastSearch, setLastSearch] = useState('');
   const [searchTimeout, setSearchTimeout] = useState(0);
+  const [fileteredData, setFilteredData] = useState(data);
 
   const setResetSettings = useCallback(() => {
     setDisplayData(data);
@@ -57,7 +61,9 @@ const DataTable = ({
       activeSortIndex: null,
       direction: null,
     });
+    setIsSorting(false);
     setSearchSelectValue(itemsSearchSelectValue);
+    setSearchInputValue('');
   }, [
     setDisplayData,
     data,
@@ -66,8 +72,11 @@ const DataTable = ({
     itemsPerPage,
     setLastSearch,
     setSortingState,
+    setIsSorting,
     setSearchSelectValue,
+    setSearchInputValue,
     itemsSearchSelectValue,
+
   ]);
 
   //TODO .trim on input
@@ -146,6 +155,8 @@ const DataTable = ({
 
 
   const handleSortClick = useCallback((index, direction) => {
+    setIsSorting(true);
+
     setSortingState(prevState => {
 
       if (prevState.activeSortIndex === index) {
@@ -168,8 +179,19 @@ const DataTable = ({
         };
       }
     });
-  
-  }, [sort, headers, data, setSortingState]);
+
+  }, [sort, headers, data, setSortingState, setIsSorting, setDisplayData]);
+
+
+  useEffect(() => {
+    if (searchInputValue === '' && isSorting) {
+      setSortingState({
+        activeSortIndex: null,
+        direction: null,
+      });
+      setIsSorting(false);
+    }
+  }, [searchInputValue, isSorting, setSortingState, setIsSorting]);
 
 
 
@@ -184,19 +206,18 @@ const DataTable = ({
   const searchEntryDebounced = useCallback((e) => {
 
     const value = e.target.value.toLowerCase().trim();
-
-    console.log('HERE I AM')
-    console.log('value', value)
-
-    if (value === lastSearch) {
+    setSearchInputValue(value);
+    
+    if (value === lastSearch){
       return;
+
     } else {
       setDisplayData((searchSelectValue === 'all') ?
         data.filter(entry => Object.keys(entry).some((key) => entry[key].toLowerCase().includes(value)))
       :
         data.filter(entry => entry[searchSelectValue].toLowerCase().includes(value))
-        )
-      }
+      )
+    }
       
     setLastSearch(value);
   }, [lastSearch, setLastSearch, data, setDisplayData, searchSelectValue]);

@@ -148,8 +148,8 @@ const EmployeeList = () => {
 
 
   useEffect(() => {
-    // setEmployeesData(originalEmployeesData)
-    setEmployeesData(employeesData)
+    setEmployeesData(originalEmployeesData)
+    // setEmployeesData(employeesData)
     // setEmployeesData([...employeesData, originalEmployeesData])
   }, [setEmployeesData, originalEmployeesData, employeesData])
 
