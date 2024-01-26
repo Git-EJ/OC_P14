@@ -122,8 +122,8 @@ const Pagination = ({
 
   const onJumpPage = useCallback((e) => {
     //if user enter value > totalPageCount then input value will be totalPageCount
-    const value = +e.target.value > totalPageCount ? totalPageCount : +e.target.value;
-    setInputValue(value); 
+    const value = +e.target.value.trim() > totalPageCount ? totalPageCount : +e.target.value.trim();
+    setInputValue(value);
     
     if (inputTimeout) {
       clearTimeout(inputTimeout);
@@ -139,9 +139,9 @@ const Pagination = ({
 
 
   const onKeyDownPage = useCallback((e) => {
-    if (e.key === 'ArrowRight') {
+    if (e.key === 'ArrowRight' || e.key ==='ArrowUp') {
       onNextPage();
-    } else if (e.key === 'ArrowLeft') {
+    } else if (e.key === 'ArrowLeft' || e.key ==='ArrowDown') {
       onPreviousPage();
     }
   }, [onNextPage, onPreviousPage]);
@@ -166,9 +166,13 @@ const Pagination = ({
   useEffect(() => {
     if(totalPageCount === 0) {
       setInputValue(0);
-      setCurrentPage(0);
     }
   }, [totalPageCount, setCurrentPage])
+
+  useEffect(() => {
+    console.log('currentPage JUMP', currentPage);
+    console.log('inputValue JUMP', inpuValue);
+  },[inpuValue, currentPage])
 
 
   return (

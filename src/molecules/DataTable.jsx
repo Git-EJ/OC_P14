@@ -29,17 +29,23 @@ const DataTable = ({
 }) => {
 
   
+
+  const [dataLength, setDataLength] = useState(0);
+  
+  const [displayData, setDisplayData] = useState(data);
+  const [dataDisplayLength, setDataDisplayLength] = useState(0);
+  
+  const [totalPageCount, setTotalPageCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  
+  const [entriesSelectValue, setEntrieSelectValue] = useState(itemsPerPage);
+  
+  const [sortingState, setSortingState] = useState({ activeSortIndex: null, direction: null, });
   
   const searchRef = useRef({value:""})
-  const [displayData, setDisplayData] = useState(data);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [entriesSelectValue, setEntrieSelectValue] = useState(itemsPerPage);
-  const [dataLength, setDataLength] = useState(0);
-  const [totalPageCount, setTotalPageCount] = useState(0);
+  const [searchSelectValue, setSearchSelectValue] = useState(itemsSearchSelectValue);
   const [lastSearch, setLastSearch] = useState('');
   const [searchTimeout, setSearchTimeout] = useState(0);
-  const [sortingState, setSortingState] = useState({ activeSortIndex: null, direction: null, });
-  const [searchSelectValue, setSearchSelectValue] = useState(itemsSearchSelectValue);
 
   const setResetSettings = useCallback(() => {
     setDisplayData(data);
@@ -64,7 +70,7 @@ const DataTable = ({
     itemsSearchSelectValue,
   ]);
 
-  
+  //TODO .trim on input
   //TODO clean input search, sort when change selectSearch
   //TODO clean sort when search
   const sort = useCallback((entry, data, sortBy='asc') => {
@@ -176,14 +182,22 @@ const DataTable = ({
 
   //TODO REGEX
   const searchEntryDebounced = useCallback((e) => {
-    const value = e.target.value.toLowerCase();
-    if (value === lastSearch) return;
-    setDisplayData( (searchSelectValue === 'all') ?
-      data.filter(entry => Object.keys(entry).some((key) => entry[key].toLowerCase().includes(value)))
-    :
-      data.filter(entry => entry[searchSelectValue].toLowerCase().includes(value))
-    )
 
+    const value = e.target.value.toLowerCase().trim();
+
+    console.log('HERE I AM')
+    console.log('value', value)
+
+    if (value === lastSearch) {
+      return;
+    } else {
+      setDisplayData((searchSelectValue === 'all') ?
+        data.filter(entry => Object.keys(entry).some((key) => entry[key].toLowerCase().includes(value)))
+      :
+        data.filter(entry => entry[searchSelectValue].toLowerCase().includes(value))
+        )
+      }
+      
     setLastSearch(value);
   }, [lastSearch, setLastSearch, data, setDisplayData, searchSelectValue]);
   
@@ -200,30 +214,61 @@ const DataTable = ({
       setTimeout(() => {
         searchEntryDebounced(e);
         setSearchTimeout(0);
-      }, 300)
+      }, 500)
     )
   }, [searchEntryDebounced, searchTimeout]);
+
+
+  const onSearchSelectChange = useCallback((e) => {
+    setSearchSelectValue(e.target.value);
+    // searchRef.current && (searchRef.current.value = "") //for clear input search
+    setCurrentPage(1);
+  }, [setSearchSelectValue]);
   
+
+  const onEntriesSelectChange = useCallback((e) => {
+    setCurrentPage(1);
+    setEntrieSelectValue(+e.target.value);
+  }, [setCurrentPage, setEntrieSelectValue]);
+
+
 
   // on mount
   useEffect(() => {
+    setDataLength(data.length);
     if (data && data.length > 0) {
       setDisplayData(data);
     }
   }, [data, setDisplayData]);
 
-
   useEffect(() => {
-    setDataLength(displayData.length);
-  }, [displayData, setDataLength]);
+    setDataDisplayLength(displayData.length);
+  }, [displayData, setDataDisplayLength]);
   
   useEffect(() => {
-    setTotalPageCount(Math.ceil(dataLength / entriesSelectValue));
-  }, [dataLength ,entriesSelectValue, setTotalPageCount]);
+    setTotalPageCount(Math.ceil(dataDisplayLength / entriesSelectValue));
+  }, [dataDisplayLength ,entriesSelectValue, setTotalPageCount]);
 
   useEffect(() => {
     setResetSettings();
   }, [resetSettings, setResetSettings]);
+
+
+  //DEV console.Log
+  useEffect(() => {
+    console.log('currentPage', currentPage)
+    console.log('dataDisplayLength', dataDisplayLength)
+    console.log('totalPageCount', totalPageCount)
+    console.log('entriesSelectValue', entriesSelectValue)
+    console.log('displayData', displayData)
+    console.log('lastSearch', lastSearch)
+    console.log('searchSelectValue', searchSelectValue)
+    console.log('sortingState', sortingState)
+    console.log('searchTimeout', searchTimeout)
+  }, [currentPage, totalPageCount, entriesSelectValue, dataDisplayLength, displayData, lastSearch, searchSelectValue, sortingState, searchTimeout]);
+
+
+
 
   //START DataTable RETURN
   return (
@@ -238,7 +283,8 @@ const DataTable = ({
           <select 
             id="data-table_entries" 
             value={entriesSelectValue}
-            onChange={(e) => setEntrieSelectValue(+e.target.value)}
+            // onChange={(e) => setEntrieSelectValue(+e.target.value)}
+            onChange={onEntriesSelectChange}
             {...(totalPageCount === 0 ? {disabled: true} : null)}
           >
             <option value="1">1</option>
@@ -259,8 +305,9 @@ const DataTable = ({
             <select
               id="data-table_search-select"
               value={searchSelectValue}
-              onChange={(e) => setSearchSelectValue(e.target.value)}
-              {...(totalPageCount === 0 ? {disabled: true} : null)}
+              {...(dataLength === 0 ? {disabled: true} : null)}
+              // onChange={(e) => setSearchSelectValue(e.target.value)}
+              onChange={onSearchSelectChange}
             >
               <option value="all">All</option>
               {headers.map((header, i) => (
@@ -277,7 +324,7 @@ const DataTable = ({
               type="text" 
               placeholder=""
               onChange={(e) => searchEntry(e)}
-              {...(totalPageCount === 0 ? {disabled: true} : null)}
+              {...(dataLength === 0 ? {disabled: true} : null)}
             />
           </div>
         </div>
@@ -301,9 +348,9 @@ const DataTable = ({
           </div>
         }>
           <DisplayDataContents
+            dataDisplayLength={dataDisplayLength}
             data={displayData}
             entriesSelectValue={entriesSelectValue}
-            dataLength={dataLength}
             currentPage={currentPage}
           />
 
@@ -315,8 +362,8 @@ const DataTable = ({
 
           <div className="data-table_below_showing_entries_container">
             <DisplayShowingEntries
+              dataDisplayLength={dataDisplayLength}
               entriesSelectValue={entriesSelectValue}
-              dataLength={dataLength}
               currentPage={currentPage}
             />
           </div>
