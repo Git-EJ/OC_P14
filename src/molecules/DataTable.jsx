@@ -33,7 +33,7 @@ const DataTable = ({
   const [dataLength, setDataLength] = useState(0);
   
   const [displayData, setDisplayData] = useState(data);
-  const [dataDisplayLength, setDataDisplayLength] = useState(0);
+  const [displayDataLength, setDisplayDataLength] = useState(0);
   
   const [totalPageCount, setTotalPageCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,46 +42,59 @@ const DataTable = ({
   
   const [sortingState, setSortingState] = useState({ activeSortIndex: null, direction: null, });
   const [isSorting, setIsSorting] = useState(false);
-  const [sortedData, setSortedData] = useState(data);
+  const [sortedData, setSortedData] = useState(null);
   
   const searchRef = useRef({value:""})
   const [searchSelectValue, setSearchSelectValue] = useState(itemsSearchSelectValue);
   const [searchInputValue, setSearchInputValue] = useState('');
   const [lastSearch, setLastSearch] = useState('');
   const [searchTimeout, setSearchTimeout] = useState(0);
-  const [fileteredData, setFilteredData] = useState(data);
+  const [isFiltering, setIsFiltering] = useState(false);
+  const [fileteredData, setFilteredData] = useState(null);
+
+  const [filteredAndSortedData, setFilteredAndSortedData] = useState(null);
 
   const setResetSettings = useCallback(() => {
     setDisplayData(data);
+    setSortedData(null);
+    setFilteredData(null);
+    setFilteredAndSortedData(null);
+    
     setCurrentPage(1);
+
     setEntrieSelectValue(itemsPerPage);
+
+    setIsFiltering(false);
+    setSearchInputValue('');
     searchRef.current && (searchRef.current.value = "")
+    setSearchSelectValue(itemsSearchSelectValue);
     setLastSearch('');
+
+    setIsSorting(false);
     setSortingState({
       activeSortIndex: null,
       direction: null,
     });
-    setIsSorting(false);
-    setSearchSelectValue(itemsSearchSelectValue);
-    setSearchInputValue('');
   }, [
-    setDisplayData,
     data,
+    setDisplayData,
+    setSortedData,
+    setFilteredData,
+    setFilteredAndSortedData,
     setCurrentPage,
     setEntrieSelectValue,
     itemsPerPage,
-    setLastSearch,
-    setSortingState,
-    setIsSorting,
-    setSearchSelectValue,
+    setIsFiltering,
     setSearchInputValue,
+    searchRef,
+    setSearchSelectValue,
+    setLastSearch,
     itemsSearchSelectValue,
-
+    setIsSorting,
+    setSortingState,
   ]);
 
-  //TODO .trim on input
-  //TODO clean input search, sort when change selectSearch
-  //TODO clean sort when search
+
   const sort = useCallback((entry, data, sortBy='asc') => {
 
     const key = entry.key;
@@ -155,45 +168,43 @@ const DataTable = ({
 
 
   const handleSortClick = useCallback((index, direction) => {
-    setIsSorting(true);
 
-    setSortingState(prevState => {
+    if (displayDataLength === 0) {
+      return;
 
-      if (prevState.activeSortIndex === index) {
-        const newDirection = prevState.direction === 'asc' ? 'desc' : 'asc'
-        const sortedData = sort(headers[index], data, newDirection);
-        setDisplayData(sortedData);
-  
-        return {
-          ...prevState,
-          direction: newDirection,
-        };
+    } else {
+      setIsSorting(true);
+    
+      setSortingState(prevState => {
 
-      } else {
-        const sortedData = sort(headers[index], data, direction);
-        setDisplayData(sortedData);
-  
-        return {
-          activeSortIndex: index,
-          direction,
-        };
-      }
-    });
+        if (prevState.activeSortIndex === index) {
+          const newDirection = prevState.direction === 'asc' ? 'desc' : 'asc'
+        
+          isFiltering ? 
+            setFilteredAndSortedData(sort(headers[index], filteredAndSortedData ? filteredAndSortedData : fileteredData, newDirection))
+          :
+            setSortedData(sort(headers[index], data, newDirection));
+    
+          return {
+            ...prevState,
+            direction: newDirection,
+          };
 
-  }, [sort, headers, data, setSortingState, setIsSorting, setDisplayData]);
-
-
-  useEffect(() => {
-    if (searchInputValue === '' && isSorting) {
-      setSortingState({
-        activeSortIndex: null,
-        direction: null,
+        } else {
+          isFiltering ?
+            setFilteredAndSortedData(sort(headers[index], filteredAndSortedData ? filteredAndSortedData : fileteredData, direction))
+          :
+            setSortedData(sort(headers[index], data, direction));
+    
+          return {
+            activeSortIndex: index,
+            direction,
+          };
+        }
       });
-      setIsSorting(false);
     }
-  }, [searchInputValue, isSorting, setSortingState, setIsSorting]);
 
-
+  }, [sort, headers, data, fileteredData, isFiltering, filteredAndSortedData, displayDataLength]);//TODO DEV console.log
 
 
   const searchBySelectValue = useCallback((value, entry) => {
@@ -206,13 +217,28 @@ const DataTable = ({
   const searchEntryDebounced = useCallback((e) => {
 
     const value = e.target.value.toLowerCase().trim();
+    console.log('%c' + value.toUpperCase(), 'color: red');
+
     setSearchInputValue(value);
+
+    if(value === '') {
+      setIsFiltering(false);
+      setCurrentPage(1);
+      // return;
+    }
     
-    if (value === lastSearch){
+    if (value === lastSearch) {
       return;
 
     } else {
-      setDisplayData((searchSelectValue === 'all') ?
+      setIsFiltering(true);
+      setIsSorting(false);
+      setSortingState({
+        activeSortIndex: null,
+        direction: null,
+      });
+      
+      setFilteredData((searchSelectValue === 'all') ?
         data.filter(entry => Object.keys(entry).some((key) => entry[key].toLowerCase().includes(value)))
       :
         data.filter(entry => entry[searchSelectValue].toLowerCase().includes(value))
@@ -220,11 +246,13 @@ const DataTable = ({
     }
       
     setLastSearch(value);
-  }, [lastSearch, setLastSearch, data, setDisplayData, searchSelectValue]);
+  }, [lastSearch, setLastSearch, data, setFilteredData, searchSelectValue]);
   
-  useEffect(() => {
-    setDisplayData(data.filter((entry) => searchBySelectValue(lastSearch, entry)))
-  }, [data, searchBySelectValue, lastSearch, setDisplayData]);
+
+  //TODO WHEN filtering and do SORT data can't be filtered by select
+  useEffect(() => {  
+    setFilteredData(data.filter((entry) => searchBySelectValue(lastSearch, entry)))
+  }, [data, searchBySelectValue, lastSearch, setFilteredData]);
 
 
   const searchEntry = useCallback((e) => {
@@ -242,7 +270,7 @@ const DataTable = ({
 
   const onSearchSelectChange = useCallback((e) => {
     setSearchSelectValue(e.target.value);
-    // searchRef.current && (searchRef.current.value = "") //for clear input search
+    // searchRef.current && (searchRef.current.value = "") //TODO for clear input search when select chage
     setCurrentPage(1);
   }, [setSearchSelectValue]);
   
@@ -254,21 +282,63 @@ const DataTable = ({
 
 
 
-  // on mount
   useEffect(() => {
-    setDataLength(data.length);
+
     if (data && data.length > 0) {
-      setDisplayData(data);
+      if (isSorting && !isFiltering) {
+        console.log('%c DD===sortedData', 'color: orange; font-size:2rem', sortedData)
+        setDisplayData(sortedData);
+        setFilteredData(null);
+        setFilteredAndSortedData(null);
+      } else if(isFiltering && !isSorting) {
+        console.log('%c DD===filteredData', 'color: pink; font-size:2rem', fileteredData)
+        setDisplayData(fileteredData);
+        setSortedData(null);
+        setFilteredAndSortedData(null);
+      } else if(isFiltering && isSorting) {
+        console.log('%c DD=== filteredAndSortedData', 'color: lime; font-size:2rem', filteredAndSortedData)
+        setDisplayData(filteredAndSortedData);
+        setSortedData(null);
+        setFilteredData(null);
+      } else if(searchInputValue === '' ) {
+        console.log('%c DD=== data', 'color: cyan; font-size:2rem', data);
+        setDisplayData(data);
+        setFilteredData(null);
+        setSortedData(null);
+        setFilteredAndSortedData(null);
+      } else {
+        console.log('%c DD=== data','color: purple; font-size:2rem', data)
+        setDisplayData(data);
+        setFilteredData(null);
+        setSortedData(null);
+        setFilteredAndSortedData(null);
+      }
     }
-  }, [data, setDisplayData]);
+  },[isSorting, isFiltering, data, sortedData, fileteredData, headers, sortingState, filteredAndSortedData, searchInputValue]);
+
 
   useEffect(() => {
-    setDataDisplayLength(displayData.length);
-  }, [displayData, setDataDisplayLength]);
+    if (data && displayData) {
+      setDataLength(data.length);
+      setDisplayDataLength(displayData.length);
+    } 
+  }, [data, displayData]);
   
   useEffect(() => {
-    setTotalPageCount(Math.ceil(dataDisplayLength / entriesSelectValue));
-  }, [dataDisplayLength ,entriesSelectValue, setTotalPageCount]);
+    setTotalPageCount(Math.ceil(displayDataLength / entriesSelectValue));
+  }, [displayDataLength ,entriesSelectValue, setTotalPageCount]);
+
+  useEffect(() => {
+    if (searchInputValue === '') {
+      setSortingState({
+        activeSortIndex: null,
+        direction: null,
+      });
+      setIsSorting(false);
+      setIsFiltering(false);
+      setCurrentPage(1)
+    }
+  }, [searchInputValue]);
 
   useEffect(() => {
     setResetSettings();
@@ -277,16 +347,26 @@ const DataTable = ({
 
   //DEV console.Log
   useEffect(() => {
-    console.log('currentPage', currentPage)
-    console.log('dataDisplayLength', dataDisplayLength)
-    console.log('totalPageCount', totalPageCount)
-    console.log('entriesSelectValue', entriesSelectValue)
-    console.log('displayData', displayData)
+    console.log('DataTable rendered')
+    // console.log('currentPage', currentPage)
+    console.log('dataLength', dataLength)
+    console.log('displayDataLength', displayDataLength)
+    // console.log('totalPageCount', totalPageCount)
+    // console.log('entriesSelectValue', entriesSelectValue)
+    // console.log('data', data)
+    // console.log('displayData', displayData)
     console.log('lastSearch', lastSearch)
     console.log('searchSelectValue', searchSelectValue)
-    console.log('sortingState', sortingState)
-    console.log('searchTimeout', searchTimeout)
-  }, [currentPage, totalPageCount, entriesSelectValue, dataDisplayLength, displayData, lastSearch, searchSelectValue, sortingState, searchTimeout]);
+    console.log('searchInputValue', searchInputValue)
+    // console.log('sortingState', sortingState)
+    // console.log('searchTimeout', searchTimeout)
+    console.log('isFiltering', isFiltering)
+    console.log('fileteredData', fileteredData)
+    console.log('isSorting', isSorting)
+    // console.log('sortedData', sortedData)
+    // console.log('filteredAndSortedData', filteredAndSortedData)
+    console.log('DataTable rendered')
+  }, [currentPage, data, totalPageCount, filteredAndSortedData, entriesSelectValue, searchInputValue, displayDataLength, displayData, lastSearch, dataLength, searchSelectValue, sortingState, searchTimeout, isFiltering, fileteredData, isSorting, sortedData]);
 
 
 
@@ -304,7 +384,6 @@ const DataTable = ({
           <select 
             id="data-table_entries" 
             value={entriesSelectValue}
-            // onChange={(e) => setEntrieSelectValue(+e.target.value)}
             onChange={onEntriesSelectChange}
             {...(totalPageCount === 0 ? {disabled: true} : null)}
           >
@@ -326,9 +405,8 @@ const DataTable = ({
             <select
               id="data-table_search-select"
               value={searchSelectValue}
-              {...(dataLength === 0 ? {disabled: true} : null)}
-              // onChange={(e) => setSearchSelectValue(e.target.value)}
               onChange={onSearchSelectChange}
+              {...(dataLength === 0 ? {disabled: true} : null)}
             >
               <option value="all">All</option>
               {headers.map((header, i) => (
@@ -369,7 +447,7 @@ const DataTable = ({
           </div>
         }>
           <DisplayDataContents
-            dataDisplayLength={dataDisplayLength}
+            displayDataLength={displayDataLength}
             data={displayData}
             entriesSelectValue={entriesSelectValue}
             currentPage={currentPage}
@@ -383,7 +461,7 @@ const DataTable = ({
 
           <div className="data-table_below_showing_entries_container">
             <DisplayShowingEntries
-              dataDisplayLength={dataDisplayLength}
+              displayDataLength={displayDataLength}
               entriesSelectValue={entriesSelectValue}
               currentPage={currentPage}
             />

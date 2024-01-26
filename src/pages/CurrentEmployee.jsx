@@ -153,9 +153,9 @@ const EmployeeList = () => {
     // setEmployeesData([...employeesData, originalEmployeesData])
   }, [setEmployeesData, originalEmployeesData, employeesData])
 
-  useEffect(() => {
-    console.log('CE-employeesData', employeesData)
-  }, [employeesData]);
+  // useEffect(() => {
+  //   console.log('CE-employeesData', employeesData)
+  // }, [employeesData]);
 
 
 

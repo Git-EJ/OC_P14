@@ -169,10 +169,10 @@ const Pagination = ({
     }
   }, [totalPageCount, setCurrentPage])
 
-  useEffect(() => {
-    console.log('currentPage JUMP', currentPage);
-    console.log('inputValue JUMP', inpuValue);
-  },[inpuValue, currentPage])
+  // useEffect(() => {
+  //   console.log('currentPage JUMP', currentPage);
+  //   console.log('inputValue JUMP', inpuValue);
+  // },[inpuValue, currentPage])
 
 
   return (

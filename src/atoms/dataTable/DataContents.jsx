@@ -36,7 +36,7 @@ const DataContents = ({data}) => {
 };
 
 
-const DisplayDataContents = ({data, entriesSelectValue, dataDisplayLength, currentPage}) => {
+const DisplayDataContents = ({data, entriesSelectValue, displayDataLength, currentPage}) => {
   
   //avoid error when data.length is 0
   if (!data) {
@@ -45,7 +45,7 @@ const DisplayDataContents = ({data, entriesSelectValue, dataDisplayLength, curre
 
   return (
     <DataContents
-      data={(entriesSelectValue >= dataDisplayLength) ? data : data.slice((currentPage - 1) * entriesSelectValue, currentPage * entriesSelectValue )}
+      data={(entriesSelectValue >= displayDataLength) ? data : data.slice((currentPage - 1) * entriesSelectValue, currentPage * entriesSelectValue )}
     />
   )
 };
@@ -55,6 +55,6 @@ export default DisplayDataContents;
 DisplayDataContents.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object),
   entriesSelectValue: PropTypes.number,
-  dataDisplayLength: PropTypes.number,
+  displayDataLength: PropTypes.number,
   currentPage: PropTypes.number,
 };
