@@ -1,10 +1,9 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import employeesDataContext from "../context/employeesData/EmployeesDataContext";
 import CreateEmployeeContext from "../context/createEmployee/CreateEmployeeContext"
 import SelectField from "../atoms/SelectField";
 import Modal from '../atoms/Modal';
 import SpheresButton from "./SpheresButton";
-import { string } from "prop-types";
 
 
 // TODO REGEX INPUT
@@ -207,8 +206,7 @@ const CreateEmployeeForm = () => {
 
   
   const createEmployee = (e) => {
-    // TODO post request && data validation
-    //TODO how to use defaultValue of formFieldsets in case of empty input?
+    // TODO data validation
     e.preventDefault();
     setIsModalOpen(true);
     setEmployeesData([...employeesData, newArrayOfInputsValues]);
@@ -220,8 +218,6 @@ const CreateEmployeeForm = () => {
 
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
-    // setEmployeesData([]);
-  // }, [setIsModalOpen, setEmployeesData]);
   }, [setIsModalOpen]);
 
   return (

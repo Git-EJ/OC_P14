@@ -15,12 +15,7 @@ const employeesDataReducer = (state, action) => {
       return {
         ...state,
         employeesData: action.payload,
-      };
-    case "SET_IS_EMPTY_EMPLOYEES_DATA":
-      return {
-        ...state,
-        isEmptyEmployeesData: action.payload,
-      };
+      }
     case "SET_LOADING": //future Dev
       return {
         ...state,
@@ -40,7 +35,7 @@ const employeesDataReducer = (state, action) => {
 
 const EmployeesContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(employeesDataReducer, initialState);
-
+  
   return (
     <EmployeesDataContext.Provider value={{ state, dispatch }}>
       {children}

@@ -1,23 +1,16 @@
 import PropTypes from 'prop-types';
 import { useCallback, useEffect } from 'react';
 
-// TODO <modal pro
+// TODO MUI modal
 const Modal = ({closeModal}) => {
   
-  // TODO in parent component?
+
   const handleKeyDown = useCallback((e) => {
     if (e.key === 'Escape') {
       closeModal();
     }
   }, [closeModal]);
 
-  //TODO focus on modal but background can't be clicked or tabbed for working
-  // useEffect(() => {
-  //   const modalDOMElement = document.getElementById('create-employee_modal');
-  //   if (modalDOMElement) {
-  //     modalDOMElement.focus();
-  //   }
-  // }, []);
 
   useEffect(() => {
     const handleKeyDown = (event) => {

@@ -5,212 +5,190 @@ import Pagination from "../atoms/Pagination";
 import DisplayShowingEntries from "../atoms/dataTable/DisplayShowingEnrtries";
 // const DisplayDataContents = lazy(() => import("../atoms/dataTable/DataContents"))
 
-//TODO DEV timeout
+const PREFIX = "data-table"
+
+//DEV timeout
 const DisplayDataContents = lazy(() => 
 new Promise(resolve => {
   setTimeout(() => resolve(import("../atoms/dataTable/DataContents")), 2000);
 })
 );
 
-//TODO onResetData
+
+const sort = (entry, data, sortBy='asc') => {
+
+  const key = entry.key;
+
+    if (entry.sort) {
+      return [...data].sort((a, b) => entry.sort(a, b, sortBy==='desc' ? -1 : 1)) // for future dev (librairy)
+
+    } else if (entry.type === 'number') {
+      return [...data].sort((a, b) => (+a[key] - +b[key]) * (sortBy === "desc" ? -1 : 1))
+
+     
+    } else if (entry.type === 'date') {
+      return [...data].sort((a, b) => {
+       
+        const formatDate = (dateStr) => { // date entry format needs to be : 'dd/mm/yyyy'
+          const parts = dateStr.split('/');
+          return new Date(parts[2], parts[1] - 1, parts[0]); // yyyy, mm, dd => month -1 because month start at 0 in JS
+        };
+    
+        const dateA = formatDate(a[key]);
+        const dateB = formatDate(b[key]);
+    
+        return (dateA - dateB) * (sortBy === "desc" ? -1 : 1);
+      });
+
+    } else if (entry.type === 'street') {
+      return [...data].sort((a, b) => {
+
+        const extractStreetData = (address) => {
+
+          const parts = address.split(' ');
+
+          // Extract street number 
+          // parsInt convert string to number('10'to 10) ; 
+          // .shift() throw away the first element of the array and return it : 
+          // example => ['10', 'rue', 'du', 'code'] => throw '10' and change the array for  ['rue', 'du', 'code']
+          const number = parseInt(parts.shift(), 10); 
+
+          //Extract street name
+          // .join(' ') convert array to string
+          // example => ['rue', 'du', 'code'] => 'rue du code'
+          const streetName = parts.join(' ');
+
+          return { number, streetName };
+        };
+      
+        // aData and bData are objects with number and streetName properties
+        // example => { number: 10, streetName: 'rue du code' }
+        const aData = extractStreetData(a[key]);
+        const bData = extractStreetData(b[key]);
+
+
+        // Sort by street name
+        // throw 0 if a === b ; -1 if a < b ; 1 if a > b
+        const nameCompare = aData.streetName.localeCompare(bData.streetName);
+
+        if (nameCompare !== 0) {
+          return nameCompare * (sortBy === "desc" ? -1 : 1);
+        }
+      
+        // if street names are equal, sort by street number
+        return (aData.number - bData.number) * (sortBy === "desc" ? -1 : 1); //with .number 03 before 10
+      });
+
+    } else {
+      return [...data].sort((a, b) => (a[key].localeCompare(b[key])) * (sortBy === "desc" ? -1 : 1))
+    }
+
+}
+
+const searchBySelectValue = (selectedOption, value, row) => {
+  if (selectedOption === 'all')
+    return Object.keys(row).find((key) => row[key].toLowerCase().includes(value))
+  return row[selectedOption].toLowerCase().includes(value)
+}
+
+
 //TODO icons in component datatable
 const DataTable = ({
   headers,
   data,
   // onEditRequest = () => {},
   // onChange = () => {},
+  onPageChanged  = () => {},
   onResetData = () => {},
   onResetSettings = () => {},
   resetSettings = false,
   itemsPerPage = 5,
   itemsSearchSelectValue = 'all',
-  IconLeft = ()=>{return (<></>)},
-  IconRight = ()=>{return (<></>)},
+  IconLeft = null,
+  IconRight = null,
+  IconAsc = null,
+  IconDesc = null,
 }) => {
 
   
 
-  const [dataLength, setDataLength] = useState(0);
-  
   const [displayData, setDisplayData] = useState(data);
-  const [displayDataLength, setDisplayDataLength] = useState(0);
-  
-  const [totalPageCount, setTotalPageCount] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  
-  const [entriesSelectValue, setEntrieSelectValue] = useState(itemsPerPage);
-  
-  const [sortingState, setSortingState] = useState({ activeSortIndex: null, direction: null, });
-  const [isSorting, setIsSorting] = useState(false);
-  const [sortedData, setSortedData] = useState(null);
-  
+  const [config, setConfig] = useState({
+    sort: {
+      index: null,
+      direction: null,
+    },
+    search: {
+      keyword: "",
+      option: "all",
+    },
+    pagination: {
+      currentPage: 1,
+      entriesPerPage: itemsPerPage,
+    }
+  });
+
   const searchRef = useRef({value:""})
   const [searchSelectValue, setSearchSelectValue] = useState(itemsSearchSelectValue);
-  const [searchInputValue, setSearchInputValue] = useState('');
   const [lastSearch, setLastSearch] = useState('');
   const [searchTimeout, setSearchTimeout] = useState(0);
-  const [isFiltering, setIsFiltering] = useState(false);
-  const [fileteredData, setFilteredData] = useState(null);
 
-  const [filteredAndSortedData, setFilteredAndSortedData] = useState(null);
-
-  const setResetSettings = useCallback(() => {
+  const handleResetSettings = useCallback(() => {
     setDisplayData(data);
-    setSortedData(null);
-    setFilteredData(null);
-    setFilteredAndSortedData(null);
-    
-    setCurrentPage(1);
+    setConfig({
+      sort: {
+        index: null,
+        direction: null,
+      },
+      search: {
+        keyword: "",
+        option: "all",
+      },
+      pagination: {
+        currentPage: 1,
+        entriesPerPage: itemsPerPage,
+      }
+    })
 
-    setEntrieSelectValue(itemsPerPage);
-
-    setIsFiltering(false);
-    setSearchInputValue('');
     searchRef.current && (searchRef.current.value = "")
     setSearchSelectValue(itemsSearchSelectValue);
     setLastSearch('');
 
-    setIsSorting(false);
-    setSortingState({
-      activeSortIndex: null,
-      direction: null,
-    });
   }, [
-    data,
-    setDisplayData,
-    setSortedData,
-    setFilteredData,
-    setFilteredAndSortedData,
-    setCurrentPage,
-    setEntrieSelectValue,
-    itemsPerPage,
-    setIsFiltering,
-    setSearchInputValue,
     searchRef,
-    setSearchSelectValue,
-    setLastSearch,
-    itemsSearchSelectValue,
-    setIsSorting,
-    setSortingState,
+    data, 
+    itemsPerPage, 
+    itemsSearchSelectValue, 
   ]);
 
 
-  const sort = useCallback((entry, data, sortBy='asc') => {
 
-    const key = entry.key;
-
-  
-      if (entry.sort) {
-        return [...data].sort((a, b) => entry.sort(a, b, sortBy==='desc' ? -1 : 1)) // for future dev (librairy)
-
-      } else if (entry.type === 'number') {
-        return [...data].sort((a, b) => (+a[key] - +b[key]) * (sortBy === "desc" ? -1 : 1))
-
-       
-      } else if (entry.type === 'date') {
-        return [...data].sort((a, b) => {
-         
-          const formatDate = (dateStr) => { // date entry format needs to be : 'dd/mm/yyyy'
-            const parts = dateStr.split('/');
-            return new Date(parts[2], parts[1] - 1, parts[0]); // yyyy, mm, dd => month -1 because month start at 0 in JS
-          };
-      
-          const dateA = formatDate(a[key]);
-          const dateB = formatDate(b[key]);
-      
-          return (dateA - dateB) * (sortBy === "desc" ? -1 : 1);
-        });
-
-      } else if (entry.type === 'street') {
-        return [...data].sort((a, b) => {
-
-          const extractStreetData = (address) => {
-
-            const parts = address.split(' ');
-
-            // Extract street number 
-            // parsInt convert string to number('10'to 10) ; 
-            // .shift() throw away the first element of the array and return it : 
-            // example => ['10', 'rue', 'du', 'code'] => throw '10' and change the array for  ['rue', 'du', 'code']
-            const number = parseInt(parts.shift(), 10); 
-
-            //Extract street name
-            // .join(' ') convert array to string
-            // example => ['rue', 'du', 'code'] => 'rue du code'
-            const streetName = parts.join(' ');
-
-            return { number, streetName };
-          };
-        
-          // aData and bData are objects with number and streetName properties
-          // example => { number: 10, streetName: 'rue du code' }
-          const aData = extractStreetData(a[key]);
-          const bData = extractStreetData(b[key]);
-
-
-          // Sort by street name
-          // throw 0 if a === b ; -1 if a < b ; 1 if a > b
-          const nameCompare = aData.streetName.localeCompare(bData.streetName);
-
-          if (nameCompare !== 0) {
-            return nameCompare * (sortBy === "desc" ? -1 : 1);
-          }
-        
-          // if street names are equal, sort by street number
-          return (aData.number - bData.number) * (sortBy === "desc" ? -1 : 1); //with .number 03 before 10
-        });
-
-      } else {
-        return [...data].sort((a, b) => (a[key].localeCompare(b[key])) * (sortBy === "desc" ? -1 : 1))
+  const setCurrentPage = useCallback((page) => {
+    setConfig(prevState => ({
+      ...prevState,
+      pagination: {
+        ...prevState.pagination,
+        currentPage: page,
       }
-
-  },[]);
-
+    }))
+    onPageChanged && onPageChanged({page}) //for future dev
+  }, [setConfig, onPageChanged]);
 
   const handleSortClick = useCallback((index, direction) => {
-
-    if (displayDataLength === 0) {
-      return;
-
-    } else {
-      setIsSorting(true);
-    
-      setSortingState(prevState => {
-
-        if (prevState.activeSortIndex === index) {
-          const newDirection = prevState.direction === 'asc' ? 'desc' : 'asc'
-        
-          isFiltering ? 
-            setFilteredAndSortedData(sort(headers[index], filteredAndSortedData ? filteredAndSortedData : fileteredData, newDirection))
-          :
-            setSortedData(sort(headers[index], data, newDirection));
-    
-          return {
-            ...prevState,
-            direction: newDirection,
-          };
-
-        } else {
-          isFiltering ?
-            setFilteredAndSortedData(sort(headers[index], filteredAndSortedData ? filteredAndSortedData : fileteredData, direction))
-          :
-            setSortedData(sort(headers[index], data, direction));
-    
-          return {
-            activeSortIndex: index,
-            direction,
-          };
-        }
-      });
-    }
-
-  }, [sort, headers, data, fileteredData, isFiltering, filteredAndSortedData, displayDataLength]);//TODO DEV console.log
+    console.log('handleSortClick', index, direction)
+    if (displayData.length === 0) return
+    console.log('done')
+    setConfig(prevState => ({
+      ...prevState,
+      sort: {
+        ...prevState.sort,
+        index: index,
+        direction: direction,
+      }
+    }));
+  }, [displayData]);
 
 
-  const searchBySelectValue = useCallback((value, entry) => {
-    if (searchSelectValue === 'all') return Object.keys(entry).some((key) => entry[key].toLowerCase().includes(value));
-    return entry[searchSelectValue].toLowerCase().includes(value)
-    },[searchSelectValue]); 
 
 
   //TODO REGEX
@@ -218,43 +196,31 @@ const DataTable = ({
 
     const value = e.target.value.toLowerCase().trim();
     console.log('%c' + value.toUpperCase(), 'color: red');
-
-    setSearchInputValue(value);
-
-    if(value === '') {
-      setIsFiltering(false);
-      setCurrentPage(1);
-      // return;
+    
+    if (value === lastSearch) return;
+    
+    if (value === '') {
+      handleResetSettings()
+      return;
     }
     
-    if (value === lastSearch) {
-      return;
+    setConfig(prevState => ({
+      ...prevState,
+      search: {
+        keyword: value,
+        option: searchSelectValue,
+      },
+      pagination: {
+        ...prevState.pagination,
+        currentPage: 1
+      }
+    }))
 
-    } else {
-      setIsFiltering(true);
-      setIsSorting(false);
-      setSortingState({
-        activeSortIndex: null,
-        direction: null,
-      });
-      
-      setFilteredData((searchSelectValue === 'all') ?
-        data.filter(entry => Object.keys(entry).some((key) => entry[key].toLowerCase().includes(value)))
-      :
-        data.filter(entry => entry[searchSelectValue].toLowerCase().includes(value))
-      )
-    }
-      
     setLastSearch(value);
-  }, [lastSearch, setLastSearch, data, setFilteredData, searchSelectValue]);
+    
+  }, [searchSelectValue, lastSearch, handleResetSettings]);
   
-
-  //TODO WHEN filtering and do SORT data can't be filtered by select
-  useEffect(() => {  
-    setFilteredData(data.filter((entry) => searchBySelectValue(lastSearch, entry)))
-  }, [data, searchBySelectValue, lastSearch, setFilteredData]);
-
-
+  
   const searchEntry = useCallback((e) => {
     if (searchTimeout) {
       clearTimeout(searchTimeout);
@@ -269,123 +235,70 @@ const DataTable = ({
 
 
   const onSearchSelectChange = useCallback((e) => {
-    setSearchSelectValue(e.target.value);
-    // searchRef.current && (searchRef.current.value = "") //TODO for clear input search when select chage
-    setCurrentPage(1);
-  }, [setSearchSelectValue]);
+    setConfig(prevState => ({
+      ...prevState,
+      search: {
+        ...prevState.search,
+        option: e.target.value,
+      },
+      pagination: {
+        ...prevState.pagination,
+        currentPage: 1
+      }
+    }))
+  }, [setConfig]);
   
 
   const onEntriesSelectChange = useCallback((e) => {
-    setCurrentPage(1);
-    setEntrieSelectValue(+e.target.value);
-  }, [setCurrentPage, setEntrieSelectValue]);
-
-
-
-  useEffect(() => {
-
-    if (data && data.length > 0) {
-      if (isSorting && !isFiltering) {
-        console.log('%c DD===sortedData', 'color: orange; font-size:2rem', sortedData)
-        setDisplayData(sortedData);
-        setFilteredData(null);
-        setFilteredAndSortedData(null);
-      } else if(isFiltering && !isSorting) {
-        console.log('%c DD===filteredData', 'color: pink; font-size:2rem', fileteredData)
-        setDisplayData(fileteredData);
-        setSortedData(null);
-        setFilteredAndSortedData(null);
-      } else if(isFiltering && isSorting) {
-        console.log('%c DD=== filteredAndSortedData', 'color: lime; font-size:2rem', filteredAndSortedData)
-        setDisplayData(filteredAndSortedData);
-        setSortedData(null);
-        setFilteredData(null);
-      } else if(searchInputValue === '' ) {
-        console.log('%c DD=== data', 'color: cyan; font-size:2rem', data);
-        setDisplayData(data);
-        setFilteredData(null);
-        setSortedData(null);
-        setFilteredAndSortedData(null);
-      } else {
-        console.log('%c DD=== data','color: purple; font-size:2rem', data)
-        setDisplayData(data);
-        setFilteredData(null);
-        setSortedData(null);
-        setFilteredAndSortedData(null);
+    setConfig(prevState => ({
+      ...prevState,
+      pagination: {
+        ...prevState.pagination,
+        entriesPerPage: +e.target.value,
+        currentPage: 1
       }
-    }
-  },[isSorting, isFiltering, data, sortedData, fileteredData, headers, sortingState, filteredAndSortedData, searchInputValue]);
-
+    }))
+  }, [setConfig]);
 
   useEffect(() => {
-    if (data && displayData) {
-      setDataLength(data.length);
-      setDisplayDataLength(displayData.length);
-    } 
-  }, [data, displayData]);
+    let array = [...data];
+    const { keyword, option } = config.search;
+    const { index, direction } = config.sort;
+    
+    if (keyword!=="") {
+      array = array.filter(row => searchBySelectValue(option, keyword, row));
+    }
+
+    if (index !== null) {
+      array = sort(headers[index], array, direction);
+    }
+
+    setDisplayData(array);
+    
+  }, [data, config, headers]);
   
   useEffect(() => {
-    setTotalPageCount(Math.ceil(displayDataLength / entriesSelectValue));
-  }, [displayDataLength ,entriesSelectValue, setTotalPageCount]);
-
-  useEffect(() => {
-    if (searchInputValue === '') {
-      setSortingState({
-        activeSortIndex: null,
-        direction: null,
-      });
-      setIsSorting(false);
-      setIsFiltering(false);
-      setCurrentPage(1)
-    }
-  }, [searchInputValue]);
-
-  useEffect(() => {
-    setResetSettings();
-  }, [resetSettings, setResetSettings]);
-
-
-  //DEV console.Log
-  useEffect(() => {
-    console.log('DataTable rendered')
-    // console.log('currentPage', currentPage)
-    console.log('dataLength', dataLength)
-    console.log('displayDataLength', displayDataLength)
-    // console.log('totalPageCount', totalPageCount)
-    // console.log('entriesSelectValue', entriesSelectValue)
-    // console.log('data', data)
-    // console.log('displayData', displayData)
-    console.log('lastSearch', lastSearch)
-    console.log('searchSelectValue', searchSelectValue)
-    console.log('searchInputValue', searchInputValue)
-    // console.log('sortingState', sortingState)
-    // console.log('searchTimeout', searchTimeout)
-    console.log('isFiltering', isFiltering)
-    console.log('fileteredData', fileteredData)
-    console.log('isSorting', isSorting)
-    // console.log('sortedData', sortedData)
-    // console.log('filteredAndSortedData', filteredAndSortedData)
-    console.log('DataTable rendered')
-  }, [currentPage, data, totalPageCount, filteredAndSortedData, entriesSelectValue, searchInputValue, displayDataLength, displayData, lastSearch, dataLength, searchSelectValue, sortingState, searchTimeout, isFiltering, fileteredData, isSorting, sortedData]);
+    handleResetSettings();
+  }, [resetSettings, handleResetSettings]);
 
 
 
 
   //START DataTable RETURN
   return (
-    
-    <div className="data-table_wrapper">
 
-      <div className="data-table_options_container">
+    <div className={`${PREFIX}_wrapper`}>
+
+      <div className={`${PREFIX}_options_container`}>
 
         {/* TODO Tooltip */}
-        <div className="data-table_options_entries">
-          <label htmlFor="data-table_entries">Show</label>
+        <div className={`${PREFIX}_options_entries`}>
+          <label htmlFor={`${PREFIX}_entries`}>Show</label>
           <select 
             id="data-table_entries" 
-            value={entriesSelectValue}
+            value={config.pagination.entriesPerPage}
             onChange={onEntriesSelectChange}
-            {...(totalPageCount === 0 ? {disabled: true} : null)}
+            {...(displayData.length === 0 ? {disabled: true} : null)}
           >
             <option value="1">1</option>
             <option value="2">2</option>
@@ -395,18 +308,18 @@ const DataTable = ({
             <option value="50" >50</option>
             <option value="100">100</option>
           </select>
-          <label htmlFor="data-table_entries">entries</label>
+          <label htmlFor={`${PREFIX}_entries`}>entries</label>
         </div>
 
-        <div className="data-table_options_search_container">
+        <div className={`${PREFIX}_options_search_container`}>
 
-          <div className="data-table_options_search_select">
-            <label htmlFor="data-table_search-select">Search by:</label>
+          <div className={`${PREFIX}_options_search_select`}>
+            <label htmlFor={`${PREFIX}_search-select`}>Search by:</label>
             <select
-              id="data-table_search-select"
-              value={searchSelectValue}
+              id={`${PREFIX}_search-select`}
+              value={config.search.option}
               onChange={onSearchSelectChange}
-              {...(dataLength === 0 ? {disabled: true} : null)}
+              {...(data.length === 0 ? {disabled: true} : null)}
             >
               <option value="all">All</option>
               {headers.map((header, i) => (
@@ -415,31 +328,33 @@ const DataTable = ({
             </select>
           </div>
 
-          <div className="data-table_options_search_input">
-            <label htmlFor="data-table_search-input">Search:</label>
+          <div className={`${PREFIX}_options_search_input`}>
+            <label htmlFor={`${PREFIX}_search-input`}>Search:</label>
             <input
               ref={searchRef}
-              id="data-table_search-input"
+              id={`${PREFIX}_search-input`}
               type="text" 
               placeholder=""
               onChange={(e) => searchEntry(e)}
-              {...(dataLength === 0 ? {disabled: true} : null)}
+              {...(data.length === 0 ? {disabled: true} : null)}
             />
           </div>
         </div>
       </div> 
 
-      <div className="data-table_titles_container">
+      <div className={`${PREFIX}_titles_container`}>
         <DisplayDataHeaders
           headers={headers}
-          sortingState={sortingState}
+          sortingState={config.sort}
           handleSortClick={handleSortClick}
+          IconAsc={IconAsc}
+          IconDesc={IconDesc}
         />
       </div>
 
-      <div className="data-table_content-lines_container">
+      <div className={`${PREFIX}_content-lines_container`}>
         <Suspense fallback={
-          <div className="data-table_content-lines_container_loading_container">
+          <div className={`${PREFIX}_content-lines_container_loading_container`}>
             <p >Loading</p>
             <span>.</span>
             <span>.</span>
@@ -447,43 +362,45 @@ const DataTable = ({
           </div>
         }>
           <DisplayDataContents
-            displayDataLength={displayDataLength}
+            displayDataLength={displayData.length}
             data={displayData}
-            entriesSelectValue={entriesSelectValue}
-            currentPage={currentPage}
+            entriesSelectValue={config.pagination.entriesPerPage}
+            currentPage={config.pagination.currentPage}
           />
 
         </Suspense>
       </div>
 
-      <div className="data-table_below_container">
-        <div className="data-table_below_left_container">
+      <div className={`${PREFIX}_below_container`}>
+        <div className={`${PREFIX}_below_left_container`}>
 
-          <div className="data-table_below_showing_entries_container">
+          <div className={`${PREFIX}_below_showing_entries_container`}>
             <DisplayShowingEntries
-              displayDataLength={displayDataLength}
-              entriesSelectValue={entriesSelectValue}
-              currentPage={currentPage}
+              displayDataLength={displayData.length}
+              entriesSelectValue={config.pagination.entriesPerPage}
+              currentPage={config.pagination.currentPage}
             />
           </div>
 
-          <div className="data-table_below_reset_container">
-            <button className="data-table_below_reset_button" onClick={() => {onResetData(); onResetSettings()}}>Fait Reset</button>
+          <div className={`${PREFIX}_below_reset_container`}>
+            <button className={`${PREFIX}_below_reset_button`} onClick={() => {onResetData && onResetData(); onResetSettings()}}>Fait Reset</button>
           </div>
 
         </div>
 
         <>
           <Pagination
-            totalPageCount={totalPageCount}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
+            entryCount={displayData.length}
+            entriesPerPage={config.pagination.entriesPerPage}
+            currentPage={config.pagination.currentPage}
+            onPageChange={setCurrentPage}
             IconLeft={IconLeft}
             IconRight={IconRight}
           />
         </>
 
       </div>
+      
 
       {/* TODO delete/modif entry*/}
       
@@ -499,10 +416,13 @@ DataTable.propTypes = {
   itemsPerPage: PropTypes.number,
   onEditRequest: PropTypes.func,
   onChange: PropTypes.func,
+  onPageChanged: PropTypes.func,
   onResetData: PropTypes.func,
   onResetSettings: PropTypes.func,
   resetSettings: PropTypes.bool,
   IconLeft: PropTypes.func,
   IconRight: PropTypes.func,
+  IconAsc: PropTypes.func,
+  IconDesc: PropTypes.func,
   itemsSearchSelectValue: PropTypes.string,
 };

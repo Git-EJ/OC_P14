@@ -18,11 +18,6 @@ const Router = createBrowserRouter([
     element: <CreateEmployee />,
     
   },
-
-  {
-    path: '/employee-create',
-    element: <CreateEmployee />,
-  },
   
   {
     path: '/employee-list',

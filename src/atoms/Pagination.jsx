@@ -83,17 +83,28 @@ Counter.propTypes = {
 
 
 const Pagination = ({
-  totalPageCount,
+  entryCount,
+  entriesPerPage,
   currentPage,
-  setCurrentPage,
+  onPageChange=()=>{},
   IconLeft=null,
   IconRight=null,
+  handlePageCount=()=>{},
 }) => {
   
   //for input value update
   const [inpuValue, setInputValue] = useState(currentPage);
   const [inputTimeout, setInputTimeout] = useState(0);
+  const [totalPageCount, setTotalPageCount] = useState(0);
 
+  useEffect(() => {
+    setTotalPageCount(Math.ceil(entryCount / entriesPerPage))
+  }, [entryCount, entriesPerPage, setTotalPageCount]);
+  
+  useEffect(() => {
+    handlePageCount(totalPageCount);
+  }, [totalPageCount, handlePageCount]);
+  
   useEffect(() => {
     setInputValue(currentPage);
   }, [currentPage, totalPageCount]);
@@ -101,23 +112,23 @@ const Pagination = ({
 
   const onPreviousPage = useCallback(() => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+      onPageChange(currentPage - 1);
     }
-  }, [currentPage, setCurrentPage]);
+  }, [currentPage, onPageChange]);
   
 
   const onNextPage = useCallback(() => {
     if (currentPage < totalPageCount) {
-      setCurrentPage(currentPage + 1);
+      onPageChange(currentPage + 1);
     }
-  }, [currentPage, totalPageCount, setCurrentPage]);
+  }, [currentPage, totalPageCount, onPageChange]);
 
 
   const onJumpPageDebounced = useCallback((value) => {
     if (!isNaN(value) && value > 0 && value <= totalPageCount) {
-      setCurrentPage(value);
+      onPageChange(value);
     }
-  }, [totalPageCount, setCurrentPage]);
+  }, [totalPageCount, onPageChange]);
 
 
   const onJumpPage = useCallback((e) => {
@@ -167,7 +178,7 @@ const Pagination = ({
     if(totalPageCount === 0) {
       setInputValue(0);
     }
-  }, [totalPageCount, setCurrentPage])
+  }, [totalPageCount, onPageChange])
 
   // useEffect(() => {
   //   console.log('currentPage JUMP', currentPage);
@@ -207,7 +218,7 @@ const Pagination = ({
         <Counter
           currentPage={currentPage}
           totalPageCount={totalPageCount}
-          onPageChange={setCurrentPage}
+          onPageChange={onPageChange}
         />
         <button className="pagination_button_next" onClick={onNextPage}>
           {currentPage === totalPageCount || totalPageCount === 0 ? null : IconRight ? <IconRight /> : ">"}
@@ -218,11 +229,13 @@ const Pagination = ({
 }
 
 Pagination.propTypes = {
-  totalPageCount: PropTypes.number,
+  entryCount: PropTypes.number,
+  entriesPerPage: PropTypes.number,
   currentPage: PropTypes.number,
-  setCurrentPage: PropTypes.func,
+  onPageChange: PropTypes.func,
   IconLeft: PropTypes.func,
   IconRight: PropTypes.func,
+  handlePageCount: PropTypes.func,
 }
 
 export default Pagination;
