@@ -276,7 +276,7 @@ const CreateEmployeeForm = () => {
         <SpringModal 
           prefix={"modal"} 
           anim1={"modal_shake"} 
-          anim2={"modal_heart-beat"} 
+          anim2={"modal_heart_beat"} 
           text={'Employee successfully Created!'}
         />
       }
