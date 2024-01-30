@@ -5,4 +5,19 @@
   100% {background-position: 0 0;}
 }
 
+@keyframes modal_shaking {
+  0% {transform: translate(-50%, -50%) rotate(0)}
+  25% {transform: translate(-50%, -50%) rotate(-3deg)}
+  75% {transform: translate(-50%, -50%) rotate(3deg)}
+  100% {transform: translate(-50%, -50%) rotate(0)}
+}
+
+@keyframes modal_heart_beat {
+  0% {transform: scale(1)}
+  25% {transform: translate(40%, -10%) scale(1.2)}
+  50% {transform: scale(1)}
+  75% {transform: translate(-40%, -10%) scale(1.2)}
+  100% {transform: scale(1)}
+}
+
 

@@ -2,8 +2,8 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import employeesDataContext from "../context/employeesData/EmployeesDataContext";
 import CreateEmployeeContext from "../context/createEmployee/CreateEmployeeContext"
 import SelectField from "../atoms/SelectField";
-import Modal from '../atoms/Modal';
 import SpheresButton from "./SpheresButton";
+import SpringModal from "../atoms/Modal";
 
 
 // TODO REGEX INPUT
@@ -211,14 +211,7 @@ const CreateEmployeeForm = () => {
     setIsModalOpen(true);
     setEmployeesData([...employeesData, newArrayOfInputsValues]);
   }
-  useEffect(() => {
-    console.log('employeesData', employeesData)
-  }, [employeesData])
 
-
-  const closeModal = useCallback(() => {
-    setIsModalOpen(false);
-  }, [setIsModalOpen]);
 
   return (
     <>
@@ -279,7 +272,14 @@ const CreateEmployeeForm = () => {
         </form>
       </main>
 
-      {isModalOpen && <Modal closeModal={closeModal} />}
+      {isModalOpen && 
+        <SpringModal 
+          prefix={"modal"} 
+          anim1={"modal_shake"} 
+          anim2={"modal_heart-beat"} 
+          text={'Employee successfully Created!'}
+        />
+      }
     </>
   )
 }

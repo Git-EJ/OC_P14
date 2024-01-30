@@ -4,12 +4,12 @@
     width: fit-content;
     height: 30vh;
     @include flex_center_column;
-    position: fixed;
+    position: absolute;
     top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 1.2rem;
-    border: 2px solid $primary-color;
+    border: 3px solid $primary-color;
     border-radius: 10px;
     background-color: #fff;
   }
@@ -34,11 +34,21 @@
     border-radius: 50%;
     cursor: pointer;
 
+    
     &_label {
       margin-top: 0.1rem;
+      text-align: center;
       font-size: 0.8rem;
       font-weight: 700;
       @include gradient_text($secondary_linear-gradient);
     }
+  }
+  
+  &_shake {
+    animation: modal_shaking 10s linear infinite;
+  }
+  
+  &_heart-beat {
+    animation: modal_heart_beat 5s cubic-bezier(.17, .62, .44, .89) infinite ;
   }
 }
