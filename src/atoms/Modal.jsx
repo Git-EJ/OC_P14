@@ -111,7 +111,7 @@ const SpringModal = ({prefix, anim1, anim2, text}) => {
               <Typography id="spring-modal-title" variant="" component="div"> {/*variant = style && component = render in html element*/}
                 <div className={`${prefix}_text`}>{`${text}`}</div>
               </Typography>
-              <Typography id="spring-modal-description" component="div" sx={{ mt: 0 }} className={modalOpenForTooLong ? {anim2} :""}> {/*sx = margin-top */}
+              <Typography id="spring-modal-description" component="div" sx={{ mt: 0 }} className={modalOpenForTooLong ? `${anim2}` : ""}> {/*sx = margin-top */}
                 <div className={`${prefix}_close-button`} onClick={handleClose} >X</div>
                 <div className={`${prefix}_close-button_label`}>close</div>
               </Typography>
