@@ -130,18 +130,6 @@ const CreateEmployeeForm = () => {
     // {name: "Test notString", abbreviation: 456},
   ];
 
-  // const formatDate = (date) => {
-
-    // if (isNaN(date)) {
-    //   return '';
-    // }
-
-  //   const dateArray = date.split('-');
-  //   const day = dateArray[2]
-  //   const month = dateArray[1];
-  //   const year = dateArray[0];
-  //   return `${day}-${month}-${year}`;
-  // }
 
   function formatDate(inputDate) {
     const date = new Date(inputDate);
@@ -174,6 +162,7 @@ const CreateEmployeeForm = () => {
     
     const inputValue = inputOthers.replace(/\s+/g, ' '); //s for space, tab,line break, and others space characters
 
+
     const formattedInputValue = inputValue.includes('-') ? 
 
        inputValue.split(/[\s-]+/).map((word) => {
@@ -187,20 +176,14 @@ const CreateEmployeeForm = () => {
     return formattedInputValue;
   }
 
-    //TODO SAME FUNCTION FOR BOTH SELECT
-    const selectedDepartmentChange = (name, value) => {
-      onInputValue({ target: { name, value } });
-    }
-    const selectedStateOnChange = (name, value) => {
-      onInputValue({ target: { name, value } });
-    }
 
+  const selectFormChange = (name, value) => {
+    onInputValue({ target: { name, value } });
+  }
 
   const onInputValue = (e) => {
     let key = e.target.name;
     let value = formatOthers(defaultValueFunction(e.target.value));
-    console.log('key', key)
-    console.log('value', value)
     
     if(e.target.name === "state") {
       key = e.target.name;
@@ -222,12 +205,9 @@ const CreateEmployeeForm = () => {
     }
   }
 
-  
   useEffect(() => {
     console.log('newArrayOfInputsValues', newArrayOfInputsValues)
   }, [newArrayOfInputsValues])
-
-
 
   
   const createEmployee = (e) => {
@@ -269,7 +249,7 @@ const CreateEmployeeForm = () => {
                               label={'State'}
                               name={'state'}
                               menuItem={arrayOfStates} 
-                              onChange={selectedStateOnChange}
+                              onChange={selectFormChange}
                             />
                           </div>
                         )}
@@ -282,7 +262,7 @@ const CreateEmployeeForm = () => {
                       label={'Department'}
                       name={'department'}  
                       menuItem={arrayOfDepartments} 
-                      onChange={selectedDepartmentChange}
+                      onChange={selectFormChange}
                     />
                   } 
 
@@ -292,7 +272,6 @@ const CreateEmployeeForm = () => {
           </div>
 
           <SpheresButton type="submit" className="spheres-button_button" onClick={createEmployee} text="Add Employee" />
-
 
         </form>
       </main>
