@@ -9,7 +9,17 @@ import SpringModal from "../atoms/Modal";
 // TODO REGEX INPUT
 const CreateEmployeeForm = () => { 
   
-  const [newArrayOfInputsValues, setNewArrayOfInputsValues] = useState({});
+  const [newArrayOfInputsValues, setNewArrayOfInputsValues] = useState({
+    lastName: '',
+    firstName: '',
+    dateOfBirth: '',
+    startDate: '',
+    street: '',
+    city: '',
+    zipCode: '',
+    state: '',
+    department: '',
+  });
 
   const { state: createEmployeeState, dispatch: createEmployeeDispatch } = useContext(CreateEmployeeContext);
   const { state: employeesDataState, dispatch: employeesDataDispatch } = useContext(employeesDataContext);
@@ -177,32 +187,47 @@ const CreateEmployeeForm = () => {
     return formattedInputValue;
   }
 
-  const selectedDepartmentChange = (name, value) => {
-    onInputValue({ target: {name, value } });
-  }
-  const selectedStateOnChange = (name, value) => {
-    onInputValue({ target: { name, value } });
-  }
+    //TODO SAME FUNCTION FOR BOTH SELECT
+    const selectedDepartmentChange = (name, value) => {
+      onInputValue({ target: { name, value } });
+    }
+    const selectedStateOnChange = (name, value) => {
+      onInputValue({ target: { name, value } });
+    }
 
 
   const onInputValue = (e) => {
-    let key = e.target.name; //todo toLowerCase firstName && lastName
-    let value = formatOthers(e.target.value);
+    let key = e.target.name;
+    let value = formatOthers(defaultValueFunction(e.target.value));
+    console.log('key', key)
+    console.log('value', value)
     
     if(e.target.name === "state") {
       key = e.target.name;
-      value = formatState(e.target.value);
+      value = formatState(defaultValueFunction(e.target.value));
 
     } else if(e.target.name === "dateOfBirth" || e.target.name === "startDate") {
       key = e.target.name;
-      value = formatDate(e.target.value);
+      value = formatDate(defaultValueFunction(e.target.value));
     } 
 
     setNewArrayOfInputsValues({...newArrayOfInputsValues, [key]: value })
   }
+  
+  const defaultValueFunction = (input) => {
+    if(input === null || input === undefined) {
+      return '';
+    } else {
+      return input;
+    }
+  }
+
+  
   useEffect(() => {
     console.log('newArrayOfInputsValues', newArrayOfInputsValues)
   }, [newArrayOfInputsValues])
+
+
 
   
   const createEmployee = (e) => {
