@@ -3,7 +3,7 @@ import employeesDataContext from "../context/employeesData/EmployeesDataContext"
 import CreateEmployeeContext from "../context/createEmployee/CreateEmployeeContext"
 import SelectField from "../atoms/SelectField";
 import SpheresButton from "./SpheresButton";
-import SpringModal from "../atoms/Modal";
+import SpringModal from "../molecules/Modal";
 
 
 // TODO REGEX INPUT
