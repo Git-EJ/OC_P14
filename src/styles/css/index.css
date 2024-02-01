@@ -47,6 +47,7 @@ fieldset {
   padding: 0;
   border: none;
   outline: none;
+  color: unset;
 }
 
 html {
@@ -481,6 +482,77 @@ body ::-webkit-scrollbar {
   background: radial-gradient(circle at center, #1494B9 0%, #0E3C55 100%) !important;
 }
 
+::-webkit-input-placeholder {
+  color: rgb(0, 0, 0) !important;
+  opacity: 1 !important;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+  color: rgb(0, 0, 0) !important;
+  opacity: 1 !important;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+  color: rgb(0, 0, 0) !important;
+  opacity: 1 !important;
+}
+
+:-ms-input-placeholder {
+  color: rgb(0, 0, 0) !important;
+  opacity: 1 !important;
+}
+
+.form_input_field > div > input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #757575 !important;
+  font-size: 0.9rem !important;
+  font-family: "Roboto", sans-serif !important;
+  padding: 0 !important;
+}
+
+.form_input_field :nth-child(2) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: flex-end;
+  color: purple !important;
+  padding: 0 !important;
+  font-size: 0.9rem !important;
+  height: 5rem !important;
+  width: 5rem !important;
+}
+.form_input_field :nth-child(2) > button {
+  width: fit-content !important;
+  height: fit-content !important;
+  padding: 0.2rem;
+}
+.form_input_field :nth-child(2) > button:hover {
+  background-color: rgba(20, 149, 185, 0.116) !important;
+  color: white !important;
+}
+.form_input_field :nth-child(2) > button > svg {
+  color: #1494B9 !important;
+}
+.form_input_field :nth-child(2) > button > svg:hover {
+  color: red !important;
+}
+
+.css-1u23akw-MuiButtonBase-root-MuiPickersDay-root.Mui-selected {
+  background-color: #1494B9 !important;
+  color: white !important;
+}
+
+.css-jgls56-MuiButtonBase-root-MuiPickersDay-root:not(.Mui-selected) {
+  border: 1px solid #1494B9 !important;
+}
+
+.css-innj4t-MuiPickersYear-yearButton.Mui-selected {
+  background-color: #1494B9 !important;
+  color: white !important;
+}
+
 .modal_container {
   width: fit-content;
   height: 30vh;
@@ -575,6 +647,7 @@ body ::-webkit-scrollbar {
   background-clip: text;
   color: transparent;
   cursor: default;
+  width: fit-content;
 }
 .form_input_container {
   display: flex;
@@ -584,13 +657,16 @@ body ::-webkit-scrollbar {
   align-items: flex-start;
 }
 .form_input_field {
-  width: 200px;
-  height: 20px;
-  margin-bottom: 0.5rem;
-  border: 1px solid #1494B9;
-  padding: 1rem 0.5rem;
-  font-family: "Roboto", sans-serif;
-  font-size: 0.9rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px !important;
+  height: 20px !important;
+  margin-bottom: 0.5rem !important;
+  border: 1px solid #1494B9 !important;
+  padding: 1rem 0.5rem !important;
+  font-family: "Roboto", sans-serif !important;
+  font-size: 0.9rem !important;
 }
 .form_input_label {
   width: fit-content;

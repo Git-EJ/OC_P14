@@ -4,6 +4,7 @@ import CreateEmployeeContext from "../context/createEmployee/CreateEmployeeConte
 import SelectField from "../atoms/SelectField";
 import SpheresButton from "./SpheresButton";
 import SpringModal from "../molecules/Modal";
+import FormDatePicker from "./DatePicker";
 
 
 // TODO REGEX INPUT
@@ -34,7 +35,7 @@ const CreateEmployeeForm = () => {
   } = employeesDataState;
   const setEmployeesData = useCallback((payload) => { employeesDataDispatch({ type: "SET_EMPLOYEES_DATA", payload }) }, [employeesDataDispatch]);
 
-
+  //TODO remove default value
   const formFieldsets = [
   
     {
@@ -42,8 +43,8 @@ const CreateEmployeeForm = () => {
       input: [
         {label: "Lastname", id: "lastName", labelClassName: "form_input_label", type: "text", placeholder: "Lastname", inputClassName: "form_input_field", defaultValue: "Doe"},
         {label: "Firstname", id: "firstName", labelClassName: "form_input_label", type: "text", placeholder: "Firstname", inputClassName: "form_input_field", defaultValue: "John"},
-        {label: "Date of Birth", id: "dateOfBirth", labelClassName: "form_input_label", type: "date", placeholder: "Birthdate", inputClassName: "form_input_field", defaultValue: "01/01/1970"},
-        {label: "Start Date", id: "startDate", labelClassName: "form_input_label", type: "date", placeholder: "Start Date", inputClassName: "form_input_field", defaultValue: "01/01/2021"},
+        // {label: "Date of Birth", id: "dateOfBirth", labelClassName: "form_input_label", type: "date", placeholder: "Birthdate", inputClassName: "form_input_field", defaultValue: "01/01/1970"},
+        // {label: "Start Date", id: "startDate", labelClassName: "form_input_label", type: "date", placeholder: "Start Date", inputClassName: "form_input_field", defaultValue: "01/01/2021"},
       ],
     },
     {
@@ -243,7 +244,32 @@ const CreateEmployeeForm = () => {
                           />
                         </div>
 
+                        {fieldset.legend === "Employee Informations" && input.id === "firstName" && (
+                          <>
+                            <FormDatePicker 
+                              id={'dateOfBirth'}
+                              name={'dateOfBirth'}
+                              label={'Date of Birth'}
+                              placeholder={'Birthdate'}
+                              containerClassName={'form_input_container'}
+                              labelClassName={'form_input_label'}
+                              inputClassName={'form_input_field'}
+                            />
+
+                            <FormDatePicker 
+                              id={'startDate'}
+                              name={'startDate'}
+                              label={'Start Date'}
+                              placeholder={'Start Date'}
+                              containerClassName={'form_input_container'}
+                              labelClassName={'form_input_label'}
+                              inputClassName={'form_input_field'}
+                            />
+                          </>
+                        )}
+
                         {fieldset.legend === "Employee Address" && input.id === "city" && (
+                          //TODO CSS FOR SELECT FIELD AND DYNAMIC
                           <div className="form_input_container">
                             <SelectField 
                               label={'State'}
