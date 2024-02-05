@@ -1,10 +1,10 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import employeesDataContext from "../context/employeesData/EmployeesDataContext";
 import CreateEmployeeContext from "../context/createEmployee/CreateEmployeeContext"
-import SelectField from "../atoms/SelectField";
+import SelectField from "../atoms/mui/SelectField";
 import SpheresButton from "./SpheresButton";
-import SpringModal from "../molecules/Modal";
-import FormDatePicker from "./DatePicker";
+import SpringModal from "../atoms/mui/Modal";
+import FormDatePicker from "../atoms/mui/DatePicker";
 
 
 // TODO REGEX INPUT
@@ -25,34 +25,27 @@ const CreateEmployeeForm = () => {
   const { state: createEmployeeState, dispatch: createEmployeeDispatch } = useContext(CreateEmployeeContext);
   const { state: employeesDataState, dispatch: employeesDataDispatch } = useContext(employeesDataContext);
 
-  const {
-    isModalOpen,
-  } = createEmployeeState;
+  const { isModalOpen } = createEmployeeState;
   const setIsModalOpen = useCallback((payload) => { createEmployeeDispatch({ type: "SET_IS_MODAL_OPEN", payload }) }, [createEmployeeDispatch]);
 
-  const {
-    employeesData,
-  } = employeesDataState;
+  const { employeesData } = employeesDataState;
   const setEmployeesData = useCallback((payload) => { employeesDataDispatch({ type: "SET_EMPLOYEES_DATA", payload }) }, [employeesDataDispatch]);
 
   //TODO remove default value
   const formFieldsets = [
-  
     {
       legend: "Employee Informations",
       input: [
-        {label: "Lastname", id: "lastName", labelClassName: "form_input_label", type: "text", placeholder: "Lastname", inputClassName: "form_input_field", defaultValue: "Doe"},
-        {label: "Firstname", id: "firstName", labelClassName: "form_input_label", type: "text", placeholder: "Firstname", inputClassName: "form_input_field", defaultValue: "John"},
-        // {label: "Date of Birth", id: "dateOfBirth", labelClassName: "form_input_label", type: "date", placeholder: "Birthdate", inputClassName: "form_input_field", defaultValue: "01/01/1970"},
-        // {label: "Start Date", id: "startDate", labelClassName: "form_input_label", type: "date", placeholder: "Start Date", inputClassName: "form_input_field", defaultValue: "01/01/2021"},
+        {label: "Lastname", id: "lastName", labelClassName: "form_input_label", type: "text", placeholder: "Lastname", inputClassName: "form_input_field"},
+        {label: "Firstname", id: "firstName", labelClassName: "form_input_label", type: "text", placeholder: "Firstname", inputClassName: "form_input_field"},
       ],
     },
     {
       legend: "Employee Address",
       input: [
-        {label: "Street", id: "street", labelClassName: "form_input_label", type: "text", placeholder: "Street", inputClassName: "form_input_field", defaultValue: "1234 Main St"},
-        {label: "City", id: "city", labelClassName: "form_input_label", type: "text", placeholder: "City", inputClassName: "form_input_field", defaultValue: "City"},
-        {label: "Zip Code", id: "zipCode", labelClassName: "form_input_label", type: "number", placeholder: "Zip Code", inputClassName: "form_input_field", defaultValue: "12345"},
+        {label: "Street", id: "street", labelClassName: "form_input_label", type: "text", placeholder: "Street", inputClassName: "form_input_field"},
+        {label: "City", id: "city", labelClassName: "form_input_label", type: "text", placeholder: "City", inputClassName: "form_input_field"},
+        {label: "Zip Code", id: "zipCode", labelClassName: "form_input_label", type: "number", placeholder: "Zip Code", inputClassName: "form_input_field"},
       ],
     }
   ];
@@ -132,20 +125,6 @@ const CreateEmployeeForm = () => {
   ];
 
 
-  function formatDate(inputDate) {
-    const date = new Date(inputDate);
-  
-    if (isNaN(date)) {
-      return '';
-    }
-  
-    const day = String(date.getDate()).padStart(2, '0'); //2 caracteres if only 1 add 0 at the beginning
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = String(date.getFullYear());
-  
-    return `${day}-${month}-${year}`;
-  }
-
   function formatState(inputState) {
     if( !inputState || inputState.length !== 2 || /*typeof inputState !== 'string' ||*/ !/^[a-zA-Z]+$/.test(inputState) ) {
       return '';
@@ -192,7 +171,7 @@ const CreateEmployeeForm = () => {
 
     } else if(e.target.name === "dateOfBirth" || e.target.name === "startDate") {
       key = e.target.name;
-      value = formatDate(defaultValueFunction(e.target.value));
+      value = e.target.value;
     } 
 
     setNewArrayOfInputsValues({...newArrayOfInputsValues, [key]: value })
@@ -254,6 +233,7 @@ const CreateEmployeeForm = () => {
                               containerClassName={'form_input_container'}
                               labelClassName={'form_input_label'}
                               inputClassName={'form_input_field'}
+                              onChange={onInputValue}
                             />
 
                             <FormDatePicker 
@@ -264,29 +244,35 @@ const CreateEmployeeForm = () => {
                               containerClassName={'form_input_container'}
                               labelClassName={'form_input_label'}
                               inputClassName={'form_input_field'}
+                              onChange={onInputValue}
                             />
                           </>
                         )}
 
                         {fieldset.legend === "Employee Address" && input.id === "city" && (
-                          //TODO CSS FOR SELECT FIELD AND DYNAMIC
-                          <div className="form_input_container">
-                            <SelectField 
-                              label={'State'}
-                              name={'state'}
-                              menuItem={arrayOfStates} 
-                              onChange={selectFormChange}
-                            />
-                          </div>
+                          <SelectField
+                            id={'state'}
+                            name={'state'}
+                            label={'State'}
+                            containerClassName="form_input_container"
+                            labelClassName={'form_input_label'}
+                            inputClassName={'form_input_field'}
+                            menuItem={arrayOfStates} 
+                            onChange={selectFormChange}
+                          />
                         )}
                       </React.Fragment>
                     )
                   })}
 
                   {fieldset.legend === "Employee Informations" && 
-                    <SelectField 
+                    <SelectField
+                      id={'department'}
+                      name={'department'} 
                       label={'Department'}
-                      name={'department'}  
+                      containerClassName="form_input_container"
+                      labelClassName={'form_input_label'}
+                      inputClassName={'form_input_field'}
                       menuItem={arrayOfDepartments} 
                       onChange={selectFormChange}
                     />

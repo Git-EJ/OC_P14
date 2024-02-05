@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import { useSpring, animated } from '@react-spring/web';
 import { cloneElement, forwardRef, useCallback, useContext, useEffect, useState } from 'react';
-import CreateEmployeeContext from '../context/createEmployee/CreateEmployeeContext';
+import CreateEmployeeContext from '../../context/createEmployee/CreateEmployeeContext';
 
 
 const Fade = forwardRef(function Fade(props, ref) {

@@ -1,76 +1,8 @@
-::-webkit-input-placeholder {
-  color: rgb(0, 0, 0) !important;
-  opacity: 1 !important;
-}
-
-:-moz-placeholder { /* Firefox 18- */
-  color: rgb(0, 0, 0) !important;
-  opacity: 1 !important;
-}
-
-::-moz-placeholder {  /* Firefox 19+ */
-  color: rgb(0, 0, 0) !important;
-  opacity: 1 !important;
-}
-
-:-ms-input-placeholder {  
-  color: rgb(0, 0, 0) !important;
-  opacity: 1 !important;
-}
-
-
-// Datepicker input
-.form_input_field > div > input { 
-  @include flex_center;
-  color: #757575 !important;
-  font-size: 0.9rem !important;
-  font-family: 'Roboto', sans-serif !important;
-  padding:0 !important;
-}
-
-// Datepicker icon effect when click on calendar icon
-.form_input_field :nth-child(2) {
-  @include flex_center;
-  justify-content: flex-end;
-  color: purple !important;
-  padding:0 !important;
-  font-size: 0.9rem !important;
-  height: 5rem !important;
-  width: 5rem !important;
+.datepicker_popper {
   
-  & > button {
-    width: fit-content !important;
-    height: fit-content !important;
-    padding: 0.2rem;
-
-    &:hover {
-      background-color: rgba(20, 149, 185, 0.116) !important;
-      color: white !important;
-    }
-
-    & > svg {
-      color: $primary-color !important;
-      &:hover {
-        color: red !important;
-      }
-    }
+  & .MuiPaper-root {
+    border: 5px solid $primary-color;
+    border-radius: 30px;
+    overflow: hidden;
   }
-}
-
-//calendar date selected
-.css-1u23akw-MuiButtonBase-root-MuiPickersDay-root.Mui-selected {
-  background-color: $primary-color !important;
-  color: white !important;
-}
-
-//calendar date of the day
-.css-jgls56-MuiButtonBase-root-MuiPickersDay-root:not(.Mui-selected) {
-  border: 1px solid $primary-color !important;
-}
-
-
-// year selected in year picker
-.css-innj4t-MuiPickersYear-yearButton.Mui-selected {
-  background-color: $primary-color !important;
-  color: white !important;
 }

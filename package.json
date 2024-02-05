@@ -16,6 +16,7 @@
     "@mui/material": "^5.15.3",
     "@mui/x-date-pickers": "^6.19.2",
     "@react-spring/web": "^9.7.3",
+    "@types/material-ui": "^0.21.16",
     "dayjs": "^1.11.10",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
@@ -24,10 +25,12 @@
     "sass": "^1.69.7"
   },
   "devDependencies": {
+    "@types/node": "^20.11.16",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react-swc": "^3.5.0",
-    "eslint": "^8.55.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",

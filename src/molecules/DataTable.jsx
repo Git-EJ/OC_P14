@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
 import DisplayDataHeaders from "../atoms/dataTable/DisplayHeaders";
-import Pagination from "../atoms/Pagination";
+import Pagination from "../atoms/dataTable/Pagination";
 import DisplayShowingEntries from "../atoms/dataTable/DisplayShowingEnrtries";
 // const DisplayDataContents = lazy(() => import("../atoms/dataTable/DataContents"))
 

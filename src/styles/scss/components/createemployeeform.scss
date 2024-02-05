@@ -43,7 +43,7 @@
       @include flex_center_column;
       align-items: flex-start;
     }
-    
+    //TODO
     &_field {
       @include flex_center;
       width: 200px !important;
@@ -53,6 +53,7 @@
       padding: 1rem 0.5rem !important;
       font-family: 'Roboto', sans-serif !important;
       font-size: 0.9rem !important;
+      border-radius: 0px !important;
     }
 
     &_label {

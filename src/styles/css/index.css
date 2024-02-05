@@ -449,20 +449,6 @@ body ::-webkit-scrollbar {
   border-radius: 0px !important;
 }
 
-.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
-  border-radius: 0px !important;
-  border-style: none !important;
-  border-width: 0px !important;
-  border-color: transparent !important;
-}
-
-.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
-  padding: 0px 0px !important;
-  font-family: "Roboto", sans-serif !important;
-  font-size: 0.9rem !important;
-  color: #757575 !important;
-}
-
 .css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
   max-height: calc(500px - 10%) !important;
 }
@@ -482,75 +468,10 @@ body ::-webkit-scrollbar {
   background: radial-gradient(circle at center, #1494B9 0%, #0E3C55 100%) !important;
 }
 
-::-webkit-input-placeholder {
-  color: rgb(0, 0, 0) !important;
-  opacity: 1 !important;
-}
-
-:-moz-placeholder { /* Firefox 18- */
-  color: rgb(0, 0, 0) !important;
-  opacity: 1 !important;
-}
-
-::-moz-placeholder { /* Firefox 19+ */
-  color: rgb(0, 0, 0) !important;
-  opacity: 1 !important;
-}
-
-:-ms-input-placeholder {
-  color: rgb(0, 0, 0) !important;
-  opacity: 1 !important;
-}
-
-.form_input_field > div > input {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #757575 !important;
-  font-size: 0.9rem !important;
-  font-family: "Roboto", sans-serif !important;
-  padding: 0 !important;
-}
-
-.form_input_field :nth-child(2) {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  justify-content: flex-end;
-  color: purple !important;
-  padding: 0 !important;
-  font-size: 0.9rem !important;
-  height: 5rem !important;
-  width: 5rem !important;
-}
-.form_input_field :nth-child(2) > button {
-  width: fit-content !important;
-  height: fit-content !important;
-  padding: 0.2rem;
-}
-.form_input_field :nth-child(2) > button:hover {
-  background-color: rgba(20, 149, 185, 0.116) !important;
-  color: white !important;
-}
-.form_input_field :nth-child(2) > button > svg {
-  color: #1494B9 !important;
-}
-.form_input_field :nth-child(2) > button > svg:hover {
-  color: red !important;
-}
-
-.css-1u23akw-MuiButtonBase-root-MuiPickersDay-root.Mui-selected {
-  background-color: #1494B9 !important;
-  color: white !important;
-}
-
-.css-jgls56-MuiButtonBase-root-MuiPickersDay-root:not(.Mui-selected) {
-  border: 1px solid #1494B9 !important;
-}
-
-.css-innj4t-MuiPickersYear-yearButton.Mui-selected {
-  background-color: #1494B9 !important;
-  color: white !important;
+.datepicker_popper .MuiPaper-root {
+  border: 5px solid #1494B9;
+  border-radius: 30px;
+  overflow: hidden;
 }
 
 .modal_container {
@@ -667,6 +588,7 @@ body ::-webkit-scrollbar {
   padding: 1rem 0.5rem !important;
   font-family: "Roboto", sans-serif !important;
   font-size: 0.9rem !important;
+  border-radius: 0px !important;
 }
 .form_input_label {
   width: fit-content;
