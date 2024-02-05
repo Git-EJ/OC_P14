@@ -15,7 +15,7 @@ const RenderSpheresLines = ({innerRadius, angle}) => {
         const containerWidth = container.offsetWidth
         const radius = Math.min(maxRadius, containerWidth / 10);
         setResponsiveRadius(radius)
-        console.log('radius', radius);
+        // console.log('radius', radius);
       } else {
         return;
       }
