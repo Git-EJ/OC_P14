@@ -204,6 +204,7 @@ body ::-webkit-scrollbar {
   flex-direction: column;
   width: fit-content;
   height: fit-content;
+  padding-top: 3px;
 }
 .sphere-pyramid_wrapper:first-child {
   transform: rotateZ(180deg);
@@ -376,13 +377,14 @@ body ::-webkit-scrollbar {
   padding: 1.2rem 0;
 }
 .header_logo_img {
-  width: fit-content;
-  height: 100%;
+  width: clamp(100px, 12vw, 115px);
+  height: clamp(100px, 12vw, 115px);
   cursor: pointer;
 }
 .header_logo_title {
+  white-space: nowrap;
   font-family: "Tektur_Bold", sans-serif;
-  font-size: 3rem;
+  font-size: clamp(2.5rem, 5vw, 3rem);
   margin-left: 20px;
   background: linear-gradient(to right, #1494B9, #0E3C55);
   -webkit-background-clip: text;
@@ -404,6 +406,7 @@ body ::-webkit-scrollbar {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  overflow: hidden;
   cursor: default;
 }
 .header_vertical_bar_item:hover {
@@ -434,12 +437,12 @@ body ::-webkit-scrollbar {
   margin: 0 1.2rem;
 }
 .header_button_nav {
+  white-space: nowrap;
   background: radial-gradient(circle at center, #1494B9 0%, #0E3C55 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  padding: 0px 0 5px 0;
-  font-size: 1.2rem;
+  font-size: clamp(0.8rem, 3vw, 1.2rem);
   font-family: "Tektur_Bold", sans-serif;
   font-weight: 500;
   cursor: pointer;

@@ -4,6 +4,7 @@
     @include flex_center_column;
     width: fit-content;
     height: fit-content;
+    padding-top: 3px;
     
     &:first-child {
       transform: rotateZ(180deg)

@@ -30,7 +30,7 @@ const Header = ({ navigateButton_1, textButton_1, navigateButton_2, textButton_2
           </div>
 
           <div className="header_vertical_bar_container">
-            <MultipleVerticalBar nbreOfBars={70} className={'header_vertical_bar_item'} />
+            <MultipleVerticalBar maxBars={50} className={'header_vertical_bar_item'} />
           </div>
 
 

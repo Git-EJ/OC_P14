@@ -25,14 +25,15 @@
     }
   
     &_img {
-      width: fit-content;
-      height: 100%;
+      width: clamp(100px, 12vw, 115px);
+      height: clamp(100px, 12vw, 115px);
       cursor: pointer;
     }
   
     &_title {
+      white-space: nowrap;
       font-family: 'Tektur_Bold', sans-serif;
-      font-size: 3rem;
+      font-size: clamp(2.5rem, 5vw, 3rem);
       margin-left: 20px;
       @include gradient_text($secondary_linear-gradient);
       cursor: default;
@@ -49,7 +50,9 @@
       width: fit-content;
       font-size: 3rem;
       @include gradient_text($tertiary_linear-gradient);
+      overflow: hidden;
       cursor: default;
+      
     }
   
     &_item {
@@ -87,9 +90,9 @@
     }
 
     &_nav {
+      white-space: nowrap;
       @include gradient_text($primary_radial-gradient);
-      padding: 0px 0 5px 0;
-      font-size: 1.2rem;
+      font-size: clamp(0.8rem, 3vw, 1.2rem);
       font-family: 'Tektur_Bold', sans-serif;
       font-weight: 500;
       cursor: pointer;
