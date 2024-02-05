@@ -8,7 +8,7 @@ Sphere.propTypes = {
   radius: PropTypes.number.isRequired,
 };
 
-const SphereLine = ({ innerRadius="0px", angle=0, radius, ratio=0.8, gap="1px", numberOfSpheres }) => {
+const SphereLine = ({ innerRadius="0px", angle=0, radius, ratio=0.6, gap="1px", numberOfSpheres }) => {
 
   const renderSpheres = (radius, spheresLeft) => {
     return (

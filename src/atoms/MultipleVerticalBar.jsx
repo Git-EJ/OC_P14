@@ -5,23 +5,20 @@ const MultipleVerticalBar = ({ maxBars, className}) => {
   const [nbreOfBars, setNbreOfBars] = useState(0);
 
   useEffect(() => {
-  const updateNumberOfBars = () => {
-    
-    const container= document.querySelector('.header_vertical_bar_container');
-    
-    if(container) {
-      const barWidth = 12;
-      const containerWidth = container.offsetWidth;
-      const nbreOfBars = Math.floor((containerWidth ) / barWidth);
-      const newNbreOfBars = Math.min(nbreOfBars, maxBars);
-      console.log('containerWidth', containerWidth);
-      console.log('nbreOfBars', nbreOfBars);
-      console.log('newNbreOfBars', newNbreOfBars);
-      setNbreOfBars(newNbreOfBars);
-    } else {
-      return;
-    }
-  };
+    const updateNumberOfBars = () => {
+      
+      const container= document.querySelector('.header_vertical_bar_container');
+      
+      if(container) {
+        const barWidth = 12;
+        const containerWidth = container.offsetWidth;
+        const nbreOfBars = Math.floor((containerWidth ) / barWidth);
+        const newNbreOfBars = Math.min(nbreOfBars, maxBars);
+        setNbreOfBars(newNbreOfBars);
+      } else {
+        return;
+      }
+    };
 
     updateNumberOfBars();
     
