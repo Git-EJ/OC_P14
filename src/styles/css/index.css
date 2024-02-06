@@ -171,7 +171,7 @@ body ::-webkit-scrollbar {
   flex-direction: column;
   height: auto;
   width: 100%;
-  margin: 2rem 0 0 0;
+  margin: 2rem 0;
 }
 .main_modal-opacity {
   opacity: 0.2;
@@ -234,10 +234,6 @@ body ::-webkit-scrollbar {
   width: fit-content;
   height: fit-content;
   margin-top: 1rem;
-  background: #fff;
-}
-.spheres-button_container > :nth-child(3) > :nth-child(1) {
-  transform: translate(4.25rem, -50%) !important;
 }
 .spheres-button_button {
   background: linear-gradient(to right, #1494B9, #0E3C55);
