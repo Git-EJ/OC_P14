@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import SphereLine from "../atoms/SphereLine";
 import { useEffect, useCallback, useState, useMemo } from "react";
-import useResponsiveRadius from "../atoms/style/UpdateRadius";
+import useResponsiveRadius from "../atoms/style/useResponsiveRadius";
 
 
 let c = 1; //DEV

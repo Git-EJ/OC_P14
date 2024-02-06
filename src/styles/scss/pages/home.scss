@@ -17,11 +17,9 @@
     }
 
     &_img {
+      //TODO keep height and with in case of inline style not working?
       width: 100%;
       height: 100%;
-      // //TODO responsive?
-      // width: clamp(170px, 22vw, 240px);
-      // height: clamp(170px, 22vw, 240px);
       cursor: pointer;
     }
   }

@@ -946,8 +946,8 @@ body ::-webkit-scrollbar {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 15rem;
-  width: 15rem;
+  height: 240px;
+  width: 240px;
 }
 .home-main_logo_img {
   width: 100%;

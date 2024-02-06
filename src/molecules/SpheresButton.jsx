@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import SphereLine from "../atoms/SphereLine";
-import useResponsiveRadius from "../atoms/style/UpdateRadius";
+import useResponsiveRadius from "../atoms/style/useResponsiveRadius";
 
 
 
