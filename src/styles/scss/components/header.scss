@@ -25,15 +25,15 @@
     }
   
     &_img {
-      width: clamp(100px, 12vw, 115px);
-      height: clamp(100px, 12vw, 115px);
+      width: clamp(90px, 12vw, 115px);
+      height: clamp(90px, 12vw, 115px);
       cursor: pointer;
     }
   
     &_title {
       white-space: nowrap;
       font-family: 'Tektur_Bold', sans-serif;
-      font-size: clamp(2.5rem, 5vw, 3rem);
+      font-size: clamp(2.2rem, 5vw, 3rem);
       margin-left: 20px;
       @include gradient_text($secondary_linear-gradient);
       cursor: default;
@@ -97,5 +97,11 @@
       font-weight: 500;
       cursor: pointer;
     }
+  }
+}
+
+@media screen and (max-width: 450px){
+  .header_logo_title {
+    margin-left: .5rem;
   }
 }

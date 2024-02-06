@@ -240,8 +240,8 @@ body ::-webkit-scrollbar {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  width: 135px;
-  height: 135px;
+  width: 136px;
+  height: 136px;
   font-family: "Tektur_Bold", sans-serif;
   font-size: 1.3rem;
   border: 10px solid #1494B9;
@@ -373,14 +373,14 @@ body ::-webkit-scrollbar {
   padding: 1.2rem 0;
 }
 .header_logo_img {
-  width: clamp(100px, 12vw, 115px);
-  height: clamp(100px, 12vw, 115px);
+  width: clamp(90px, 12vw, 115px);
+  height: clamp(90px, 12vw, 115px);
   cursor: pointer;
 }
 .header_logo_title {
   white-space: nowrap;
   font-family: "Tektur_Bold", sans-serif;
-  font-size: clamp(2.5rem, 5vw, 3rem);
+  font-size: clamp(2.2rem, 5vw, 3rem);
   margin-left: 20px;
   background: linear-gradient(to right, #1494B9, #0E3C55);
   -webkit-background-clip: text;
@@ -444,6 +444,11 @@ body ::-webkit-scrollbar {
   cursor: pointer;
 }
 
+@media screen and (max-width: 450px) {
+  .header_logo_title {
+    margin-left: 0.5rem;
+  }
+}
 .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
   border-radius: 0px !important;
 }
