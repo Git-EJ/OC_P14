@@ -35,6 +35,8 @@ const Home = () => {
             innerRadius="7.5rem" // wheel logo height or width / 2
           />
 
+          {/* TODO logo responsive
+          const container = window.innerWidth < 768 ? 'logosize' : 'logo size' */}
           <div className="home-main_logo_container">
             <img className="home-main_logo_img"
               src="/src/assets/logos/logo-circle-bg_hr-net.png" 

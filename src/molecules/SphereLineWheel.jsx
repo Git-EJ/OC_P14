@@ -6,16 +6,15 @@ import { useEffect, useCallback, useState } from "react";
 const RenderSpheresLines = ({innerRadius, angle}) => {
 
   const [responsiveRadius, setResponsiveRadius] = useState(80);
-  const container = document.querySelector('.home-main_container')
   
   useEffect(() => {
     const updateRadius = () => {
+      const container = document.querySelector('.home-main_container')
       if (container) {
         const maxRadius = 80
         const containerWidth = container.offsetWidth
         const radius = Math.min(maxRadius, containerWidth / 10);
         setResponsiveRadius(radius)
-        // console.log('radius', radius);
       } else {
         return;
       }
@@ -27,7 +26,7 @@ const RenderSpheresLines = ({innerRadius, angle}) => {
     return () => {
       window.removeEventListener('resize', updateRadius);
     };
-  }, [container])
+  }, [])
 
   return (
     <SphereLine radius={responsiveRadius} gap={"1px"} innerRadius={innerRadius} numberOfSpheres={4} angle={angle}/>
