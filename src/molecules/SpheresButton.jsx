@@ -1,34 +1,12 @@
 import PropTypes from "prop-types";
 import SphereLine from "../atoms/SphereLine";
-import { useState, useEffect } from "react";
+import useResponsiveRadius from "../atoms/style/UpdateRadius";
 
 
-const SpheresButton = ({ type, className, onClick, text }) => {
 
-  const [responsiveRadius, setResponsiveRadius] = useState(80);
-  
-  useEffect(() => {
-    const updateRadius = () => {
-      const container = window.innerWidth;
-      if (container) {
-        const maxRadius = 80
-        const radius = Math.min(maxRadius, container / 10);
-        setResponsiveRadius(radius)
-        // console.log('radius', radius);
-      } else {
-        return;
-      }
-    };
+const SpheresButton = ({ type, className, onClick, text, container, maxRadius }) => {
 
-    updateRadius();
-
-    window.addEventListener('resize', updateRadius);
-    return () => {
-      window.removeEventListener('resize', updateRadius);
-    };
-  }, [])
-
-  // const logoSize = window.innerWidth <  ? 'logosize' : ''
+  const responsiveRadius = useResponsiveRadius({container, maxRadius}) ;
 
   return (
     // if you want to change the innerRadius, you have to change in spheresbutton.scss
@@ -52,4 +30,6 @@ SpheresButton.propTypes = {
   className: PropTypes.string,
   onClick: PropTypes.func,
   text: PropTypes.string,
+  container: PropTypes.object,
+  maxRadius: PropTypes.number,
 };

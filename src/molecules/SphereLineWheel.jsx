@@ -1,51 +1,36 @@
 import PropTypes from "prop-types";
 import SphereLine from "../atoms/SphereLine";
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useCallback, useState, useMemo } from "react";
+import useResponsiveRadius from "../atoms/style/UpdateRadius";
 
 
-const RenderSpheresLines = ({innerRadius, angle}) => {
+let c = 1; //DEV
 
-  const [responsiveRadius, setResponsiveRadius] = useState(80);
-  
-  useEffect(() => {
-    const updateRadius = () => {
-      const container = document.querySelector('.home-main_container')
-      if (container) {
-        const maxRadius = 80
-        const containerWidth = container.offsetWidth
-        const radius = Math.min(maxRadius, containerWidth / 10);
-        setResponsiveRadius(radius)
-      } else {
-        return;
-      }
-    };
+const RenderSpheresLines = ({innerRadius, angle, container, maxRadius}) => {
 
-    updateRadius();
-
-    window.addEventListener('resize', updateRadius);
-    return () => {
-      window.removeEventListener('resize', updateRadius);
-    };
-  }, [])
+  // console.log('RenderSpheresLines', c++) //TODO to many render
+  const responsiveRadius = useResponsiveRadius({container, maxRadius}) ;
 
   return (
     <SphereLine radius={responsiveRadius} gap={"1px"} innerRadius={innerRadius} numberOfSpheres={4} angle={angle}/>
   );
-}
+};
 
 RenderSpheresLines.propTypes = {
   innerRadius: PropTypes.string.isRequired,
   angle: PropTypes.number.isRequired,
+  container: PropTypes.object,
+  maxRadius: PropTypes.number,
 };
 
 
 
-const SphereLineWheel = ({innerRadius="0px", startAngle=0, numberOfSphereLine, animationSpeed}) => {
+const SphereLineWheel = ({innerRadius="0px", startAngle=0, numberOfSphereLine, animationSpeed, container, maxRadius}) => {
   
   const array = new Array(numberOfSphereLine).fill(0)
   const delta = 360 / numberOfSphereLine;
 
-  const [animation, setAnimation] = useState(null)
+  // const [animation, setAnimation] = useState(null)
   const [current, setCurrent] = useState(
     {
       angle: 0,
@@ -54,33 +39,33 @@ const SphereLineWheel = ({innerRadius="0px", startAngle=0, numberOfSphereLine, a
     }
   );
 
-  const intervalAngle = useCallback(() => {
-    setCurrent(c => {
-      const dif = (c.target - c.speed)
-      if (Math.abs(dif) < 0.01) {
-        c.speed = c.target
-      } else {
-        c.speed = c.speed + (c.target - c.speed) / 100;
-      }
-      return {...c, angle: c.angle + c.speed}
-    })
-  }, [setCurrent])
+  // const intervalAngle = useCallback(() => {
+  //   setCurrent(c => {
+  //     const dif = (c.target - c.speed)
+  //     if (Math.abs(dif) < 0.01) {
+  //       c.speed = c.target
+  //     } else {
+  //       c.speed = c.speed + (c.target - c.speed) / 100;
+  //     }
+  //     return {...c, angle: c.angle + c.speed}
+  //   })
+  // }, [])
 
-  useEffect(() => {
-    if (animationSpeed !== current.target) {
-      setCurrent(c=>({...c, target:animationSpeed}));
-    }
-  }, [animationSpeed, setCurrent, current])
+  // useEffect(() => {
+  //   if (animationSpeed !== current.target) {
+  //     setCurrent(c=>({...c, target:animationSpeed}));
+  //   }
+  // }, [animationSpeed, current])
 
-  useEffect(() => {
-    if (!animation) setAnimation (setInterval(intervalAngle, 30))
-    return () => {
-      if (animation) {
-        clearInterval(animation)
-        setAnimation(null)
-      }
-    }
-  }, [setAnimation, intervalAngle, animation])
+  // useEffect(() => {
+  //   if (!animation) setAnimation (setInterval(intervalAngle, 30))
+  //   return () => {
+  //     if (animation) {
+  //       clearInterval(animation)
+  //       setAnimation(null)
+  //     }
+  //   }
+  // }, [intervalAngle, animation])
   
 
   return (
@@ -91,7 +76,13 @@ const SphereLineWheel = ({innerRadius="0px", startAngle=0, numberOfSphereLine, a
       }}
     >
       {array.map((_, i) =>
-        <RenderSpheresLines key={`sphere-line-${i}`} innerRadius={innerRadius} angle={startAngle + i * delta} />
+        <RenderSpheresLines 
+          key={`sphere-line-${i}`} 
+          innerRadius={innerRadius} 
+          angle={startAngle + i * delta}
+          container={container}
+          maxRadius={maxRadius}
+        />
       )}
     </div>
   )
@@ -104,4 +95,6 @@ SphereLineWheel.propTypes = {
   startAngle: PropTypes.number,
   numberOfSphereLine: PropTypes.number.isRequired,
   animationSpeed: PropTypes.number,
+  container: PropTypes.object,
+  maxRadius: PropTypes.number,
 };

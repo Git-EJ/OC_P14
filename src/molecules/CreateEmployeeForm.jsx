@@ -197,7 +197,6 @@ const CreateEmployeeForm = () => {
     setEmployeesData([...employeesData, newArrayOfInputsValues]);
   }
 
-
   return (
     <>
       <main className={`main_wrapper ${isModalOpen ? 'main_modal-opacity' : ''}`}>
@@ -283,7 +282,14 @@ const CreateEmployeeForm = () => {
             })}
           </div>
 
-          <SpheresButton type="submit" className="spheres-button_button" onClick={createEmployee} text="Add Employee" />
+          <SpheresButton 
+            type="submit" 
+            className="spheres-button_button" 
+            onClick={createEmployee} 
+            text="Add Employee" 
+            container = {window}
+            maxRadius = {80}
+          />
 
         </form>
       </main>

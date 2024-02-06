@@ -1,20 +1,26 @@
 import PropTypes from 'prop-types';
 
-const Sphere = ({radius}) => <div className="sphere" style={{
-  width: radius,
-  height: radius,
+const Sphere = ({currentRadius}) => <div className="sphere" style={{
+  width: `${currentRadius}px`,
+  height: `${currentRadius}px`,
 }}/>
+
 Sphere.propTypes = {
-  radius: PropTypes.number.isRequired,
+  currentRadius: PropTypes.number.isRequired,
 };
+
+
 
 const SphereLine = ({ innerRadius="0px", angle=0, radius, ratio=0.6, gap="1px", numberOfSpheres }) => {
 
-  const renderSpheres = (radius, spheresLeft) => {
+  const renderSpheres = (currentRadius, spheresLeft) => {
+    
+    currentRadius = Math.max(currentRadius, 0);
+
     return (
       <>
-        <Sphere radius={radius}/>
-        {spheresLeft>1 && renderSpheres(radius * ratio, spheresLeft - 1)}
+        <Sphere currentRadius={currentRadius}/>
+        {spheresLeft>1 && renderSpheres(currentRadius * ratio, spheresLeft - 1)}
       </>
     );
   };
@@ -42,7 +48,7 @@ export default SphereLine;
 SphereLine.propTypes = {
   innerRadius: PropTypes.string,
   angle: PropTypes.number,
-  radius: PropTypes.number.isRequired,
+  radius: PropTypes.number,
   ratio: PropTypes.number,
   gap: PropTypes.string,
   numberOfSpheres: PropTypes.number.isRequired,

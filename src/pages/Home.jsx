@@ -5,17 +5,18 @@ import SphereLineWheel from "../molecules/SphereLineWheel";
 
 const Home = () => {
   document.title = "HRnet | Home";
-
+  
   const [animationSpeed, setAnimationSpeed] = useState(0.02);
-
+  
   const handleClickLogo = () => {
     setAnimationSpeed(c=>c*3);
     setTimeout(() => {
       setAnimationSpeed(0.02);
     }, 3000);
   };
+  
 
-
+  
   return (
     <>
       <Header 
@@ -27,12 +28,14 @@ const Home = () => {
       
       <main className="main_wrapper">
 
-        <div className="home-main_container relative">
+        <div className="home-main_container relative" >
 
           <SphereLineWheel 
             numberOfSphereLine={12}
             animationSpeed={animationSpeed}
             innerRadius="7.5rem" // wheel logo height or width / 2
+            container={window}
+            maxRadius={80}
           />
 
           {/* TODO logo responsive

@@ -89,6 +89,7 @@ const EmployeeList = () => {
     }
   },[dispatch]);
 
+
   return (
     <>
       <Header navigateButton_1='/employee-create' textButton_1='Create Employee' />
@@ -108,7 +109,9 @@ const EmployeeList = () => {
           <SpheresButton 
             type="submit" 
             className="spheres-button_button" 
-            onClick={addEmployeeLink} text="Add Employee" 
+            onClick={addEmployeeLink} text="Add Employee"
+            container={window}
+            maxRadius={80} 
           />
 
       </main>
