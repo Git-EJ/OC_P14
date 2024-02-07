@@ -4,7 +4,7 @@
     @include flex_center_row;
     justify-content: space-between;
     align-items: stretch;
-    max-width: 45%;
+    width: fit-content;
     gap: 2rem;
   }
 
@@ -32,9 +32,10 @@
       @include flex_center_column;
       width: fit-content;
       height: auto;
+      white-space: nowrap;
 
       >label {
-        font-size: 0.9rem;
+        font-size: $datatable_font_size;
         font-family: 'Tektur_Semi-Bold', sans-serif;
         width: fit-content;
         margin-right: 0.5rem;
@@ -64,7 +65,7 @@
       @include flex_center;
       width: fit-content;
       background: none;
-      font-size: 0.8rem;
+      font-size: $pagination_font_size;
       cursor: pointer;
       
       >svg {

@@ -10,3 +10,10 @@ $secondary-color: #0E3C55;
 $logo_wheel_size: 240px;
 $sphere_button_size: 136px;
 $sphere_button_font_size: 1.3rem;
+
+
+//DATATABLE
+$datatable_font_size: clamp(0.8rem, 2vw, 0.9rem);
+
+//PAGINATIONS
+$pagination_font_size: clamp(0.7rem, 2vw, 0.8rem);

@@ -2,11 +2,12 @@
 
   &_wrapper {
     @include flex_center_column;
-    width: 95%;
+    width: 100%;
     height: auto;
+    padding: 0 2rem 1rem 2rem;
     cursor: default;
+    overflow-x: auto; 
   }
-
 
   &_options {
 
@@ -16,7 +17,7 @@
       width: 100%;
       height: auto;
       font-family: 'Tektur_Semi-Bold', sans-serif;
-      font-size: 0.9rem;
+      font-size: $datatable_font_size;
       gap: 1rem;
     }
     
@@ -74,7 +75,7 @@
     align-items: stretch;
     width: 100%;
     margin-top: 1rem;
-    
+
     >div:first-child {
       border-radius: 10px 0 0 0;
       border: 2px solid $primary-color;
@@ -104,7 +105,7 @@
         padding: 0.5rem;
         @include text_ellipsis;
         font-family: 'Tektur_Bold', sans-serif;
-        font-size: 0.9rem;
+        font-size: $datatable_font_size;
         @include gradient_text($secondary_linear-gradient);
       }
 
@@ -219,7 +220,7 @@
         @include text_ellipsis;
         text-align: center;
         width: 100%;
-        font-size: 0.9rem;
+        font-size: $datatable_font_size;
         padding: 0.5rem;
       }
     }
@@ -240,7 +241,7 @@
     &_left_container {
       @include flex_center_column;
       align-items: flex-start;
-      max-width: 45%;
+      width: fit-content;
       height: auto;
     }
 
@@ -254,7 +255,7 @@
 
       &_text {
         width: fit-content;
-        font-size: 0.9rem;
+        font-size: $datatable_font_size;
         font-family: 'Tektur_Bold', sans-serif;
         @include gradient_text($secondary_linear-gradient);
       }
@@ -273,7 +274,7 @@
         width: fit-content;
         height: auto;
         padding: 0.5rem 1rem;
-        font-size: 0.9rem;
+        font-size: $datatable_font_size;
         font-family: 'Tektur_Bold', sans-serif;
         @include gradient_text($secondary_linear-gradient);
         cursor: pointer;

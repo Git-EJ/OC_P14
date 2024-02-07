@@ -2,7 +2,7 @@
 
   &_container {
     width: fit-content;
-    height: 30vh;
+    height: fit-content;
     @include flex_center_column;
     position: absolute;
     top: 45%;
@@ -17,18 +17,18 @@
   &_text {
     text-align: center;
     font-family: 'Tektur_Bold', sans-serif;
-    font-size: 2.5rem;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
     @include gradient_text($secondary_linear-gradient);
     cursor: default;
   }
 
   &_close-button {
     @include flex_center;
-    height: 5rem;
-    width: 5rem;
+    height: clamp(3.5rem, 8vw, 5rem);
+    width: clamp(3.5rem, 8vw, 5rem);
     margin-top: 2rem;
     font-weight: 700;
-    font-size: 3.5rem;
+    font-size: clamp(2rem, 5vw, 3.5rem);
     color: #fff;
     background: $primary_radial-gradient;
     border-radius: 50%;
@@ -38,7 +38,7 @@
     &_label {
       margin-top: 0.1rem;
       text-align: center;
-      font-size: 0.8rem;
+      font-size: clamp(0.7rem, 2vw, 0.8rem);
       font-weight: 700;
       @include gradient_text($secondary_linear-gradient);
     }

@@ -263,7 +263,7 @@ body ::-webkit-scrollbar {
   flex-direction: row;
   justify-content: space-between;
   align-items: stretch;
-  max-width: 45%;
+  width: fit-content;
   gap: 2rem;
 }
 .pagination_jump_container {
@@ -292,9 +292,10 @@ body ::-webkit-scrollbar {
   flex-direction: column;
   width: fit-content;
   height: auto;
+  white-space: nowrap;
 }
 .pagination_jump_text-label > label {
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
   font-family: "Tektur_Semi-Bold", sans-serif;
   width: fit-content;
   margin-right: 0.5rem;
@@ -319,7 +320,7 @@ body ::-webkit-scrollbar {
   align-items: center;
   width: fit-content;
   background: none;
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
   cursor: pointer;
 }
 .pagination_button_previous > svg, .pagination_button_next > svg, .pagination_button_current > svg, .pagination_button_not-current > svg {
@@ -480,7 +481,7 @@ body ::-webkit-scrollbar {
 
 .modal_container {
   width: fit-content;
-  height: 30vh;
+  height: fit-content;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -497,7 +498,7 @@ body ::-webkit-scrollbar {
 .modal_text {
   text-align: center;
   font-family: "Tektur_Bold", sans-serif;
-  font-size: 2.5rem;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   background: linear-gradient(to right, #1494B9, #0E3C55);
   -webkit-background-clip: text;
   background-clip: text;
@@ -508,11 +509,11 @@ body ::-webkit-scrollbar {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 5rem;
-  width: 5rem;
+  height: clamp(3.5rem, 8vw, 5rem);
+  width: clamp(3.5rem, 8vw, 5rem);
   margin-top: 2rem;
   font-weight: 700;
-  font-size: 3.5rem;
+  font-size: clamp(2rem, 5vw, 3.5rem);
   color: #fff;
   background: radial-gradient(circle at center, #1494B9 0%, #0E3C55 100%);
   border-radius: 50%;
@@ -521,7 +522,7 @@ body ::-webkit-scrollbar {
 .modal_close-button_label {
   margin-top: 0.1rem;
   text-align: center;
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
   font-weight: 700;
   background: linear-gradient(to right, #1494B9, #0E3C55);
   -webkit-background-clip: text;
@@ -626,9 +627,11 @@ body ::-webkit-scrollbar {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 95%;
+  width: 100%;
   height: auto;
+  padding: 0 2rem 1rem 2rem;
   cursor: default;
+  overflow-x: auto;
 }
 .data-table_options_container {
   display: flex;
@@ -639,7 +642,7 @@ body ::-webkit-scrollbar {
   width: 100%;
   height: auto;
   font-family: "Tektur_Semi-Bold", sans-serif;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
   gap: 1rem;
 }
 .data-table_options_search_container {
@@ -726,7 +729,7 @@ body ::-webkit-scrollbar {
   overflow: hidden;
   text-overflow: ellipsis;
   font-family: "Tektur_Bold", sans-serif;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
   background: linear-gradient(to right, #1494B9, #0E3C55);
   -webkit-background-clip: text;
   background-clip: text;
@@ -855,7 +858,7 @@ body ::-webkit-scrollbar {
   text-overflow: ellipsis;
   text-align: center;
   width: 100%;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
   padding: 0.5rem;
 }
 .data-table_below_container {
@@ -875,7 +878,7 @@ body ::-webkit-scrollbar {
   align-items: center;
   flex-direction: column;
   align-items: flex-start;
-  max-width: 45%;
+  width: fit-content;
   height: auto;
 }
 .data-table_below_showing_entries_container {
@@ -885,7 +888,7 @@ body ::-webkit-scrollbar {
 }
 .data-table_below_showing_entries_text {
   width: fit-content;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
   font-family: "Tektur_Bold", sans-serif;
   background: linear-gradient(to right, #1494B9, #0E3C55);
   -webkit-background-clip: text;
@@ -904,7 +907,7 @@ body ::-webkit-scrollbar {
   width: fit-content;
   height: auto;
   padding: 0.5rem 1rem;
-  font-size: 0.9rem;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
   font-family: "Tektur_Bold", sans-serif;
   background: linear-gradient(to right, #1494B9, #0E3C55);
   -webkit-background-clip: text;
@@ -928,7 +931,7 @@ body ::-webkit-scrollbar {
 .current-employee_page-title {
   margin: 1.5rem 0 3rem 0;
   font-family: "Tektur_Bold", sans-serif;
-  font-size: 2.5rem;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
   background: linear-gradient(to right, #1494B9, #0E3C55);
   -webkit-background-clip: text;
   background-clip: text;
