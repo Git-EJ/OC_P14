@@ -59,6 +59,10 @@ const StyledDatepicker = styled(DatePicker)(({theme}) => ({
     ...theme['datePicker-button'],
   },
 
+  [`& .${'MuiOutlinedInput-root'}`]: {
+    paddingRight: 0,
+  },
+
 
 }));
 

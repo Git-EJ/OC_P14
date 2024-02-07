@@ -45,7 +45,7 @@ const CreateEmployeeForm = () => {
       input: [
         {label: "Street", id: "street", labelClassName: "form_input_label", type: "text", placeholder: "Street", inputClassName: "form_input_field"},
         {label: "City", id: "city", labelClassName: "form_input_label", type: "text", placeholder: "City", inputClassName: "form_input_field"},
-        {label: "Zip Code", id: "zipCode", labelClassName: "form_input_label", type: "number", placeholder: "Zip Code", inputClassName: "form_input_field"},
+        {label: "Zip Code", id: "zipCode", labelClassName: "form_input_label", type: "text", placeholder: "Zip Code", inputClassName: "form_input_field"},
       ],
     }
   ];
@@ -153,18 +153,28 @@ const CreateEmployeeForm = () => {
     }
   }
   
+
   const [inputError, setInputError] = useState({});
-
-  const regexDate = useMemo(() => /^(0?[1-9]|1[0-9]|2[0-9]|3[0-1])[/](0[1-9]|1[0-2])[/]([0-9]{4})$/, []);
-
+  
+  const regexPattern = useMemo(() => ({
+    street: /^[a-zA-ZÀ-ÿ0-9\s-]+$/,
+    name: /^[a-zA-ZÀ-ÿ- ]{1,30}$/,
+    date: /^(0?[1-9]|1[0-9]|2[0-9]|3[0-1])[/](0[1-9]|1[0-2])[/]([0-9]{4})$/,
+    zipCode: /^\d{5}$/,
+  }), []);
+  
 
   const formatDate = useCallback((inputDate, key) => {
 
     if(!inputDate || typeof inputDate !== 'string' || typeof key !== 'string') {
       console.log('%c' + 'INPUTDATE-ERROR' + key + ' ' + inputDate + ' invalid input => falsy or type !== string', 'color: red;');
+      setInputError(prevErrors => ({
+        ...prevErrors,
+        [key]:`Invalid ${camelToNotCamel(key)}`
+      }));
       return '';
 
-    } else if (!inputDate.match(regexDate)) {
+    } else if (!inputDate.match(regexPattern.date)) {
       console.log('%c' + 'INPUTDATE-ERROR ' + key + ' ' + inputDate + ' invalid date => date format', 'color: red;');
       setInputError(prevErrors => ({
         ...prevErrors,
@@ -190,39 +200,99 @@ const CreateEmployeeForm = () => {
       });
       return inputDate;
     }  
-  }, [regexDate]);
+  }, [regexPattern.date]);
 
-  // DEV
-  useEffect(() => {
-    formatDate('112/2021', 'dateOfBirth');
-    formatDate(2021, 'startDate');
-  }, [formatDate])
+  // // DEV
+  // useEffect(() => {
+  // if (process.env.NODE_ENV === "development" ) {
+  //     formatDate('112/2021', 'dateOfBirth');
+  //     formatDate(2021, 'startDate');
+  //   }
+  // }, [formatDate]);
 
+  const formatInputText = useCallback((inputText, key) => {
 
-
-
-  function formatOthers(inputOthers, key) {
-    console.log ('key', key, 'inputOthers', inputOthers)
-
-    if(!inputOthers) {
+    if(!inputText || typeof inputText !== 'string' || typeof key !== 'string') {
+      console.log('%c' + 'INPUT-ERROR' + key + ' ' + inputText + ' invalid input => falsy or type !== string', 'color: red;');
+      setInputError(prevErrors => ({
+        ...prevErrors,
+        [key]:`Invalid ${camelToNotCamel(key)}`
+      }));
       return '';
     } 
+
+    if(key === 'lastName' || key === 'firstName') {
     
-    const inputValue = inputOthers.replace(/\s+/g, ' '); //s for space, tab,line break, and others space characters
+      if(!inputText.match(regexPattern.name)) {
+        console.log('%c' + 'INPUTNAME-ERROR ' + key + ' ' + inputText + ' invalid name => name format', 'color: red;');
+        setInputError(prevErrors => ({
+          ...prevErrors,
+          [key]:`Invalid ${camelToNotCamel(key)}, only - and letters are allowed, max 30 characters.`
+        }));
+        return '';
+      } else {
+        setInputError(prevErrors => {
+          const newErrors = { ...prevErrors };
+          delete newErrors[key];
+          return newErrors; 
+        });
+        return inputText; 
+      }
+
+    } else if (key === 'street') {
+      if(!inputText.match(regexPattern.street)) {
+        console.log('%c' + 'INPUTSTREET-ERROR ' + key + ' ' + inputText + ' invalid street => street format', 'color: red;');
+        setInputError(prevErrors => ({
+          ...prevErrors,
+          [key]:`Invalid ${camelToNotCamel(key)}, only letters, numbers and - are allowed, max 50 characters.`
+        }));
+        return '';
+      } else {
+        setInputError(prevErrors => {
+          const newErrors = { ...prevErrors };
+          delete newErrors[key];
+          return newErrors;
+        });
+        return inputText;
+      }
+
+    } else if (key === 'city') {
+      if(!inputText.match(regexPattern.name)) {
+        console.log('%c' + 'INPUTCITY-ERROR ' + key + ' ' + inputText + ' invalid city => city format', 'color: red;');
+        setInputError(prevErrors => ({
+          ...prevErrors,
+          [key]:`Invalid ${camelToNotCamel(key)}, only - and letters are allowed, max 30 characters.`
+        }));
+        return '';
+      } else {
+        setInputError(prevErrors => {
+          const newErrors = { ...prevErrors };
+          delete newErrors[key];
+          return newErrors;
+        });
+        return inputText;
+      }
+    } else if (key === 'zipCode') {
+      if(!inputText.match(regexPattern.zipCode)) {
+        console.log('%c' + 'INPUTZIPCODE-ERROR ' + key + ' ' + inputText + ' invalid zipCode => zipCode format', 'color: red;');
+        setInputError(prevErrors => ({
+          ...prevErrors,
+          [key]:`Invalid ${camelToNotCamel(key)}, only 5 digits are allowed.`
+        }));
+        return '';
+      } else {
+        setInputError(prevErrors => {
+          const newErrors = { ...prevErrors };
+          delete newErrors[key];
+          return newErrors;
+        });
+        return inputText;
+      }
+    }
+
+  }, [regexPattern.name, regexPattern.street, regexPattern.zipCode]);
 
 
-    const formattedInputValue = inputValue.includes('-') ? 
-
-       inputValue.split(/[\s-]+/).map((word) => { 
-        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-      }).join('-') 
-    : 
-      inputValue.split(' ').map((word) => {
-        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-      }).join(' ');
-
-    return formattedInputValue;
-  }
 
 
   const onInputChange = (e) => {
@@ -231,18 +301,18 @@ const CreateEmployeeForm = () => {
 
     if(e.target.name === "state") {
       key = e.target.name;
-      console.log('key', key)
-      value = formatState(defaultValueFunction(e.target.value));
+      value = formatState(e.target.value);
 
     } else if(e.target.name === "dateOfBirth" || e.target.name === "startDate") {
       key = e.target.name;
-      value = formatDate(defaultValueFunction(e.target.value), key);
+      value = formatDate(e.target.value, key);
 
     } else if(e.target.name === "department") {
       key = e.target.name;
-      value = formatDepartment(defaultValueFunction(e.target.value));
+      value = formatDepartment(e.target.value);
+
     } else {
-      value = formatOthers(defaultValueFunction(e.target.value), key);
+      value = formatInputText(e.target.value, key);
     }
 
     setNewArrayOfInputsValues({...newArrayOfInputsValues, [key]: value })
@@ -250,21 +320,29 @@ const CreateEmployeeForm = () => {
 
 
   // const onInputBlur = () => {
+    // let inputValue = inputText
+    // .replace(/\s+/g, ' ') // if several spaces leave only one space
+    // .replace(/-+/g, '-') // if several - leave only one -
+    // .replace(/\s?-\s?/g, '-') // if space- or -space remove space
+    // .replace(/^-+|-+$|^\s+|\s+$/g, ''); // Remove - and spaces at the start and end
+    
+    // return inputValue
+    // .split(' ')
+    // .map(segment =>
+    //   segment.includes('-')
+    //     ? segment.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join('-')
+    //     : segment.charAt(0).toUpperCase() + segment.slice(1).toLowerCase()
+    // )
+    // .join(' ');
   //   setNewArrayOfInputsValues({...newArrayOfInputsValues})
   // }
 
   
-  const defaultValueFunction = (input) => {
-    if(input === null || input === undefined) {
-      return '';
-    } else {
-      return input;
-    }
-  }
-
   // DEV
   useEffect(() => {
-    console.log('newArrayOfInputsValues', newArrayOfInputsValues)
+    if (process.env.NODE_ENV === "development" ) {
+      console.log('newArrayOfInputsValues', newArrayOfInputsValues)
+    }
   }, [newArrayOfInputsValues])
 
 
@@ -299,7 +377,7 @@ const CreateEmployeeForm = () => {
                             name={input.id}
                             placeholder={input.placeholder} 
                             className={input.inputClassName} 
-                            value={newArrayOfInputsValues[input.id]}
+                            // value={newArrayOfInputsValues[input.id]}
                             onChange={onInputChange}
                             // onBlur={onInputBlur}
                           />
@@ -320,8 +398,6 @@ const CreateEmployeeForm = () => {
                               onChange={onInputChange}
                             />
                             {inputError['dateOfBirth'] && <div className="form_input_error">{inputError['dateOfBirth']}</div>}
-                            
-                            {console.log('JSX--inputError', inputError['dateOfBirth'])}
 
                             <FormDatePicker 
                               id={'startDate'}
