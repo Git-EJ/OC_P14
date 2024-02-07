@@ -31,11 +31,11 @@ export const themeDatePicker = {
   },
 
   ['datePicker-button']: {
-    height: '5rem',
-    width: '5rem',
+    height: '3rem',
+    width: '3rem',
     margin: '0rem',
     padding: '0.2rem',
-    transform: 'translateX(1.5rem)',
+    transform: 'translateX(.5rem)',
     color: palette.main['primary-color'],
     
     '&:hover': {

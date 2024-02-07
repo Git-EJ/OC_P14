@@ -10,27 +10,16 @@ import dayjs from "dayjs";
 
 // TODO REGEX INPUT
 const CreateEmployeeForm = () => { 
-
-  const [newArrayOfInputsValues, setNewArrayOfInputsValues] = useState({
-    lastName: '',
-    firstName: '',
-    dateOfBirth: '',
-    startDate: '',
-    street: '',
-    city: '',
-    zipCode: '',
-    state: '',
-    department: '',
-  });
-
+  
   const { state: createEmployeeState, dispatch: createEmployeeDispatch } = useContext(CreateEmployeeContext);
   const { state: employeesDataState, dispatch: employeesDataDispatch } = useContext(employeesDataContext);
-
+  
   const { isModalOpen } = createEmployeeState;
   const setIsModalOpen = useCallback((payload) => { createEmployeeDispatch({ type: "SET_IS_MODAL_OPEN", payload }) }, [createEmployeeDispatch]);
-
+  
   const { employeesData } = employeesDataState;
   const setEmployeesData = useCallback((payload) => { employeesDataDispatch({ type: "SET_EMPLOYEES_DATA", payload }) }, [employeesDataDispatch]);
+  
 
   const formFieldsets = [
     {
@@ -49,14 +38,16 @@ const CreateEmployeeForm = () => {
       ],
     }
   ];
+  
 
   const arrayOfDepartments = [
     {name: "Sales", abbreviation: "sales"},
     {name: "Marketing", abbreviation: "marketing"},
     {name: "Engineering", abbreviation: "engineering"},
-    {name: "Human Ressources", abbreviation: "human ressources"},
+    {name: "Human ressources", abbreviation: "human ressources"},
     {name: "Legal", abbreviation: "legal"},
   ];
+  
 
   const arrayOfStates = [
     {name: "Alabama", abbreviation: "AL"},
@@ -123,46 +114,66 @@ const CreateEmployeeForm = () => {
     {name: "Test length", abbreviation: 'TLH'},
     // {name: "Test notString", abbreviation: 456},
   ];
-
-
-  function camelToNotCamel(str) {
-    return str
-      .replace(/([A-Z])/g, ' $1')
-      .replace(/^./, (match) => match.toUpperCase())
-      .trim();
-  }
-
-
-  const selectFormChange = (name, value) => {
-    onInputChange({ target: { name, value } });
-  }
-
-  function formatState(inputState) {
-    if( !inputState || inputState.length !== 2 || !/^[a-zA-Z]+$/.test(inputState) ) {
-      return '';
-    }
-    inputState = inputState.toUpperCase();
-    return inputState;
-  }
-  
-  function formatDepartment(inputDepartment) {
-    if(!inputDepartment) {
-      return '';
-    } else {
-      return inputDepartment.charAt(0).toUpperCase() + inputDepartment.slice(1).toLowerCase();
-    }
-  }
   
 
+
+  
+  const [isValid, setIsValid] = useState({});
   const [inputError, setInputError] = useState({});
-  
+  const [newArrayOfInputsValues, setNewArrayOfInputsValues] = useState({
+    lastName: '',
+    firstName: '',
+    dateOfBirth: '',
+    startDate: '',
+    street: '',
+    city: '',
+    zipCode: '',
+    state: '',
+    department: '',
+  });
   const regexPattern = useMemo(() => ({
     street: /^[a-zA-ZÀ-ÿ0-9\s-]+$/,
     name: /^[a-zA-ZÀ-ÿ- ]{1,30}$/,
     date: /^(0?[1-9]|1[0-9]|2[0-9]|3[0-1])[/](0[1-9]|1[0-2])[/]([0-9]{4})$/,
     zipCode: /^\d{5}$/,
   }), []);
+
   
+
+  const camelToNotCamel= useCallback((str) => {
+    return str
+      .replace(/([A-Z])/g, ' $1')
+      .replace(/^./, (match) => match.toUpperCase())
+      .trim();
+  }, []);
+    
+
+  const formatState = useCallback((inputState, key) => {
+
+    if( !inputState || typeof inputState !== 'string' || typeof key !== 'string' ) {
+      console.log('c%', 'INPUTSTATE-ERROR' + key + ' ' + inputState + ' invalid input => falsy or type !== string', 'color: red;');
+      setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
+      return '';
+
+    } else {
+      setIsValid(prevIsValid => ({...prevIsValid, [key]: true}));
+      return inputState;
+    }
+  }, []);
+  
+
+  const formatDepartment = useCallback((inputDepartment, key) => {
+
+    if(!inputDepartment || typeof inputDepartment !== 'string' || typeof key !== 'string') {
+      console.log('%c' + 'INPUTDEPARTMENT-ERROR' + key + ' ' + inputDepartment + ' invalid input => falsy or type !== string', 'color: red;');
+      setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
+      return '';
+    } else {
+      setIsValid(prevIsValid => ({...prevIsValid, [key]: true}));
+      return inputDepartment;
+    }
+  }, []);
+
 
   const formatDate = useCallback((inputDate, key) => {
 
@@ -172,6 +183,7 @@ const CreateEmployeeForm = () => {
         ...prevErrors,
         [key]:`Invalid ${camelToNotCamel(key)}`
       }));
+      setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
       return '';
 
     } else if (!inputDate.match(regexPattern.date)) {
@@ -180,6 +192,7 @@ const CreateEmployeeForm = () => {
         ...prevErrors,
         [key]:`Invalid ${camelToNotCamel(key)}`
       }));
+      setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
       return '';
 
     } else if(key === 'dateOfBirth' && dayjs().isBefore(dayjs(inputDate, 'DD/MM/YYYY'))) {
@@ -188,6 +201,7 @@ const CreateEmployeeForm = () => {
         ...prevErrors,
         [key]:`Your ${camelToNotCamel(key)} cannot be in the future McFly!`
       }));
+      setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
       return '';
 
     } else {
@@ -198,17 +212,11 @@ const CreateEmployeeForm = () => {
         // return :reflects the state of the form with the remaining errors if there are any
         return newErrors; 
       });
+      setIsValid(prevIsValid => ({...prevIsValid, [key]: true}));
       return inputDate;
     }  
-  }, [regexPattern.date]);
+  }, [regexPattern.date, camelToNotCamel]);
 
-  // // DEV
-  // useEffect(() => {
-  // if (process.env.NODE_ENV === "development" ) {
-  //     formatDate('112/2021', 'dateOfBirth');
-  //     formatDate(2021, 'startDate');
-  //   }
-  // }, [formatDate]);
 
   const formatInputText = useCallback((inputText, key) => {
 
@@ -218,6 +226,7 @@ const CreateEmployeeForm = () => {
         ...prevErrors,
         [key]:`Invalid ${camelToNotCamel(key)}`
       }));
+      setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
       return '';
     } 
 
@@ -229,6 +238,7 @@ const CreateEmployeeForm = () => {
           ...prevErrors,
           [key]:`Invalid ${camelToNotCamel(key)}, only - and letters are allowed, max 30 characters.`
         }));
+        setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
         return '';
       } else {
         setInputError(prevErrors => {
@@ -236,16 +246,19 @@ const CreateEmployeeForm = () => {
           delete newErrors[key];
           return newErrors; 
         });
+        setIsValid(prevIsValid => ({...prevIsValid, [key]: true}));
         return inputText; 
       }
 
     } else if (key === 'street') {
+
       if(!inputText.match(regexPattern.street)) {
         console.log('%c' + 'INPUTSTREET-ERROR ' + key + ' ' + inputText + ' invalid street => street format', 'color: red;');
         setInputError(prevErrors => ({
           ...prevErrors,
           [key]:`Invalid ${camelToNotCamel(key)}, only letters, numbers and - are allowed, max 50 characters.`
         }));
+        setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
         return '';
       } else {
         setInputError(prevErrors => {
@@ -253,16 +266,19 @@ const CreateEmployeeForm = () => {
           delete newErrors[key];
           return newErrors;
         });
+        setIsValid(prevIsValid => ({...prevIsValid, [key]: true}));
         return inputText;
       }
 
     } else if (key === 'city') {
+
       if(!inputText.match(regexPattern.name)) {
         console.log('%c' + 'INPUTCITY-ERROR ' + key + ' ' + inputText + ' invalid city => city format', 'color: red;');
         setInputError(prevErrors => ({
           ...prevErrors,
           [key]:`Invalid ${camelToNotCamel(key)}, only - and letters are allowed, max 30 characters.`
         }));
+        setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
         return '';
       } else {
         setInputError(prevErrors => {
@@ -270,15 +286,18 @@ const CreateEmployeeForm = () => {
           delete newErrors[key];
           return newErrors;
         });
+        setIsValid(prevIsValid => ({...prevIsValid, [key]: true}));
         return inputText;
       }
     } else if (key === 'zipCode') {
+
       if(!inputText.match(regexPattern.zipCode)) {
         console.log('%c' + 'INPUTZIPCODE-ERROR ' + key + ' ' + inputText + ' invalid zipCode => zipCode format', 'color: red;');
         setInputError(prevErrors => ({
           ...prevErrors,
           [key]:`Invalid ${camelToNotCamel(key)}, only 5 digits are allowed.`
         }));
+        setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
         return '';
       } else {
         setInputError(prevErrors => {
@@ -286,37 +305,38 @@ const CreateEmployeeForm = () => {
           delete newErrors[key];
           return newErrors;
         });
+        setIsValid(prevIsValid => ({...prevIsValid, [key]: true}));
         return inputText;
       }
     }
 
-  }, [regexPattern.name, regexPattern.street, regexPattern.zipCode]);
+  }, [regexPattern.name, regexPattern.street, regexPattern.zipCode, camelToNotCamel]);
 
 
-
-
-  const onInputChange = (e) => {
+  const onInputChange = useCallback((e) => {
     let key = e.target.name;
     let value;
 
     if(e.target.name === "state") {
-      key = e.target.name;
-      value = formatState(e.target.value);
+      value = formatState(e.target.value, key);
 
     } else if(e.target.name === "dateOfBirth" || e.target.name === "startDate") {
-      key = e.target.name;
       value = formatDate(e.target.value, key);
 
     } else if(e.target.name === "department") {
-      key = e.target.name;
-      value = formatDepartment(e.target.value);
+      value = formatDepartment(e.target.value, key);
 
     } else {
       value = formatInputText(e.target.value, key);
     }
 
     setNewArrayOfInputsValues({...newArrayOfInputsValues, [key]: value })
-  }
+  }, [formatState, formatDate, formatDepartment, formatInputText, newArrayOfInputsValues]);
+
+
+  const onSelectChange = useCallback((name, value) => {
+    onInputChange({ target: { name, value } });
+  }, [onInputChange]);
 
 
   // const onInputBlur = () => {
@@ -337,24 +357,31 @@ const CreateEmployeeForm = () => {
   //   setNewArrayOfInputsValues({...newArrayOfInputsValues})
   // }
 
-  
-  // DEV
-  useEffect(() => {
-    if (process.env.NODE_ENV === "development" ) {
-      console.log('newArrayOfInputsValues', newArrayOfInputsValues)
-    }
-  }, [newArrayOfInputsValues])
-
-
-
-
-
   const createEmployee = (e) => {
     // TODO data validation
     e.preventDefault();
     setIsModalOpen(true);
     setEmployeesData([...employeesData, newArrayOfInputsValues]);
   }
+  
+
+
+  // DEV
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development" ) {
+      console.log('newArrayOfInputsValues', newArrayOfInputsValues)
+      console.log('isValid', isValid)
+    }
+  }, [newArrayOfInputsValues, isValid])
+
+    // // DEV for formatDate test error format
+  // useEffect(() => {
+  // if (process.env.NODE_ENV === "development" ) {
+  //     formatDate('112/2021', 'dateOfBirth');
+  //     formatDate(2021, 'startDate');
+  //   }
+  // }, [formatDate]);
+
 
   return (
     <>
@@ -422,7 +449,7 @@ const CreateEmployeeForm = () => {
                             labelClassName={'form_input_label'}
                             inputClassName={'form_input_field'}
                             menuItem={arrayOfStates} 
-                            onChange={selectFormChange}
+                            onChange={onSelectChange}
     
                           />
                         )}
@@ -439,7 +466,7 @@ const CreateEmployeeForm = () => {
                       labelClassName={'form_input_label'}
                       inputClassName={'form_input_field'}
                       menuItem={arrayOfDepartments} 
-                      onChange={selectFormChange}
+                      onChange={onSelectChange}
                     />
                   } 
 
