@@ -1,15 +1,16 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import employeesDataContext from "../context/employeesData/EmployeesDataContext";
 import CreateEmployeeContext from "../context/createEmployee/CreateEmployeeContext"
 import SelectField from "../atoms/mui/SelectField";
 import SpheresButton from "./SpheresButton";
 import SpringModal from "../atoms/mui/Modal";
 import FormDatePicker from "../atoms/mui/DatePicker";
+import dayjs from "dayjs";
 
 
 // TODO REGEX INPUT
 const CreateEmployeeForm = () => { 
-  
+
   const [newArrayOfInputsValues, setNewArrayOfInputsValues] = useState({
     lastName: '',
     firstName: '',
@@ -31,7 +32,6 @@ const CreateEmployeeForm = () => {
   const { employeesData } = employeesDataState;
   const setEmployeesData = useCallback((payload) => { employeesDataDispatch({ type: "SET_EMPLOYEES_DATA", payload }) }, [employeesDataDispatch]);
 
-  //TODO remove default value
   const formFieldsets = [
     {
       legend: "Employee Informations",
@@ -125,27 +125,95 @@ const CreateEmployeeForm = () => {
   ];
 
 
+  function camelToNotCamel(str) {
+    return str
+      .replace(/([A-Z])/g, ' $1')
+      .replace(/^./, (match) => match.toUpperCase())
+      .trim();
+  }
+
+
+  const selectFormChange = (name, value) => {
+    onInputChange({ target: { name, value } });
+  }
+
   function formatState(inputState) {
-    if( !inputState || inputState.length !== 2 || /*typeof inputState !== 'string' ||*/ !/^[a-zA-Z]+$/.test(inputState) ) {
+    if( !inputState || inputState.length !== 2 || !/^[a-zA-Z]+$/.test(inputState) ) {
       return '';
     }
     inputState = inputState.toUpperCase();
     return inputState;
   }
+  
+  function formatDepartment(inputDepartment) {
+    if(!inputDepartment) {
+      return '';
+    } else {
+      return inputDepartment.charAt(0).toUpperCase() + inputDepartment.slice(1).toLowerCase();
+    }
+  }
+  
+  const [inputError, setInputError] = useState({});
 
-  function formatOthers(inputOthers) {
+  const regexDate = useMemo(() => /^(0?[1-9]|1[0-9]|2[0-9]|3[0-1])[/](0[1-9]|1[0-2])[/]([0-9]{4})$/, []);
+
+
+  const formatDate = useCallback((inputDate, key) => {
+
+    if(!inputDate || typeof inputDate !== 'string' || typeof key !== 'string') {
+      console.log('%c' + 'INPUTDATE-ERROR' + key + ' ' + inputDate + ' invalid input => falsy or type !== string', 'color: red;');
+      return '';
+
+    } else if (!inputDate.match(regexDate)) {
+      console.log('%c' + 'INPUTDATE-ERROR ' + key + ' ' + inputDate + ' invalid date => date format', 'color: red;');
+      setInputError(prevErrors => ({
+        ...prevErrors,
+        [key]:`Invalid ${camelToNotCamel(key)}`
+      }));
+      return '';
+
+    } else if(key === 'dateOfBirth' && dayjs().isBefore(dayjs(inputDate, 'DD/MM/YYYY'))) {
+      console.log('%c' + 'INPUTDATE-ERROR ' + key + ' ' + inputDate + ", are in the future Marty!!!", 'color: red;');
+      setInputError(prevErrors => ({
+        ...prevErrors,
+        [key]:`Your ${camelToNotCamel(key)} cannot be in the future McFly!`
+      }));
+      return '';
+
+    } else {
+      setInputError(prevErrors => {
+        const newErrors = { ...prevErrors };
+        delete newErrors[key];
+        // return the error object update, 
+        // return :reflects the state of the form with the remaining errors if there are any
+        return newErrors; 
+      });
+      return inputDate;
+    }  
+  }, [regexDate]);
+
+  // DEV
+  useEffect(() => {
+    formatDate('112/2021', 'dateOfBirth');
+    formatDate(2021, 'startDate');
+  }, [formatDate])
+
+
+
+
+  function formatOthers(inputOthers, key) {
+    console.log ('key', key, 'inputOthers', inputOthers)
+
     if(!inputOthers) {
       return '';
-    } else if (/^\d+$/.test(inputOthers)) { //only numbers
-      return inputOthers
-    }
+    } 
     
     const inputValue = inputOthers.replace(/\s+/g, ' '); //s for space, tab,line break, and others space characters
 
 
     const formattedInputValue = inputValue.includes('-') ? 
 
-       inputValue.split(/[\s-]+/).map((word) => {
+       inputValue.split(/[\s-]+/).map((word) => { 
         return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
       }).join('-') 
     : 
@@ -157,25 +225,34 @@ const CreateEmployeeForm = () => {
   }
 
 
-  const selectFormChange = (name, value) => {
-    onInputValue({ target: { name, value } });
-  }
-
-  const onInputValue = (e) => {
+  const onInputChange = (e) => {
     let key = e.target.name;
-    let value = formatOthers(defaultValueFunction(e.target.value));
-    
+    let value;
+
     if(e.target.name === "state") {
       key = e.target.name;
+      console.log('key', key)
       value = formatState(defaultValueFunction(e.target.value));
 
     } else if(e.target.name === "dateOfBirth" || e.target.name === "startDate") {
       key = e.target.name;
-      value = e.target.value;
-    } 
+      value = formatDate(defaultValueFunction(e.target.value), key);
+
+    } else if(e.target.name === "department") {
+      key = e.target.name;
+      value = formatDepartment(defaultValueFunction(e.target.value));
+    } else {
+      value = formatOthers(defaultValueFunction(e.target.value), key);
+    }
 
     setNewArrayOfInputsValues({...newArrayOfInputsValues, [key]: value })
   }
+
+
+  // const onInputBlur = () => {
+  //   setNewArrayOfInputsValues({...newArrayOfInputsValues})
+  // }
+
   
   const defaultValueFunction = (input) => {
     if(input === null || input === undefined) {
@@ -185,11 +262,15 @@ const CreateEmployeeForm = () => {
     }
   }
 
+  // DEV
   useEffect(() => {
     console.log('newArrayOfInputsValues', newArrayOfInputsValues)
   }, [newArrayOfInputsValues])
 
-  
+
+
+
+
   const createEmployee = (e) => {
     // TODO data validation
     e.preventDefault();
@@ -218,8 +299,12 @@ const CreateEmployeeForm = () => {
                             name={input.id}
                             placeholder={input.placeholder} 
                             className={input.inputClassName} 
-                            onInput={onInputValue} // TODO onInput or onBlur
+                            value={newArrayOfInputsValues[input.id]}
+                            onChange={onInputChange}
+                            // onBlur={onInputBlur}
                           />
+                          {inputError[input.id] && <div className="form_input_error">{inputError[input.id]}</div>}
+
                         </div>
 
                         {fieldset.legend === "Employee Informations" && input.id === "firstName" && (
@@ -232,8 +317,11 @@ const CreateEmployeeForm = () => {
                               containerClassName={'form_input_container'}
                               labelClassName={'form_input_label'}
                               inputClassName={'form_input_field'}
-                              onChange={onInputValue}
+                              onChange={onInputChange}
                             />
+                            {inputError['dateOfBirth'] && <div className="form_input_error">{inputError['dateOfBirth']}</div>}
+                            
+                            {console.log('JSX--inputError', inputError['dateOfBirth'])}
 
                             <FormDatePicker 
                               id={'startDate'}
@@ -243,8 +331,9 @@ const CreateEmployeeForm = () => {
                               containerClassName={'form_input_container'}
                               labelClassName={'form_input_label'}
                               inputClassName={'form_input_field'}
-                              onChange={onInputValue}
+                              onChange={onInputChange}
                             />
+                            {inputError['startDate'] && <div className="form_input_error">{inputError['startDate']}</div>}
                           </>
                         )}
 
@@ -258,6 +347,7 @@ const CreateEmployeeForm = () => {
                             inputClassName={'form_input_field'}
                             menuItem={arrayOfStates} 
                             onChange={selectFormChange}
+    
                           />
                         )}
                       </React.Fragment>
@@ -283,7 +373,6 @@ const CreateEmployeeForm = () => {
           </div>
 
           <SpheresButton 
-            type="submit" 
             className="spheres-button_button" 
             onClick={createEmployee} 
             text="Add Employee" 

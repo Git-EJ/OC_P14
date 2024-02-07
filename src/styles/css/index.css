@@ -606,6 +606,16 @@ body ::-webkit-scrollbar {
   background-clip: text;
   color: transparent;
 }
+.form_input_error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
+  width: 200px;
+  margin-bottom: 0.2rem;
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
+  color: #FF0000;
+}
 
 @media screen and (max-width: 1100px) {
   .form_fieldsets_wrapper {

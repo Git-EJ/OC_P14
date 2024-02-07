@@ -47,8 +47,8 @@
     //TODO
     &_field {
       @include flex_center;
-      width: 200px !important;
-      height:20px !important;
+      width: $form_input_width !important;
+      height:$form_input_height !important;
       margin-bottom: 0.5rem !important;;
       border: 1px solid $primary-color !important;
       padding: 1rem 0.5rem !important;
@@ -63,6 +63,15 @@
       font-size: 1.3rem;
       margin-bottom: 0.2rem;
       @include gradient_text($secondary_linear-gradient);
+    }
+
+    &_error {
+      @include flex_center;
+      justify-content: flex-start;
+      width: $form_input_width;
+      margin-bottom: 0.2rem;
+      font-size: clamp(0.7rem, 2vw, 0.8rem);
+      color: $error-color;
     }
   }
 }
