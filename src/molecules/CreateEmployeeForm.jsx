@@ -113,15 +113,13 @@ const CreateEmployeeForm = () => {
     {name: "Test toUpperCase", abbreviation: "tu"},
     {name: "Test notLetters", abbreviation: '123'},
     {name: "Test length", abbreviation: 'TLH'},
-    // {name: "Test notString", abbreviation: 456},
+    {name: "Test notString", abbreviation: 456},
   ]), []);
   
 
-
-  
   const [isValid, setIsValid] = useState({});
-  const [submitError, setSubmitError] = useState('');
   const [inputError, setInputError] = useState({});
+  const [submitError, setSubmitError] = useState('');
   const [submitAnimation, setSubmitAnimation] = useState(false);
   const [newArrayOfInputsValues, setNewArrayOfInputsValues] = useState({
     lastName: '',
@@ -206,7 +204,6 @@ const CreateEmployeeForm = () => {
         return console.log('%c' + 'INPUT-ERROR ' + key + ' ' + input + ' invalid input', 'color: red;');
     }
   }, []);
-
 
 
   const validateAndFormatInput = useCallback((input, key) => {
@@ -391,33 +388,39 @@ const CreateEmployeeForm = () => {
                         )}
 
                         {fieldset.legend === "Employee Address" && input.id === "city" && (
-                          <SelectField
-                            id={'state'}
-                            name={'state'}
-                            label={'State'}
-                            containerClassName="form_input_container"
-                            labelClassName={'form_input_label'}
-                            inputClassName={'form_input_field'}
-                            menuItem={arrayOfStates} 
-                            onChange={onSelectChange}
-                          />
+                          <>
+                            <SelectField
+                              id={'state'}
+                              name={'state'}
+                              label={'State'}
+                              containerClassName="form_input_container"
+                              labelClassName={'form_input_label'}
+                              inputClassName={'form_input_field'}
+                              menuItem={arrayOfStates} 
+                              onChange={onSelectChange}
+                            />
+                            {inputError['state'] && <div className="form_input_error">{inputError['state']}</div>}
+                          </>
                         )}
                       </React.Fragment>
                     )
                   })}
 
                   {fieldset.legend === "Employee Informations" && 
-                    <SelectField
-                      id={'department'}
-                      name={'department'} 
-                      label={'Department'}
-                      containerClassName="form_input_container"
-                      labelClassName={'form_input_label'}
-                      inputClassName={'form_input_field'}
-                      menuItem={arrayOfDepartments} 
-                      onChange={onSelectChange}
-                    />
-                  } 
+                    <>
+                      <SelectField
+                        id={'department'}
+                        name={'department'} 
+                        label={'Department'}
+                        containerClassName="form_input_container"
+                        labelClassName={'form_input_label'}
+                        inputClassName={'form_input_field'}
+                        menuItem={arrayOfDepartments} 
+                        onChange={onSelectChange}
+                      />
+                      {inputError['department'] && <div className="form_input_error">{inputError['department']}</div>}
+                    </>
+                  }
 
                 </fieldset>
               )
