@@ -8,6 +8,7 @@ import FormDatePicker from "../atoms/mui/DatePicker";
 import dayjs from "dayjs";
 
 
+
 // TODO SELECT VALUE COLOR IN INPUT
 const CreateEmployeeForm = () => { 
   
@@ -21,7 +22,7 @@ const CreateEmployeeForm = () => {
   const setEmployeesData = useCallback((payload) => { employeesDataDispatch({ type: "SET_EMPLOYEES_DATA", payload }) }, [employeesDataDispatch]);
   
 
-  const formFieldsets = [
+  const formFieldsets = useMemo(() => ([
     {
       legend: "Employee Informations",
       input: [
@@ -37,19 +38,19 @@ const CreateEmployeeForm = () => {
         {label: "Zip Code", id: "zipCode", labelClassName: "form_input_label", type: "text", placeholder: "Zip Code", inputClassName: "form_input_field"},
       ],
     }
-  ];
+  ]), []);
   
 
-  const arrayOfDepartments = [
+  const arrayOfDepartments = useMemo(() => ([
     {name: "Sales", abbreviation: "sales"},
     {name: "Marketing", abbreviation: "marketing"},
     {name: "Engineering", abbreviation: "engineering"},
     {name: "Human ressources", abbreviation: "human ressources"},
     {name: "Legal", abbreviation: "legal"},
-  ];
+  ]), []);
   
 
-  const arrayOfStates = [
+  const arrayOfStates = useMemo (() =>  ([
     {name: "Alabama", abbreviation: "AL"},
     {name: "Alaska", abbreviation: "AK"},
     {name: "American Samoa", abbreviation: "AS"},
@@ -113,7 +114,7 @@ const CreateEmployeeForm = () => {
     {name: "Test notLetters", abbreviation: '123'},
     {name: "Test length", abbreviation: 'TLH'},
     // {name: "Test notString", abbreviation: 456},
-  ];
+  ]), []);
   
 
 
@@ -134,14 +135,22 @@ const CreateEmployeeForm = () => {
     department: '',
   });
 
-  const regexPattern = useMemo(() => ({
-    street: /^(?!.*\.\.)[a-zA-Z0-9-. ]+$/,
-    name: /^[a-zA-ZÀ-ÿ- ]{1,30}$/,
-    date: /^(0?[1-9]|1[0-9]|2[0-9]|3[0-1])[/](0[1-9]|1[0-2])[/]([0-9]{4})$/,
-    zipCode: /^\d{5}$/,
-  }), []);
 
   
+  const regexPatterns = useMemo(() => {
+    const onlyLettersHyphenSpace= /^[a-zA-ZÀ-ÿ- ]{1,30}$/;
+    const dateFR= /^(0?[1-9]|1[0-9]|2[0-9]|3[0-1])[/](0[1-9]|1[0-2])[/]([0-9]{4})$/;
+    
+    return {
+      lastName: onlyLettersHyphenSpace,
+      firstName: onlyLettersHyphenSpace,
+      dateOfBirth: dateFR,
+      startDate: dateFR,
+      street: /^(?!.*\.\.)[a-zA-Z0-9-. ]+$/,
+      city: onlyLettersHyphenSpace,
+      zipCode: /^\d{5}$/,
+    };
+  }, []);
 
   const camelToNotCamel= useCallback((str) => {
     return str
@@ -149,171 +158,98 @@ const CreateEmployeeForm = () => {
       .replace(/^./, (match) => match.toUpperCase())
       .trim();
   }, []);
-    
 
-  const formatState = useCallback((inputState, key) => {
 
-    if( !inputState || typeof inputState !== 'string' || typeof key !== 'string' ) {
-      console.log('c%', 'INPUTSTATE-ERROR' + key + ' ' + inputState + ' invalid input => falsy or type !== string', 'color: red;');
-      setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
-      return '';
-
-    } else {
-      setIsValid(prevIsValid => ({...prevIsValid, [key]: true}));
-      return inputState;
-    }
-  }, []);
+  const regexErrorMessages = useCallback((key) => {
+    const baseMessage = `Invalid ${camelToNotCamel(key)}`;
   
+    switch (key) {
+      case 'lastName':
+      case 'firstName':
+        return `${baseMessage}, only - and letters are allowed, max 30 characters`;
+      case 'dateOfBirth':
+      case 'startDate':
+        return `${baseMessage} format, must be DD/MM/YYYY`;
+      case 'street':
+        return `${baseMessage}, only letters, numbers, . (not ..) and - are allowed, max 50 characters`;
+      case 'city':
+        return `${baseMessage}, only - and letters are allowed, max 30 characters`;
+      case 'zipCode':
+        return `${baseMessage}, only 5 digits are allowed`;
+      default:
+        return `${baseMessage}, input format`;
+    }
+  }, [camelToNotCamel]);
 
-  const formatDepartment = useCallback((inputDepartment, key) => {
 
-    if(!inputDepartment || typeof inputDepartment !== 'string' || typeof key !== 'string') {
-      console.log('%c' + 'INPUTDEPARTMENT-ERROR' + key + ' ' + inputDepartment + ' invalid input => falsy or type !== string', 'color: red;');
-      setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
-      return '';
-    } else {
-      setIsValid(prevIsValid => ({...prevIsValid, [key]: true}));
-      return inputDepartment;
+  const customErrorMessages = useCallback((key, errorType) => {
+    switch (errorType) {
+      case 'invalidType':
+        return `Invalid ${camelToNotCamel(key)}`;
+      case 'dateInTheFuture':
+        return `${camelToNotCamel(key)} cannot be in the future McFly!!!`;
+      default:
+        return `Invalid ${camelToNotCamel(key)}`;
+    }
+  }, [camelToNotCamel]);
+
+
+  const consoleErrorMessages = useCallback((key, input, log) => {
+    switch (log) {
+      case 'type':
+        return console.log('%c' + 'INPUT-ERROR ' + key + ' ' + input + ' invalid input => falsy or type !== string', 'color: red;');
+      case 'regex':
+        return console.log('%c' + 'INPUT-ERROR ' + key + ' ' + input + ' ' + `invalid ${key} => ${key} format`, 'color: red;');
+      case 'dateInTheFuture':
+        return  console.log('%c' + 'INPUTDATE-ERROR ' + key + ' ' + input + ", are in the future Marty!!!", 'color: red;');
+      default:
+        return console.log('%c' + 'INPUT-ERROR ' + key + ' ' + input + ' invalid input', 'color: red;');
     }
   }, []);
 
 
-  const formatDate = useCallback((inputDate, key) => {
 
-    if(!inputDate || typeof inputDate !== 'string' || typeof key !== 'string') {
-      console.log('%c' + 'INPUTDATE-ERROR' + key + ' ' + inputDate + ' invalid input => falsy or type !== string', 'color: red;');
+  const validateAndFormatInput = useCallback((input, key) => {
+
+    if(!input || typeof input !== 'string' || typeof key !== 'string') {
+      consoleErrorMessages(key, input, 'type');
       setInputError(prevErrors => ({
         ...prevErrors,
-        [key]:`Invalid ${camelToNotCamel(key)}`
+        [key]:customErrorMessages(key,'invalidType')
       }));
       setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
-      return '';
-
-    } else if (!inputDate.match(regexPattern.date)) {
-      console.log('%c' + 'INPUTDATE-ERROR ' + key + ' ' + inputDate + ' invalid date => date format', 'color: red;');
-      setInputError(prevErrors => ({
-        ...prevErrors,
-        [key]:`Invalid ${camelToNotCamel(key)}`
-      }));
-      setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
-      return '';
-
-    } else if(key === 'dateOfBirth' && dayjs().isBefore(dayjs(inputDate, 'DD/MM/YYYY'))) {
-      console.log('%c' + 'INPUTDATE-ERROR ' + key + ' ' + inputDate + ", are in the future Marty!!!", 'color: red;');
-      setInputError(prevErrors => ({
-        ...prevErrors,
-        [key]:`${camelToNotCamel(key)} cannot be in the future McFly!`
-      }));
-      setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
-      return '';
-
-    } else {
-      setInputError(prevErrors => {
-        const newErrors = { ...prevErrors };
-        delete newErrors[key];
-        // return the error object update, 
-        // return :reflects the state of the form with the remaining errors if there are any
-        return newErrors; 
-      });
-      setIsValid(prevIsValid => ({...prevIsValid, [key]: true}));
-      return inputDate;
-    }  
-  }, [regexPattern.date, camelToNotCamel]);
-
-
-  const formatInputText = useCallback((inputText, key) => {
-
-    if(!inputText || typeof inputText !== 'string' || typeof key !== 'string') {
-      console.log('%c' + 'INPUT-ERROR' + key + ' ' + inputText + ' invalid input => falsy or type !== string', 'color: red;');
-      setInputError(prevErrors => ({
-        ...prevErrors,
-        [key]:`Invalid ${camelToNotCamel(key)}`
-      }));
-      setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
-      return '';
-    } 
-
-    if(key === 'lastName' || key === 'firstName') {
-    
-      if(!inputText.match(regexPattern.name)) {
-        console.log('%c' + 'INPUTNAME-ERROR ' + key + ' ' + inputText + ' invalid name => name format', 'color: red;');
-        setInputError(prevErrors => ({
-          ...prevErrors,
-          [key]:`Invalid ${camelToNotCamel(key)}, only - and letters are allowed, max 30 characters.`
-        }));
-        setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
-        return '';
-      } else {
-        setInputError(prevErrors => {
-          const newErrors = { ...prevErrors };
-          delete newErrors[key];
-          return newErrors; 
-        });
-        setIsValid(prevIsValid => ({...prevIsValid, [key]: true}));
-        return inputText; 
-      }
-
-    } else if (key === 'street') {
-
-      if(!inputText.match(regexPattern.street)) {
-        console.log('%c' + 'INPUTSTREET-ERROR ' + key + ' ' + inputText + ' invalid street => street format', 'color: red;');
-        setInputError(prevErrors => ({
-          ...prevErrors,
-          [key]:`Invalid ${camelToNotCamel(key)}, only letters, numbers, . (not ..) and - are allowed, max 50 characters.`
-        }));
-        setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
-        return '';
-      } else {
-        setInputError(prevErrors => {
-          const newErrors = { ...prevErrors };
-          delete newErrors[key];
-          return newErrors;
-        });
-        setIsValid(prevIsValid => ({...prevIsValid, [key]: true}));
-        return inputText;
-      }
-
-    } else if (key === 'city') {
-
-      if(!inputText.match(regexPattern.name)) {
-        console.log('%c' + 'INPUTCITY-ERROR ' + key + ' ' + inputText + ' invalid city => city format', 'color: red;');
-        setInputError(prevErrors => ({
-          ...prevErrors,
-          [key]:`Invalid ${camelToNotCamel(key)}, only - and letters are allowed, max 30 characters.`
-        }));
-        setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
-        return '';
-      } else {
-        setInputError(prevErrors => {
-          const newErrors = { ...prevErrors };
-          delete newErrors[key];
-          return newErrors;
-        });
-        setIsValid(prevIsValid => ({...prevIsValid, [key]: true}));
-        return inputText;
-      }
-    } else if (key === 'zipCode') {
-
-      if(!inputText.match(regexPattern.zipCode)) {
-        console.log('%c' + 'INPUTZIPCODE-ERROR ' + key + ' ' + inputText + ' invalid zipCode => zipCode format', 'color: red;');
-        setInputError(prevErrors => ({
-          ...prevErrors,
-          [key]:`Invalid ${camelToNotCamel(key)}, only 5 digits are allowed.`
-        }));
-        setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
-        return '';
-      } else {
-        setInputError(prevErrors => {
-          const newErrors = { ...prevErrors };
-          delete newErrors[key];
-          return newErrors;
-        });
-        setIsValid(prevIsValid => ({...prevIsValid, [key]: true}));
-        return inputText;
-      }
+      return '';  
     }
 
-  }, [regexPattern.name, regexPattern.street, regexPattern.zipCode, camelToNotCamel]);
+    if(regexPatterns[key] && !input.match(regexPatterns[key])) {
+      consoleErrorMessages(key, input, 'regex');
+      setInputError(prevErrors => ({
+        ...prevErrors,
+        [key]:regexErrorMessages(key)
+      }));
+      setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
+      return '';
+    }
+
+    if(key === 'dateOfBirth' && dayjs().isBefore(dayjs(input, 'DD/MM/YYYY'))) {
+      consoleErrorMessages(key, input, 'dateInTheFuture');
+      setInputError(prevErrors => ({
+        ...prevErrors,
+        [key]:customErrorMessages(key, 'dateInTheFuture')
+      }));
+      setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
+      return '';
+    }
+
+    setInputError(prevErrors => {
+      const newErrors = { ...prevErrors };
+      delete newErrors[key];
+      return newErrors;
+    });
+    setIsValid(prevIsValid => ({...prevIsValid, [key]: true}));
+    return input;
+
+  }, [regexPatterns, regexErrorMessages, customErrorMessages, consoleErrorMessages]);
 
 
   const onInputChange = useCallback((e) => {
@@ -321,19 +257,19 @@ const CreateEmployeeForm = () => {
     let value = e.target.value;
 
     if(e.target.name === "state") {
-      setNewArrayOfInputsValues(prevArray => ({...prevArray, [key]: formatState(value, key)}));
+      setNewArrayOfInputsValues(prevArray => ({...prevArray, [key]: validateAndFormatInput(value, key)}));
 
     } else if(e.target.name === "dateOfBirth" || e.target.name === "startDate") {
-      setNewArrayOfInputsValues(prevArray => ({...prevArray, [key]: formatDate(value, key)}));
+      setNewArrayOfInputsValues(prevArray => ({...prevArray, [key]: validateAndFormatInput(value, key)}));
 
     } else if(e.target.name === "department") {
-      setNewArrayOfInputsValues(prevArray => ({...prevArray, [key]: formatDepartment(value, key)}));
+      setNewArrayOfInputsValues(prevArray => ({...prevArray, [key]: validateAndFormatInput(value, key)}));
 
     } else {
-      formatInputText(value, key);
+      validateAndFormatInput(value, key);
     }
 
-  }, [formatState, formatDate, formatDepartment, formatInputText]);
+  }, [validateAndFormatInput]);
 
 
   const onSelectChange = useCallback((name, value) => {
@@ -361,7 +297,6 @@ const CreateEmployeeForm = () => {
   }, []);
 
 
-
   const createEmployee = (e) => {
     e.preventDefault();
     
@@ -382,15 +317,13 @@ const CreateEmployeeForm = () => {
     }
   }
   
-
-
-  // // DEV
-  // useEffect(() => {
-  //   if (process.env.NODE_ENV === "development" ) {
-  //     console.log('newArrayOfInputsValues', newArrayOfInputsValues)
-  //     console.log('isValid', isValid)
-  //   }
-  // }, [newArrayOfInputsValues, isValid])
+  // DEV
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development" ) {
+      console.log('newArrayOfInputsValues', newArrayOfInputsValues)
+      console.log('isValid', isValid)
+    }
+  }, [newArrayOfInputsValues, isValid])
 
   //   // DEV for formatDate test error format
   // useEffect(() => {
