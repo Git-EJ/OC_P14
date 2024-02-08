@@ -151,6 +151,23 @@ th {
     transform: scale(1);
   }
 }
+@keyframes submit_error_shake {
+  0% {
+    transform: rotateZ(0);
+  }
+  25% {
+    transform: rotateZ(-3deg);
+  }
+  50% {
+    transform: rotateZ(3deg);
+  }
+  75% {
+    transform: rotateZ(-3deg);
+  }
+  100% {
+    transform: rotateZ(0);
+  }
+}
 html,
 body {
   max-width: 1440px;
@@ -615,6 +632,19 @@ body ::-webkit-scrollbar {
   margin-bottom: 0.2rem;
   font-size: clamp(0.7rem, 2vw, 0.8rem);
   color: #FF0000;
+}
+.form_submit_error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  margin: 2rem 0.5rem 0.5rem 0.5rem;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: #FF0000;
+}
+.form_submit_error_animation {
+  animation: submit_error_shake 0.3s linear;
+  animation-iteration-count: 2;
 }
 
 @media screen and (max-width: 1100px) {

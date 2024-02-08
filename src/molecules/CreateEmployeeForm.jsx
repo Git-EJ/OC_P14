@@ -8,7 +8,7 @@ import FormDatePicker from "../atoms/mui/DatePicker";
 import dayjs from "dayjs";
 
 
-// TODO REGEX INPUT
+// TODO SELECT VALUE COLOR IN INPUT
 const CreateEmployeeForm = () => { 
   
   const { state: createEmployeeState, dispatch: createEmployeeDispatch } = useContext(CreateEmployeeContext);
@@ -119,7 +119,9 @@ const CreateEmployeeForm = () => {
 
   
   const [isValid, setIsValid] = useState({});
+  const [submitError, setSubmitError] = useState('');
   const [inputError, setInputError] = useState({});
+  const [submitAnimation, setSubmitAnimation] = useState(false);
   const [newArrayOfInputsValues, setNewArrayOfInputsValues] = useState({
     lastName: '',
     firstName: '',
@@ -131,8 +133,9 @@ const CreateEmployeeForm = () => {
     state: '',
     department: '',
   });
+
   const regexPattern = useMemo(() => ({
-    street: /^[a-zA-ZÀ-ÿ0-9\s-]+$/,
+    street: /^(?!.*\.\.)[a-zA-Z0-9-. ]+$/,
     name: /^[a-zA-ZÀ-ÿ- ]{1,30}$/,
     date: /^(0?[1-9]|1[0-9]|2[0-9]|3[0-1])[/](0[1-9]|1[0-2])[/]([0-9]{4})$/,
     zipCode: /^\d{5}$/,
@@ -199,7 +202,7 @@ const CreateEmployeeForm = () => {
       console.log('%c' + 'INPUTDATE-ERROR ' + key + ' ' + inputDate + ", are in the future Marty!!!", 'color: red;');
       setInputError(prevErrors => ({
         ...prevErrors,
-        [key]:`Your ${camelToNotCamel(key)} cannot be in the future McFly!`
+        [key]:`${camelToNotCamel(key)} cannot be in the future McFly!`
       }));
       setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
       return '';
@@ -256,7 +259,7 @@ const CreateEmployeeForm = () => {
         console.log('%c' + 'INPUTSTREET-ERROR ' + key + ' ' + inputText + ' invalid street => street format', 'color: red;');
         setInputError(prevErrors => ({
           ...prevErrors,
-          [key]:`Invalid ${camelToNotCamel(key)}, only letters, numbers and - are allowed, max 50 characters.`
+          [key]:`Invalid ${camelToNotCamel(key)}, only letters, numbers, . (not ..) and - are allowed, max 50 characters.`
         }));
         setIsValid(prevIsValid => ({...prevIsValid, [key]: false}));
         return '';
@@ -315,23 +318,22 @@ const CreateEmployeeForm = () => {
 
   const onInputChange = useCallback((e) => {
     let key = e.target.name;
-    let value;
+    let value = e.target.value;
 
     if(e.target.name === "state") {
-      value = formatState(e.target.value, key);
+      setNewArrayOfInputsValues(prevArray => ({...prevArray, [key]: formatState(value, key)}));
 
     } else if(e.target.name === "dateOfBirth" || e.target.name === "startDate") {
-      value = formatDate(e.target.value, key);
+      setNewArrayOfInputsValues(prevArray => ({...prevArray, [key]: formatDate(value, key)}));
 
     } else if(e.target.name === "department") {
-      value = formatDepartment(e.target.value, key);
+      setNewArrayOfInputsValues(prevArray => ({...prevArray, [key]: formatDepartment(value, key)}));
 
     } else {
-      value = formatInputText(e.target.value, key);
+      formatInputText(value, key);
     }
 
-    setNewArrayOfInputsValues({...newArrayOfInputsValues, [key]: value })
-  }, [formatState, formatDate, formatDepartment, formatInputText, newArrayOfInputsValues]);
+  }, [formatState, formatDate, formatDepartment, formatInputText]);
 
 
   const onSelectChange = useCallback((name, value) => {
@@ -339,42 +341,58 @@ const CreateEmployeeForm = () => {
   }, [onInputChange]);
 
 
-  // const onInputBlur = () => {
-    // let inputValue = inputText
-    // .replace(/\s+/g, ' ') // if several spaces leave only one space
-    // .replace(/-+/g, '-') // if several - leave only one -
-    // .replace(/\s?-\s?/g, '-') // if space- or -space remove space
-    // .replace(/^-+|-+$|^\s+|\s+$/g, ''); // Remove - and spaces at the start and end
+  const onInputBlur = useCallback((e) => {
+    let key = e.target.name;
     
-    // return inputValue
-    // .split(' ')
-    // .map(segment =>
-    //   segment.includes('-')
-    //     ? segment.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join('-')
-    //     : segment.charAt(0).toUpperCase() + segment.slice(1).toLowerCase()
-    // )
-    // .join(' ');
-  //   setNewArrayOfInputsValues({...newArrayOfInputsValues})
-  // }
+    let value = e.target.value
+    .replace(/\s+/g, ' ') // if several spaces leave only one space
+    .replace(/-+/g, '-') // if several - leave only one -
+    .replace(/\s?-\s?/g, '-') // if space- or -space remove space
+    .replace(/^-+|-+$|^\s+|\s+$/g, '') // Remove - and spaces at the start and end
+    .split(' ')
+    .map(segment =>
+      segment.includes('-')
+        ? segment.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join('-')
+        : segment.charAt(0).toUpperCase() + segment.slice(1).toLowerCase()
+    )
+    .join(' ');
+    
+    setNewArrayOfInputsValues(prevArray => ({...prevArray, [key]: value}));
+  }, []);
+
+
 
   const createEmployee = (e) => {
-    // TODO data validation
     e.preventDefault();
-    setIsModalOpen(true);
-    setEmployeesData([...employeesData, newArrayOfInputsValues]);
+    
+    const allFieldsFilled = Object.values(newArrayOfInputsValues).every(value => value.trim() !== '');
+    if (allFieldsFilled && Object.values(isValid).every(value => value === true)) {
+      setSubmitError('');
+      setSubmitAnimation(false);
+      setIsModalOpen(true);
+      setEmployeesData([...employeesData, newArrayOfInputsValues]);
+    
+    } else {
+      setSubmitError('Please fill all the fields, and fill it correctly');
+
+      if (submitError) {
+      setSubmitAnimation(false);
+      setTimeout(() => setSubmitAnimation(true), 10);
+      }
+    }
   }
   
 
 
-  // DEV
-  useEffect(() => {
-    if (process.env.NODE_ENV === "development" ) {
-      console.log('newArrayOfInputsValues', newArrayOfInputsValues)
-      console.log('isValid', isValid)
-    }
-  }, [newArrayOfInputsValues, isValid])
+  // // DEV
+  // useEffect(() => {
+  //   if (process.env.NODE_ENV === "development" ) {
+  //     console.log('newArrayOfInputsValues', newArrayOfInputsValues)
+  //     console.log('isValid', isValid)
+  //   }
+  // }, [newArrayOfInputsValues, isValid])
 
-    // // DEV for formatDate test error format
+  //   // DEV for formatDate test error format
   // useEffect(() => {
   // if (process.env.NODE_ENV === "development" ) {
   //     formatDate('112/2021', 'dateOfBirth');
@@ -404,9 +422,8 @@ const CreateEmployeeForm = () => {
                             name={input.id}
                             placeholder={input.placeholder} 
                             className={input.inputClassName} 
-                            // value={newArrayOfInputsValues[input.id]}
                             onChange={onInputChange}
-                            // onBlur={onInputBlur}
+                            onBlur={onInputBlur}
                           />
                           {inputError[input.id] && <div className="form_input_error">{inputError[input.id]}</div>}
 
@@ -450,7 +467,6 @@ const CreateEmployeeForm = () => {
                             inputClassName={'form_input_field'}
                             menuItem={arrayOfStates} 
                             onChange={onSelectChange}
-    
                           />
                         )}
                       </React.Fragment>
@@ -475,9 +491,16 @@ const CreateEmployeeForm = () => {
             })}
           </div>
 
+          
+          {submitError && 
+            <div className={`form_submit_error ${submitAnimation ? 'form_submit_error_animation' : ''}`}>
+              {submitError}
+            </div>
+          }
+
           <SpheresButton 
             className="spheres-button_button" 
-            onClick={createEmployee} 
+            onClick= {createEmployee}
             text="Add Employee" 
             container = {window}
             maxRadius = {80}
