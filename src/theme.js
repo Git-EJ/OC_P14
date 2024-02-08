@@ -157,6 +157,42 @@ const theme = {
     },
   },
 
+  // components: {
+  //   MuiSelect: {
+  //     styleOverrides: {
+  //       '&.MuiSelect-nativeInput': {
+  //         color: 'red',
+  //       },
+  //       root: {
+  //         color:'#757575',
+  //       },
+  //     },
+  //   },
+  // },
+  
+
+  // components: {
+  //   MuiSelect: {
+  //     defaultProps: {
+  //       SelectDisplayProps: {
+  //         // style: {
+  //         //   color: 'red',
+  //         // },
+  //       },
+  //       classes: {
+  //         root: 'ROOT',
+  //         select: 'SELECT',
+  //       },
+  //     },
+
+  //     styleOverrides: {
+  //       '&.SELECT': {
+  //         color:'aqua',
+  //         border: '2px solid #2414b9',
+  //       },
+  //     },
+  //   },
+  // },
   ...themeDatePicker,
   ...themeSelect,
 }

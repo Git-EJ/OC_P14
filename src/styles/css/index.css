@@ -490,6 +490,11 @@ body ::-webkit-scrollbar {
   background: radial-gradient(circle at center, #1494B9 0%, #0E3C55 100%) !important;
 }
 
+.ROOT {
+  color: chartreuse;
+  border: 2px solid #b835b1;
+}
+
 .datepicker_popper .MuiPaper-root {
   border: 5px solid #1494B9;
   border-radius: 30px;

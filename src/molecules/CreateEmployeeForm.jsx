@@ -110,18 +110,15 @@ const CreateEmployeeForm = () => {
     {name: "West Virginia", abbreviation: "WV"},
     {name: "Wisconsin", abbreviation: "WI"},
     {name: "Wyoming", abbreviation: "WY"},
-    {name: "Test toUpperCase", abbreviation: "tu"},
-    {name: "Test notLetters", abbreviation: '123'},
-    {name: "Test length", abbreviation: 'TLH'},
-    {name: "Test notString", abbreviation: 456},
   ]), []);
   
+
 
   const [isValid, setIsValid] = useState({});
   const [inputError, setInputError] = useState({});
   const [submitError, setSubmitError] = useState('');
   const [submitAnimation, setSubmitAnimation] = useState(false);
-  const [newArrayOfInputsValues, setNewArrayOfInputsValues] = useState({
+  const [newArrayOfValues, setNewArrayOfValues] = useState({
     lastName: '',
     firstName: '',
     dateOfBirth: '',
@@ -134,7 +131,6 @@ const CreateEmployeeForm = () => {
   });
 
 
-  
   const regexPatterns = useMemo(() => {
     const onlyLettersHyphenSpace= /^[a-zA-ZÀ-ÿ- ]{1,30}$/;
     const dateFR= /^(0?[1-9]|1[0-9]|2[0-9]|3[0-1])[/](0[1-9]|1[0-2])[/]([0-9]{4})$/;
@@ -254,13 +250,13 @@ const CreateEmployeeForm = () => {
     let value = e.target.value;
 
     if(e.target.name === "state") {
-      setNewArrayOfInputsValues(prevArray => ({...prevArray, [key]: validateAndFormatInput(value, key)}));
+      setNewArrayOfValues(prevArray => ({...prevArray, [key]: validateAndFormatInput(value, key)}));
 
     } else if(e.target.name === "dateOfBirth" || e.target.name === "startDate") {
-      setNewArrayOfInputsValues(prevArray => ({...prevArray, [key]: validateAndFormatInput(value, key)}));
+      setNewArrayOfValues(prevArray => ({...prevArray, [key]: validateAndFormatInput(value, key)}));
 
     } else if(e.target.name === "department") {
-      setNewArrayOfInputsValues(prevArray => ({...prevArray, [key]: validateAndFormatInput(value, key)}));
+      setNewArrayOfValues(prevArray => ({...prevArray, [key]: validateAndFormatInput(value, key)}));
 
     } else {
       validateAndFormatInput(value, key);
@@ -290,19 +286,19 @@ const CreateEmployeeForm = () => {
     )
     .join(' ');
     
-    setNewArrayOfInputsValues(prevArray => ({...prevArray, [key]: value}));
+    setNewArrayOfValues(prevArray => ({...prevArray, [key]: value}));
   }, []);
 
 
   const createEmployee = (e) => {
     e.preventDefault();
     
-    const allFieldsFilled = Object.values(newArrayOfInputsValues).every(value => value.trim() !== '');
+    const allFieldsFilled = Object.values(newArrayOfValues).every(value => value.trim() !== '');
     if (allFieldsFilled && Object.values(isValid).every(value => value === true)) {
       setSubmitError('');
       setSubmitAnimation(false);
       setIsModalOpen(true);
-      setEmployeesData([...employeesData, newArrayOfInputsValues]);
+      setEmployeesData([...employeesData, newArrayOfValues]);
     
     } else {
       setSubmitError('Please fill all the fields, and fill it correctly');
@@ -317,10 +313,10 @@ const CreateEmployeeForm = () => {
   // DEV
   useEffect(() => {
     if (process.env.NODE_ENV === "development" ) {
-      console.log('newArrayOfInputsValues', newArrayOfInputsValues)
+      console.log('newArrayOfValues', newArrayOfValues)
       console.log('isValid', isValid)
     }
-  }, [newArrayOfInputsValues, isValid])
+  }, [newArrayOfValues, isValid])
 
   //   // DEV for formatDate test error format
   // useEffect(() => {

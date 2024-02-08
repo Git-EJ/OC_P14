@@ -17,6 +17,10 @@ const StyledSelect = styled(Select)(({theme}) => ({
     ...theme['input-border'],
   },
 
+  [`& .${'MuiSelect-nativeInput'}`]: {
+    ...theme['input-placeholder'],
+  },
+
   [`& .${'MuiSelect-select'}`]: {
     ...theme['select-input'],
   },

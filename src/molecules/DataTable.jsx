@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import DisplayDataHeaders from "../atoms/dataTable/DisplayHeaders";
 import Pagination from "../atoms/dataTable/Pagination";
 import DisplayShowingEntries from "../atoms/dataTable/DisplayShowingEnrtries";
@@ -15,15 +15,51 @@ new Promise(resolve => {
 );
 
 
+const formatData = (data, headerIndex) => {
+  const nbColumns = headerIndex.length
+  const nbEntries = data.length / nbColumns
+  const out = new Array(nbEntries)
+  for (let i = 0; i < nbEntries; i ++) {
+    const obj = {}
+    for (let j=0; j<nbColumns; j++) {
+      obj[headerIndex[j].key] = data[i*nbColumns+j]
+    }
+    out[i]= obj
+  }
+  return out
+}
+
 const sort = (entry, data, sortBy='asc') => {
+
+  const onNullable = (a,b) => {
+    if( !a ) {
+      if (!b) return 0;
+      return sortBy === 'desc' ? -1 : 1;
+    }
+    if( !b ) return sortBy === 'desc' ? 1 : -1;
+    return 2;
+  }
+
+  const onNullableNumber = (a,b) => {
+    if( isNaN(a) ) {
+      if (isNaN(b)) return 0;
+      return sortBy === 'desc' ? 1 : -1;
+    }
+    if( isNaN(b) ) return sortBy === 'desc' ? -1 : 1;
+    return (a - b) * (sortBy === "desc" ? -1 : 1);
+  }
 
   const key = entry.key;
 
     if (entry.sort) {
-      return [...data].sort((a, b) => entry.sort(a, b, sortBy==='desc' ? -1 : 1)) // for future dev (librairy)
+      return [...data].sort((a, b) => {
+        // if( !a ) return 1;
+        // if( !b ) return -1;
+        return entry.sort(a, b, sortBy==='desc' ? -1 : 1) // for future dev (librairy)
+      })
 
     } else if (entry.type === 'number') {
-      return [...data].sort((a, b) => (+a[key] - +b[key]) * (sortBy === "desc" ? -1 : 1))
+      return [...data].sort((a, b) => onNullableNumber(+a[key],+b[key]))
 
      
     } else if (entry.type === 'date') {
@@ -33,7 +69,8 @@ const sort = (entry, data, sortBy='asc') => {
           const parts = dateStr.split('/');
           return new Date(parts[2], parts[1] - 1, parts[0]); // yyyy, mm, dd => month -1 because month start at 0 in JS
         };
-    
+        const nullValue = onNullable(a[key],b[key]);
+        if (nullValue!==2) return nullValue;
         const dateA = formatDate(a[key]);
         const dateB = formatDate(b[key]);
     
@@ -42,6 +79,8 @@ const sort = (entry, data, sortBy='asc') => {
 
     } else if (entry.type === 'street') {
       return [...data].sort((a, b) => {
+        const nullValue = onNullable(a[key],b[key]);
+        if (nullValue!==2) return nullValue;
 
         const extractStreetData = (address) => {
 
@@ -80,7 +119,11 @@ const sort = (entry, data, sortBy='asc') => {
       });
 
     } else {
-      return [...data].sort((a, b) => (a[key].localeCompare(b[key])) * (sortBy === "desc" ? -1 : 1))
+      return [...data].sort((a, b) => {
+        const nullValue = onNullable(a[key],b[key]);
+        if (nullValue!==2) return nullValue;
+        return (a[key].localeCompare(b[key])) * (sortBy === "desc" ? -1 : 1)
+      })
     }
 
 }
@@ -108,11 +151,11 @@ const DataTable = ({
   IconRight = null,
   IconAsc = null,
   IconDesc = null,
+  unformatedData = false,
 }) => {
 
-  
-
-  const [displayData, setDisplayData] = useState(data);
+  const formatedData = useMemo(() => unformatedData ? formatData(data, headers) : data, [unformatedData, data, headers]);
+  const [displayData, setDisplayData] = useState( formatedData);
   const [config, setConfig] = useState({
     sort: {
       index: null,
@@ -134,7 +177,7 @@ const DataTable = ({
   const [searchTimeout, setSearchTimeout] = useState(0);
 
   const handleResetSettings = useCallback(() => {
-    setDisplayData(data);
+    setDisplayData(formatedData);
     setConfig({
       sort: {
         index: null,
@@ -156,7 +199,7 @@ const DataTable = ({
 
   }, [
     searchRef,
-    data, 
+    formatedData, 
     itemsPerPage, 
     itemsSearchSelectValue, 
   ]);
@@ -261,7 +304,7 @@ const DataTable = ({
   }, [setConfig]);
 
   useEffect(() => {
-    let array = [...data];
+    let array = [...formatedData];
     const { keyword, option } = config.search;
     const { index, direction } = config.sort;
     
@@ -275,7 +318,7 @@ const DataTable = ({
 
     setDisplayData(array);
     
-  }, [data, config, headers]);
+  }, [formatedData, config, headers]);
   
   useEffect(() => {
     handleResetSettings();
@@ -319,7 +362,7 @@ const DataTable = ({
               id={`${PREFIX}_search-select`}
               value={config.search.option}
               onChange={onSearchSelectChange}
-              {...(data.length === 0 ? {disabled: true} : null)}
+              {...(formatedData.length === 0 ? {disabled: true} : null)}
             >
               <option value="all">All</option>
               {headers.map((header, i) => (
@@ -336,7 +379,7 @@ const DataTable = ({
               type="text" 
               placeholder=""
               onChange={(e) => searchEntry(e)}
-              {...(data.length === 0 ? {disabled: true} : null)}
+              {...(formatedData.length === 0 ? {disabled: true} : null)}
             />
           </div>
         </div>
@@ -412,7 +455,7 @@ export default DataTable;
 
 DataTable.propTypes = {
   headers: PropTypes.arrayOf(PropTypes.object),
-  data: PropTypes.arrayOf(PropTypes.object),
+  data: PropTypes.arrayOf(PropTypes.object)||PropTypes.arrayOf(PropTypes.string||PropTypes.number),
   itemsPerPage: PropTypes.number,
   onEditRequest: PropTypes.func,
   onChange: PropTypes.func,
@@ -425,4 +468,5 @@ DataTable.propTypes = {
   IconAsc: PropTypes.func,
   IconDesc: PropTypes.func,
   itemsSearchSelectValue: PropTypes.string,
+  unformatedData: PropTypes.bool,
 };
