@@ -4,11 +4,11 @@ import { useLayoutEffect, useState } from "react";
 const useResponsiveRadius = ({container,  maxRadius }) => {
   const [responsiveRadius, setResponsiveRadius] = useState(maxRadius);
   
-  
   useLayoutEffect(() => {
     if (!container || maxRadius === undefined) return;
     const updateRadius = () => {
-      const containerWidth = container.innerWidth;
+      const containerWidth = container === window ? container.innerWidth : container.offsetWidth;
+      console.log('container', containerWidth)
       const radius = Math.min(maxRadius, containerWidth / 10);
       setResponsiveRadius(radius);
     };

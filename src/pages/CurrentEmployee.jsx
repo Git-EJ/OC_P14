@@ -4,8 +4,8 @@ import EmployeesDataContext from "../context/employeesData/EmployeesDataContext"
 import Header from "../molecules/Header";
 import DataTable from "../molecules/DataTable";
 import SpheresButton from "../molecules/SpheresButton";
-import CircleArrowLeft from "../assets/icons/CircleArrowLeft";
-import CircleArrowRight from "../assets/icons/CircleArrowRight";
+import CircleArrowLeft from "../atoms/icons/CircleArrowLeft";
+import CircleArrowRight from "../atoms/icons/CircleArrowRight";
 
 
 const arrayOfEmployeesDataTitle = [

@@ -3,16 +3,16 @@ import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } fro
 import DisplayDataHeaders from "../atoms/dataTable/DisplayHeaders";
 import Pagination from "../atoms/dataTable/Pagination";
 import DisplayShowingEntries from "../atoms/dataTable/DisplayShowingEnrtries";
-// const DisplayDataContents = lazy(() => import("../atoms/dataTable/DataContents"))
+const DisplayDataContents = lazy(() => import("../atoms/dataTable/DataContents"))
 
 const PREFIX = "data-table"
 
-//DEV timeout
-const DisplayDataContents = lazy(() => 
-new Promise(resolve => {
-  setTimeout(() => resolve(import("../atoms/dataTable/DataContents")), 2000);
-})
-);
+// //DEV timeout
+// const DisplayDataContents = lazy(() => 
+// new Promise(resolve => {
+//   setTimeout(() => resolve(import("../atoms/dataTable/DataContents")), 2000);
+// })
+// );
 
 
 const formatData = (data, headerIndex) => {

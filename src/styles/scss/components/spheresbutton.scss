@@ -9,7 +9,6 @@
 
   &_button {
     @include gradient_text($secondary_linear-gradient);
-    //TODO keep css with inlinestyle?
     width: $sphere_button_size;
     height: $sphere_button_size;
     font-family: 'Tektur_Bold', sans-serif;

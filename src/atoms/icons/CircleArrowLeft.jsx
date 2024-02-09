@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import SvgRadialGradient from "../../atoms/style/SvgRadialGradient";
+import SvgRadialGradient from "../style/SvgRadialGradient";
 
 const CircleArrowLeft = ({ color1, color2, rayon}) => (
   // <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->

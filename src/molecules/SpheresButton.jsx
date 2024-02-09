@@ -22,10 +22,11 @@ const SpheresButton = ({ type, className, onClick, text, container, maxRadius })
 
   useLayoutEffect(() => {
     const updateButtonSize = () => {
-      const size = window.innerWidth > 600 ? { width: '135px', height: '135px' } : { width: '100px', height: '100px' };
-      const fontSize = window.innerWidth > 600 ? '1.3rem' : '1rem';
-      const border = window.innerWidth > 600 ? '6px': '4px';
-      const innerRadius = window.innerWidth > 600 ? '69px' : '51px';
+      const largeScreen = window.innerWidth > 600;
+      const size = largeScreen ? { width: '135px', height: '135px' } : { width: '100px', height: '100px' };
+      const fontSize = largeScreen ? '1.3rem' : '1rem';
+      const border = largeScreen ? '6px': '4px';
+      const innerRadius = largeScreen ? '69px' : '51px';
       setButton({size, fontSize, border});
       setInnerRadius(innerRadius);
 

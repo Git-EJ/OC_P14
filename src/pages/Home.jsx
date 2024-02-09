@@ -1,4 +1,4 @@
-import {useLayoutEffect, useState} from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import Header from "../molecules/Header";
 import SphereLineWheel from "../molecules/SphereLineWheel";
 
@@ -10,6 +10,8 @@ const Home = () => {
   const [logoSize, setLogoSize] = useState({ width: '100%', height: '100%' });
   const [innerRadius, setInnerRadius] = useState('120px'); // wheel logo height or width / 2 => find it in variable.scss
   
+  const myRef = useRef(null)
+
   const handleClickLogo = () => {
     setAnimationSpeed(c=>c*3);
     setTimeout(() => {
@@ -19,8 +21,9 @@ const Home = () => {
 
   useLayoutEffect(() => {
     const updateLogoSize = () => {
-      const logoSize = window.innerWidth > 600 ? { width: '100%', height: '100%' } : { width: '70%', height: '70%' };
-      const innerRadius = window.innerWidth > 600 ? '120px' : '84px';
+      const largeScreen = window.innerWidth > 600;
+      const logoSize = largeScreen ? { width: '100%', height: '100%' } : { width: '70%', height: '70%' };
+      const innerRadius = largeScreen ? '120px' : '84px';
       setInnerRadius(innerRadius);
       setLogoSize(logoSize);
     }
@@ -44,20 +47,21 @@ const Home = () => {
       
       <main className="main_wrapper">
 
-        <div className="home-main_container relative" >
+        <div ref={myRef} className="home-main_container relative" >
 
+          {/*
           <SphereLineWheel 
             numberOfSphereLine={12}
             animationSpeed={animationSpeed}
             innerRadius={innerRadius} // wheel logo height or width / 2
-            container={window}
+            container={myRef.current}
             maxRadius={80}
           />
-
+  	      */}
 
           <div className="home-main_logo_container">
             <img className="home-main_logo_img"
-              src="/src/assets/logos/logo-circle-bg_hr-net.png" 
+              src={`${process.env.REACT_APP_PUBLIC_URL}/assets/logos/logo-circle-bg_hr-net.png` }
               alt="Logo HR net" 
               onClick={handleClickLogo}
               style={logoSize}

@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import './styles/css/index.css'
+import '/public/assets/index.css'
 import EmployeesContextProvider from './context/employeesData/EmployeesDataContextProvider.jsx'
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
