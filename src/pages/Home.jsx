@@ -4,7 +4,7 @@ import SphereLineWheel from "../molecules/SphereLineWheel";
 
 
 const Home = () => {
-  document.title = "HRnet | Home";
+  document.title = process.env.NODE_ENV === "development" ? "HRnet | Home DEV" : "HRnet | Home ";
   
   const [animationSpeed, setAnimationSpeed] = useState(0.02);
   const [logoSize, setLogoSize] = useState({ width: '100%', height: '100%' });
@@ -49,15 +49,14 @@ const Home = () => {
 
         <div ref={myRef} className="home-main_container relative" >
 
-          {/*
+          {/* TODO HEIGHT OF WHEEL ON LAPTOP */}
           <SphereLineWheel 
             numberOfSphereLine={12}
             animationSpeed={animationSpeed}
             innerRadius={innerRadius} // wheel logo height or width / 2
             container={myRef.current}
             maxRadius={80}
-          />
-  	      */}
+          />     
 
           <div className="home-main_logo_container">
             <img className="home-main_logo_img"

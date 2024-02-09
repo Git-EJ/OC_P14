@@ -7,6 +7,7 @@ const DisplayDataContents = lazy(() => import("../atoms/dataTable/DataContents")
 
 const PREFIX = "data-table"
 
+
 // //DEV timeout
 // const DisplayDataContents = lazy(() => 
 // new Promise(resolve => {
@@ -135,7 +136,6 @@ const searchBySelectValue = (selectedOption, value, row) => {
 }
 
 
-//TODO icons in component datatable
 const DataTable = ({
   headers,
   data,
@@ -217,6 +217,7 @@ const DataTable = ({
     onPageChanged && onPageChanged({page}) //for future dev
   }, [setConfig, onPageChanged]);
 
+
   const handleSortClick = useCallback((index, direction) => {
     console.log('handleSortClick', index, direction)
     if (displayData.length === 0) return
@@ -232,9 +233,6 @@ const DataTable = ({
   }, [displayData]);
 
 
-
-
-  //TODO REGEX
   const searchEntryDebounced = useCallback((e) => {
 
     const value = e.target.value.toLowerCase().trim();
@@ -334,7 +332,6 @@ const DataTable = ({
 
       <div className={`${PREFIX}_options_container`}>
 
-        {/* TODO Tooltip */}
         <div className={`${PREFIX}_options_entries`}>
           <label htmlFor={`${PREFIX}_entries`}>Show</label>
           <select 
@@ -397,7 +394,7 @@ const DataTable = ({
 
       <div className={`${PREFIX}_content-lines_container`}>
         <Suspense fallback={
-          <div className={`${PREFIX}_content-lines_container_loading_container`}>
+          <div className={`${PREFIX}_content-lines_container loading_dots`}>
             <p >Loading</p>
             <span>.</span>
             <span>.</span>
@@ -443,9 +440,6 @@ const DataTable = ({
         </>
 
       </div>
-      
-
-      {/* TODO delete/modif entry*/}
       
     </div>
   )

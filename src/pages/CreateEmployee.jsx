@@ -3,7 +3,7 @@ import CreateEmployeeForm from "../molecules/CreateEmployeeForm";
 import CreateEmployeeContextProvider from "../context/createEmployee/CreateEmployeeContextProvider";
 
 const CreateEmployee = () => {
-  document.title = "HRnet | CreateEmployee";
+  document.title = process.env.NODE_ENV === "development" ? "HRnet | Create Employee DEV" : "HRnet | Create Employee";
 
   return (
     <CreateEmployeeContextProvider>

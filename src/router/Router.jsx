@@ -1,27 +1,56 @@
+import{ Suspense, lazy } from "react";
 import { Navigate, createBrowserRouter } from "react-router-dom"
-import Home from "../pages/Home";
-import CreateEmployee from "../pages/CreateEmployee";
-import EmployeeList from "../pages/CurrentEmployee";
+
+const Home = lazy(() => import('../pages/Home'));
+const CreateEmployee = lazy(() => import('../pages/CreateEmployee'));
+const EmployeeList = lazy(() => import('../pages/CurrentEmployee'));
+
+
+//DEV
+// const Home = lazy(() => withDelay(() => import('../pages/Home')));
+// const withDelay = (importFunc, delay = 2000) => {
+//   return new Promise(resolve => {
+//     setTimeout(() => resolve(importFunc()), delay);
+//   });
+// };
+
+const Loader = () =>
+  <div className='page_loading loading_dots'>
+    <p >Loading</p>
+    <span>.</span>
+    <span>.</span>
+    <span>.</span>
+  </div>;
 
 
 const Router = createBrowserRouter([
 
-
   // Default routes
   {
     path: '/home',
-    element: <Home />,
+    element: (
+      <Suspense fallback={<Loader />}>
+        <Home />
+      </Suspense>
+    ),
   },
 
   {
     path: '/employee-create',
-    element: <CreateEmployee />,
-    
+    element: (
+      <Suspense fallback={<Loader />}>
+        <CreateEmployee />
+      </Suspense>
+    ),
   },
   
   {
     path: '/employee-list',
-    element: <EmployeeList />,
+    element: (
+      <Suspense fallback={<Loader />}>
+        <EmployeeList />
+      </Suspense>
+    ),
   },
   
 

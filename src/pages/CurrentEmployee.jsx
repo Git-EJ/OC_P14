@@ -56,7 +56,7 @@ const arrayOfEmployeesDataTitle = [
 
 const EmployeeList = () => {
 
-  document.title = document.title = "HRnet | Employee List";
+  document.title = process.env.NODE_ENV === "development" ? "HRnet | Employee List DEV" : "HRnet | Employee List";
   
   const navigate = useNavigate();
   const {state, dispatch} = useContext(EmployeesDataContext);

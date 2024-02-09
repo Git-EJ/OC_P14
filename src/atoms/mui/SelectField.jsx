@@ -8,29 +8,33 @@ import { useState } from 'react';
 
 
 
-const StyledSelect = styled(Select)(({theme}) => ({
-  [`& .${'MuiOutlinedInput-root'}`]: {
-    ...theme['input-field'],
-  },
+// const StyledSelect = styled(Select)(({theme}) => ({
+//   [`& .${'MuiOutlinedInput-root'}`]: {
+//     ...theme['input-field'],
+//   },
 
-  [`& .${'MuiOutlinedInput-notchedOutline'}`]: {
-    ...theme['input-border'],
-  },
+//   [`& .${'MuiOutlinedInput-notchedOutline'}`]: {
+//     ...theme['input-border'],
+//   },
 
-  [`& .${'MuiSelect-nativeInput'}`]: {
-    ...theme['input-placeholder'],
-  },
+//   [`& .${'MuiSelect-nativeInput'}`]: {
+//     ...theme['input-placeholder'],
+//   },
 
-  [`& .${'MuiSelect-select'}`]: {
-    ...theme['select-input'],
-  },
-}));
+//   [`& .${'MuiSelect-select'}`]: {
+//     ...theme['select-input'],
+//   },
+// }));
+
+// const styledSelect = {
+
+// }
 
   
   
 
 
-const SelectField = ({ id, name, label, containerClassName, labelClassName, inputClassName, menuItem, onChange }) => {
+const SelectField = ({ id, name, label, placeholder, containerClassName, labelClassName, inputClassName, menuItem, onChange }) => {
 
   const [fieldValue, setFieldValue] = useState('');
   const [open, setOpen] = useState(false);
@@ -56,29 +60,33 @@ const SelectField = ({ id, name, label, containerClassName, labelClassName, inpu
       <label htmlFor={id} className={labelClassName}>{label}</label>
 
       <FormControl> 
-        <StyledSelect 
+        <Select 
           className={inputClassName}
           id={id}
           name={name}
           open={open}
           value={fieldValue}
+          inputProps={{ 'aria-label': 'Without label' }}
           onClose={handleClose}
           onOpen={handleOpen}
           onChange={handleChange}
           displayEmpty // to display the label when no value is selected
         >
           
-          <MenuItem value="" disabled>
-            {label}
+          <MenuItem value="" disabled color='#f00'>
+          <p >{placeholder ? placeholder : ""}</p>
           </MenuItem>
 
           {menuItem.map(item => (
-            <MenuItem value={item.abbreviation} key={`selectField_${item.abbreviation}`}>
+            <MenuItem 
+              key={`selectField_${item.abbreviation}`}
+              value={item.abbreviation} 
+            >
               {item.name}
             </MenuItem>
 
           ))}
-        </StyledSelect>
+        </Select>
       </FormControl>
     </div>
   );
@@ -91,6 +99,7 @@ SelectField.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
   containerClassName: PropTypes.string,
   labelClassName: PropTypes.string,
   inputClassName: PropTypes.string,
