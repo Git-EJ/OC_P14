@@ -3,17 +3,18 @@ import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } fro
 import DisplayDataHeaders from "../atoms/dataTable/DisplayHeaders";
 import Pagination from "../atoms/dataTable/Pagination";
 import DisplayShowingEntries from "../atoms/dataTable/DisplayShowingEnrtries";
-const DisplayDataContents = lazy(() => import("../atoms/dataTable/DataContents"))
+import Loading from "../atoms/LoadingAnim";
+// const DisplayDataContents = lazy(() => import("../atoms/dataTable/DataContents"))
 
 const PREFIX = "data-table"
 
 
-// //DEV timeout
-// const DisplayDataContents = lazy(() => 
-// new Promise(resolve => {
-//   setTimeout(() => resolve(import("../atoms/dataTable/DataContents")), 2000);
-// })
-// );
+//DEV timeout
+const DisplayDataContents = lazy(() => 
+new Promise(resolve => {
+  setTimeout(() => resolve(import("../atoms/dataTable/DataContents")), 2000);
+})
+);
 
 
 const formatData = (data, headerIndex) => {
@@ -394,11 +395,8 @@ const DataTable = ({
 
       <div className={`${PREFIX}_content-lines_container`}>
         <Suspense fallback={
-          <div className={`${PREFIX}_content-lines_container loading_dots`}>
-            <p >Loading</p>
-            <span>.</span>
-            <span>.</span>
-            <span>.</span>
+          <div className={`${PREFIX}_content-lines_container`}>
+            <Loading />
           </div>
         }>
           <DisplayDataContents

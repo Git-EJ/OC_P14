@@ -7,7 +7,7 @@
 @import './base/__reset.scss';
 @import './base/__all.scss';
 
-
+@import './components/loadinganim.scss';
 @import './components/sphereline.scss';
 @import './components/spherelinewheel.scss';
 @import './components/spherepyramid.scss';
@@ -19,6 +19,7 @@
 @import './components/modal.scss';
 @import './components/createemployeeform.scss';
 @import './components/datatable.scss';
+
 
 @import './pages/home.scss';
 @import './pages/currentemployee.scss';

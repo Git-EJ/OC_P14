@@ -1,26 +1,25 @@
 import{ Suspense, lazy } from "react";
 import { Navigate, createBrowserRouter } from "react-router-dom"
-
-const Home = lazy(() => import('../pages/Home'));
+import Loading from "../atoms/LoadingAnim";
+// const Home = lazy(() => import('../pages/Home'));
 const CreateEmployee = lazy(() => import('../pages/CreateEmployee'));
 const EmployeeList = lazy(() => import('../pages/CurrentEmployee'));
 
 
-//DEV
-// const Home = lazy(() => withDelay(() => import('../pages/Home')));
-// const withDelay = (importFunc, delay = 2000) => {
-//   return new Promise(resolve => {
-//     setTimeout(() => resolve(importFunc()), delay);
-//   });
-// };
+// DEV
+const Home = lazy(() => withDelay(() => import('../pages/Home')));
+const withDelay = (importFunc, delay = 2000) => {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(importFunc()), delay);
+  });
+};
 
-const Loader = () =>
-  <div className='page_loading loading_dots'>
-    <p >Loading</p>
-    <span>.</span>
-    <span>.</span>
-    <span>.</span>
-  </div>;
+const loadingConfig= {
+  addContainerClass: "page_loading",
+  textFontSize: "3rem",
+  dotFontSize: "2.5rem",
+  nbreDots: 6
+}
 
 
 const Router = createBrowserRouter([
@@ -29,7 +28,7 @@ const Router = createBrowserRouter([
   {
     path: '/home',
     element: (
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={ <Loading {...loadingConfig}/> }>
         <Home />
       </Suspense>
     ),
@@ -38,7 +37,7 @@ const Router = createBrowserRouter([
   {
     path: '/employee-create',
     element: (
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={ <Loading {...loadingConfig}/> }>
         <CreateEmployee />
       </Suspense>
     ),
@@ -47,7 +46,7 @@ const Router = createBrowserRouter([
   {
     path: '/employee-list',
     element: (
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={ <Loading {...loadingConfig}/> }>
         <EmployeeList />
       </Suspense>
     ),
