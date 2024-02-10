@@ -60,7 +60,7 @@ const Home = () => {
 
           <div className="home-main_logo_container">
             <img className="home-main_logo_img"
-              src={`${process.env.REACT_APP_PUBLIC_URL}/assets/logos/logo-circle-bg_hr-net.png` }
+              src='/assets/logos/logo-circle-bg_hr-net.png'
               alt="Logo HR net" 
               onClick={handleClickLogo}
               style={logoSize}
