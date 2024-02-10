@@ -188,7 +188,7 @@ body ::-webkit-scrollbar {
   flex-direction: column;
   height: auto;
   width: 100%;
-  margin: 2rem 0;
+  margin: calc(2rem + 20px) 0;
 }
 .main_modal-opacity {
   opacity: 0.2;
@@ -1003,7 +1003,7 @@ body ::-webkit-scrollbar {
 }
 
 .current-employee_page-title {
-  margin: 1.5rem 0 3rem 0;
+  margin: 0 0 3rem 0;
   font-family: "Tektur_Bold", sans-serif;
   font-size: clamp(1.8rem, 4vw, 2.5rem);
   background: linear-gradient(to right, #1494B9, #0E3C55);

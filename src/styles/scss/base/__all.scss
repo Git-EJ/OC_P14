@@ -15,8 +15,7 @@ body {
     @include flex_center_column;
     height: auto;
     width: 100%;
-    margin: 2rem 0;
-
+    margin: calc(2rem + 20px) 0; 
   }
   
   &_modal-opacity {
