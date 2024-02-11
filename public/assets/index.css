@@ -526,34 +526,6 @@ body ::-webkit-scrollbar {
     margin-left: 0.5rem;
   }
 }
-.css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
-  border-radius: 0px !important;
-}
-
-.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper {
-  max-height: calc(500px - 10%) !important;
-}
-
-.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root {
-  padding: 6px 16px !important;
-}
-.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root:hover {
-  background: radial-gradient(circle at center, #1494B9 0%, #0E3C55 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-size: 1.2rem !important;
-}
-.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected {
-  color: #fff !important;
-  background: radial-gradient(circle at center, #1494B9 0%, #0E3C55 100%) !important;
-}
-
-.ROOT {
-  color: chartreuse;
-  border: 2px solid #b835b1;
-}
-
 .datepicker_popper .MuiPaper-root {
   border: 5px solid #1494B9;
   border-radius: 30px;
@@ -668,14 +640,14 @@ body ::-webkit-scrollbar {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 200px !important;
-  height: 20px !important;
-  margin-bottom: 0.5rem !important;
-  border: 1px solid #1494B9 !important;
-  padding: 1rem 0.5rem !important;
-  font-family: "Roboto", sans-serif !important;
-  font-size: 0.9rem !important;
-  border-radius: 0px !important;
+  width: 200px;
+  height: 35px;
+  margin-bottom: 0.5rem;
+  border: 1px solid #1494B9;
+  padding: 0 0.5rem;
+  font-family: "Roboto", sans-serif;
+  font-size: 0.9rem;
+  border-radius: 0px;
 }
 .form_input_label {
   width: fit-content;

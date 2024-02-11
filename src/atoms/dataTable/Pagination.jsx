@@ -195,8 +195,7 @@ const Pagination = ({
           <p>{jumpToPageText()}</p>
 
         </div>
-
-        {/* TODO Regex */}
+        
         <input type="number"
           id="Jump_to_Page"
           min="1"

@@ -1,18 +1,18 @@
 import{ Suspense, lazy } from "react";
 import { Navigate, createBrowserRouter } from "react-router-dom"
 import Loading from "../atoms/LoadingAnim";
-// const Home = lazy(() => import('../pages/Home'));
+const Home = lazy(() => import('../pages/Home'));
 const CreateEmployee = lazy(() => import('../pages/CreateEmployee'));
 const EmployeeList = lazy(() => import('../pages/CurrentEmployee'));
 
 
-// DEV
-const Home = lazy(() => withDelay(() => import('../pages/Home')));
-const withDelay = (importFunc, delay = 2000) => {
-  return new Promise(resolve => {
-    setTimeout(() => resolve(importFunc()), delay);
-  });
-};
+// // DEV
+// const Home = lazy(() => withDelay(() => import('../pages/Home')));
+// const withDelay = (importFunc, delay = 2000) => {
+//   return new Promise(resolve => {
+//     setTimeout(() => resolve(importFunc()), delay);
+//   });
+// };
 
 const loadingConfig= {
   addContainerClass: "page_loading",

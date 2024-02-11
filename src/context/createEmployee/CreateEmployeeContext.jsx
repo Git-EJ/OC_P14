@@ -1,5 +1,5 @@
 import { createContext } from "react";
 
-const CreateEmployeeContext = createContext(); //TODO create not Create
+const CreateEmployeeContext = createContext();
 
 export default CreateEmployeeContext;

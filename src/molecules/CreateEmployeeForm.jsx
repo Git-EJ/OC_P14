@@ -97,7 +97,6 @@ const arrayOfStates = [
 ]
 
 
-// TODO SELECT VALUE COLOR IN INPUT
 const CreateEmployeeForm = () => { 
   
   const { state: createEmployeeState, dispatch: createEmployeeDispatch } = useContext(CreateEmployeeContext);
@@ -384,9 +383,9 @@ const CreateEmployeeForm = () => {
                               id={'state'}
                               name={'state'}
                               label={'State'}
+                              placeholder={'State'}
                               containerClassName="form_input_container"
                               labelClassName={'form_input_label'}
-                              inputClassName={'form_input_field'}
                               menuItem={arrayOfStates} 
                               onChange={onSelectChange}
                             />
@@ -403,9 +402,9 @@ const CreateEmployeeForm = () => {
                         id={'department'}
                         name={'department'} 
                         label={'Department'}
+                        placeholder={'Department'}
                         containerClassName="form_input_container"
                         labelClassName={'form_input_label'}
-                        inputClassName={'form_input_field'}
                         menuItem={arrayOfDepartments} 
                         onChange={onSelectChange}
                       />

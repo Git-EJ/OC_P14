@@ -1,8 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 
 
-createTheme
-
 const palette = {
   main: {
     ['primary-color']: '#1494B9',
@@ -102,16 +100,52 @@ export const themeDatePicker = {
 
 export const themeSelect = {
 
-  // ['select-input-container']: {
-  //   borderRadius: '0px',
-  // },
+  ['select-field'] : {
+    justifyContent: 'flex-start',
+  },
 
-  // ['select-input']: {
-  //   padding: '0px 0px',
-  //   fontFamily: "'Roboto', sans-serif",
-  //   fontSize: '0.9rem',
-  //   color: '#757575',
-  // },
+  ['select-placeholder']: {
+    color: palette.main['input-placeholder'],
+  },
+
+  ['select-svgIcon']: {
+    ...flexCenter,
+    top: '15%',
+    right: '0.5rem',
+
+    ['& > path']: {
+      fill: palette.main['primary-color'],
+    },
+  },
+
+  ['select-menuItem']: {
+
+    fontSize: "0.8rem",
+    padding: '0 1rem',
+
+    '&:hover': {
+      backgroundColor: palette.main['primary-color'],
+      color: '#fff',
+    },
+
+    '&.Mui-selected': {
+      backgroundColor: palette.main['primary-color'],
+      color: '#fff',
+
+      '&:focus': {
+        backgroundColor: palette.main['primary-color'],
+        color: '#fff',
+      },
+    },
+  },
+
+  ['select-menuItem-disabled']: {
+    backgroundColor: 'white',
+    color: '#fff',
+    opacity: 1,
+    fontSize: "1rem",
+    background: palette.main['primary_radial-gradient'],
+  },
 };
 
 
@@ -137,13 +171,13 @@ const theme = {
   ['input-field'] : {
     ...flexCenter,
     width: '200px',
-    height:'20px',
+    height:'35px',
     marginBottom: '0.5rem',
-    border: '1px solid $primary-color',
-    padding: '1rem 0.5rem',
+    border: `1px solid ${palette.main['primary-color']}`,
     fontFamily: "'Roboto', sans-serif",
     fontSize: '0.9rem',
     borderRadius: '0',
+    boxSizing: 'border-box',
   },
 
   ['input-border']: {
@@ -160,66 +194,10 @@ const theme = {
     },
   },
 
-  // components: {
-  //   MuiSelect: {
-  //     styleOverrides: {
-  //       '&.MuiSelect-nativeInput': {
-  //         color: 'red',
-  //       },
-  //       root: {
-  //         color:'#757575',
-  //       },
-  //     },
-  //   },
-  // },
-  
-
-  // components: {
-  //   MuiSelect: {
-  //     defaultProps: {
-  //       SelectDisplayProps: {
-  //         // style: {
-  //         //   color: 'red',
-  //         // },
-  //       },
-  //       classes: {
-  //         root: 'ROOT',
-  //         select: 'SELECT',
-  //       },
-  //     },
-
-  //     styleOverrides: {
-  //       '&.SELECT': {
-  //         color:'aqua',
-  //         border: '2px solid #2414b9',
-  //       },
-  //     },
-  //   },
-  // },
   ...themeDatePicker,
   ...themeSelect,
-}
+};
 
 
   
 export default createTheme(theme);
-
-
-  // components: {
-  //   MuiPopper: {
-  //     //position => placement in Datepicker slotProps
-  //     styleOverrides: {
-  //       color: palette.main['primary-color'],
-  //     },
-  //   },
-
-  //   MuiPaper: {
-  //     styleOverrides: {
-  //       root: {
-  //         border: `5px solid ${palette.main['primary-color']}`,
-  //         borderRadius: '30px',
-  //         overflow: 'hidden',
-  //       },
-  //     },
-  //   },
-  // },

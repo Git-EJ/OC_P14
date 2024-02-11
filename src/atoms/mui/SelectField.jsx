@@ -1,40 +1,64 @@
 import PropTypes from 'prop-types';
-import styled from '@mui/material/styles/styled';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import { useState } from 'react';
+import styled from '@mui/material/styles/styled';
+import InputBase from '@mui/material/InputBase';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
 
 
-
-
-// const StyledSelect = styled(Select)(({theme}) => ({
-//   [`& .${'MuiOutlinedInput-root'}`]: {
-//     ...theme['input-field'],
-//   },
-
-//   [`& .${'MuiOutlinedInput-notchedOutline'}`]: {
-//     ...theme['input-border'],
-//   },
-
-//   [`& .${'MuiSelect-nativeInput'}`]: {
-//     ...theme['input-placeholder'],
-//   },
-
-//   [`& .${'MuiSelect-select'}`]: {
-//     ...theme['select-input'],
-//   },
-// }));
-
-// const styledSelect = {
-
-// }
-
+const StyledSelect = styled(InputBase)(({theme}) => ({
   
-  
+  [`&.${'MuiInputBase-root'}`]: {
+
+    [`& .${'MuiInputBase-input'}`]: {
+      ...theme['input-field'],
+      ...theme['select-field'],
+      
+      [`&.${'MuiSelect-select'}`]: {
+        padding: '0 0.5rem',
+      },
+    },
+
+    [`& .${'select_placeholder'}`]: {
+      ...theme['select-placeholder'],
+    },
+
+    [`& .${'MuiSelect-iconOutlined'}`]: {
+      ...theme['select-svgIcon'],
+    }, 
+  },
+}));
 
 
-const SelectField = ({ id, name, label, placeholder, containerClassName, labelClassName, inputClassName, menuItem, onChange }) => {
+const StyledMenuItem = styled(MenuItem)(({theme}) => ({
+
+  '&.MuiMenuItem-root': {
+    ...theme['select-menuItem'],
+
+    '&.Mui-disabled': {
+      ...theme['select-menuItem-disabled'],
+    },
+
+    '&.Mui-focusVisible': {
+      backgroundColor: 'rgba(20, 149, 185, 0.1  )',
+    },
+  },
+}));
+
+
+const StyledSelectList = styled('Menu')(({theme}) => ({
+
+  '& .MuiMenu-paper': {
+    maxHeight: '300px',
+    borderRadius: 0,
+    // border: `2px solid ${theme.palette.main['primary-color']}`,
+  },
+}));
+
+
+
+const SelectField = ({ id, name, label, placeholder, containerClassName, labelClassName, menuItem, onChange }) => {
 
   const [fieldValue, setFieldValue] = useState('');
   const [open, setOpen] = useState(false);
@@ -59,9 +83,9 @@ const SelectField = ({ id, name, label, placeholder, containerClassName, labelCl
     <div className={containerClassName}>
       <label htmlFor={id} className={labelClassName}>{label}</label>
 
-      <FormControl> 
+      <FormControl >
         <Select 
-          className={inputClassName}
+          input={<StyledSelect />}
           id={id}
           name={name}
           open={open}
@@ -70,22 +94,44 @@ const SelectField = ({ id, name, label, placeholder, containerClassName, labelCl
           onClose={handleClose}
           onOpen={handleOpen}
           onChange={handleChange}
-          displayEmpty // to display the label when no value is selected
+          variant='outlined'
+          displayEmpty // to display the placeholder when no value is selected
+          native = {false} // if true native browser select is used
+          MenuProps={{
+            component: StyledSelectList,
+
+            elevation: 15, //shadow depth
+            anchorOrigin: {
+              vertical: "center",
+              horizontal: "center",
+            },
+
+            transformOrigin: {
+              vertical: 'top',
+              horizontal: "center",
+            },
+
+            MenuListProps: {
+              disablePadding: true,
+              dense: true,
+              autoFocusItem: false,
+            },
+          }}
         >
-          
-          <MenuItem value="" disabled color='#f00'>
-          <p >{placeholder ? placeholder : ""}</p>
-          </MenuItem>
+
+          < StyledMenuItem value="" disabled autoFocus={false} >
+            <p className='select_placeholder' >{placeholder ? placeholder : ""}</p>
+          </StyledMenuItem>
 
           {menuItem.map(item => (
-            <MenuItem 
+            <StyledMenuItem autoFocus={false}
               key={`selectField_${item.abbreviation}`}
               value={item.abbreviation} 
             >
               {item.name}
-            </MenuItem>
-
+            </StyledMenuItem>
           ))}
+
         </Select>
       </FormControl>
     </div>
@@ -102,7 +148,6 @@ SelectField.propTypes = {
   placeholder: PropTypes.string,
   containerClassName: PropTypes.string,
   labelClassName: PropTypes.string,
-  inputClassName: PropTypes.string,
   menuItem: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
