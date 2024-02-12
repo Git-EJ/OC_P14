@@ -358,7 +358,6 @@ const CreateEmployeeForm = () => {
                               placeholder={'Birthdate'}
                               containerClassName={'form_input_container'}
                               labelClassName={'form_input_label'}
-                              inputClassName={'form_input_field'}
                               onChange={onInputChange}
                             />
                             {inputError['dateOfBirth'] && <div className="form_input_error">{inputError['dateOfBirth']}</div>}
@@ -370,7 +369,6 @@ const CreateEmployeeForm = () => {
                               placeholder={'Start Date'}
                               containerClassName={'form_input_container'}
                               labelClassName={'form_input_label'}
-                              inputClassName={'form_input_field'}
                               onChange={onInputChange}
                             />
                             {inputError['startDate'] && <div className="form_input_error">{inputError['startDate']}</div>}

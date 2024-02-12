@@ -51,11 +51,11 @@ const StyledSelectList = styled('Menu')(({theme}) => ({
 
   '& .MuiMenu-paper': {
     maxHeight: '300px',
+    border: `3px solid ${theme.palette.main['primary-color']}`,
     borderRadius: 0,
-    // border: `2px solid ${theme.palette.main['primary-color']}`,
+    overflow: 'hidden',
   },
 }));
-
 
 
 const SelectField = ({ id, name, label, placeholder, containerClassName, labelClassName, menuItem, onChange }) => {

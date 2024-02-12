@@ -526,12 +526,6 @@ body ::-webkit-scrollbar {
     margin-left: 0.5rem;
   }
 }
-.datepicker_popper .MuiPaper-root {
-  border: 5px solid #1494B9;
-  border-radius: 30px;
-  overflow: hidden;
-}
-
 .modal_container {
   width: fit-content;
   height: fit-content;

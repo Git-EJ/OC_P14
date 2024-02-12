@@ -4,12 +4,12 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DatePicker, LocalizationProvider, PickersLayout } from '@mui/x-date-pickers';
 import  { useState } from 'react';
 import 'dayjs/locale/fr';
-
+import  Popper  from '@mui/material/Popper';
+import TextField from '@mui/material/TextField';
 
 // Style for date calendar layout
 const StyledPickersLayout = styled(PickersLayout)(({ theme }) => ({
 
-  
   [`& .${'MuiTouchRipple-root'}`]: {
     ...theme['datePicker-ripple'],
   },
@@ -33,21 +33,30 @@ const StyledPickersLayout = styled(PickersLayout)(({ theme }) => ({
 }));
 
 
+const StyledPopper = styled(Popper)(({theme}) => ({
+
+  [`& .${'MuiPaper-root'}`]: {
+    ...theme['datePicker-calendar']
+  },
+}));
+
+
 
 // Style for date input
-const StyledDatepicker = styled(DatePicker)(({theme}) => ({
+const StyledDatepicker = styled(TextField)(({theme}) => ({
 
-  [`& #${'MuiInputBase-root'}`]: {
-    ...theme['input-field'],
-  },
-
-  [`& .${'MuiOutlinedInput-notchedOutline'}`]: {
-    ...theme['input-border'],
-  },
-  
   [`& .${'MuiInputBase-input'}`]: {
     ...theme['input-placeholder'],
     ...theme['datePicker-input'],
+  },
+
+  [`& .${'MuiOutlinedInput-root'}`]: {
+    ...theme['input-field'],
+    paddingRight: 0,
+  },
+  
+  [`& .${'MuiOutlinedInput-notchedOutline'}`]: {
+    ...theme['input-border'],
   },
   
   //ripple effect on input calendar icon
@@ -58,16 +67,13 @@ const StyledDatepicker = styled(DatePicker)(({theme}) => ({
   [`& .${'MuiIconButton-edgeEnd'}`]: {
     ...theme['datePicker-button'],
   },
-
-  [`& .${'MuiOutlinedInput-root'}`]: {
-    paddingRight: 0,
-  },
-
-
+  
 }));
 
 
-const FormDatePicker = ({label, id, name, labelClassName, placeholder, inputClassName, containerClassName, onChange}) => {
+
+
+const FormDatePicker = ({label, id, name, labelClassName, placeholder, containerClassName, onChange}) => {
   
   const [value, setValue] = useState(null);
   
@@ -85,10 +91,12 @@ const FormDatePicker = ({label, id, name, labelClassName, placeholder, inputClas
       <div className={containerClassName}>
         <label htmlFor={id} className={labelClassName}>{label}</label>
         
-        <StyledDatepicker
+        <DatePicker
           onChange={(newValue) => onFormatDate(newValue, name)}
-          
+
           slots={{
+            textField: StyledDatepicker,
+            popper: StyledPopper,
             layout: StyledPickersLayout,
           }}
           
@@ -96,12 +104,13 @@ const FormDatePicker = ({label, id, name, labelClassName, placeholder, inputClas
             value: value,
             popper: {
               placement: "bottom",
-              className: "datepicker_popper", //acces to all classes in the popper, use in datepicker.scss
             },
-            textField: { 
+            paper: {
+              elevation: 0, //shadow depth //TODO NOT WORKING
+            },
+            textField: {
               name: name,
               id: id,
-              className: inputClassName,
               placeholder: placeholder, 
               formatDensity:"spacious",
             },
@@ -121,6 +130,5 @@ FormDatePicker.propTypes = {
   id: PropTypes.string,
   labelClassName: PropTypes.string,
   placeholder: PropTypes.string,
-  inputClassName: PropTypes.string,
   onChange: PropTypes.func,
 };

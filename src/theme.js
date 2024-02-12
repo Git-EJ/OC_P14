@@ -24,12 +24,13 @@ const typography = {
 }
 
 export const themeDatePicker = {
-
+  
   ['datePicker-input']: {
     fontFamily: typography['roboto'],
     fontSize: "0.9rem",
-    padding: 0,
+    padding: '0 0.5rem',
   },
+  
 
   ['datePicker-button']: {
     height: '3rem',
@@ -44,44 +45,21 @@ export const themeDatePicker = {
     },
   },
   
+
   //ripple effect on input datePicker button
   ['datePicker-ripple']: {
     color: palette.main['primary-color'],
   },
-
   
+  
+
   //START - CALENDAR
-  ['datePicker-today']: {
-      
-    ['&:not(.Mui-selected)']: {
-        border: `1px solid ${palette.main['primary-color']}`,
-
-      '&:focus': {
-        backgroundColor:'transparent',
-      },
-      
-      '&:hover': {
-        backgroundColor: palette.main['primary-color'],
-        color: '#fff',
-      },
-    },
+  ['datePicker-calendar']: {
+    border: `3px solid ${palette.main['primary-color']}`,
+    borderRadius: '30px',
+    overflow: 'hidden',
   },
-
-
-  ['datePicker-day']: {
-
-    color: palette.main['secondary-color'],
-
-    ['&.Mui-selected']: {
-      backgroundColor: palette.main['primary-color'],
-      color: '#fff',
-
-      '&:focus': {
-        backgroundColor: palette.main['primary-color'],
-        color: '#fff',
-      },
-    },
-  },
+  
 
   ['datePicker-header']: {
     background: palette.main['primary_radial-gradient'],
@@ -90,23 +68,61 @@ export const themeDatePicker = {
     padding: '2rem 0.7rem',
     textTransform: 'uppercase',
   },
+  
 
   ['datePicker-headerIcons']: {
     color: '#fff',
   },
+
+
+  ['datePicker-today']: {
+    
+    ['&:not(.Mui-selected)']: {
+        border: `1px solid ${palette.main['primary-color']}`,
+        
+        '&:focus': {
+          backgroundColor:'transparent',
+        },
+        
+        '&:hover': {
+          backgroundColor: palette.main['primary-color'],
+          color: '#fff',
+        },
+      },
+    },
+    
+    
+    ['datePicker-day']: {
+      
+      color: palette.main['secondary-color'],
+      
+      ['&.Mui-selected']: {
+        backgroundColor: palette.main['primary-color'],
+        color: '#fff',
+        
+        '&:focus': {
+          backgroundColor: palette.main['primary-color'],
+          color: '#fff',
+        },
+    },
+  },
+
 
   //END - CALENDAR
 };
 
 export const themeSelect = {
 
+
   ['select-field'] : {
     justifyContent: 'flex-start',
   },
 
+
   ['select-placeholder']: {
     color: palette.main['input-placeholder'],
   },
+
 
   ['select-svgIcon']: {
     ...flexCenter,
@@ -117,6 +133,7 @@ export const themeSelect = {
       fill: palette.main['primary-color'],
     },
   },
+
 
   ['select-menuItem']: {
 
@@ -138,6 +155,7 @@ export const themeSelect = {
       },
     },
   },
+
 
   ['select-menuItem-disabled']: {
     backgroundColor: 'white',
@@ -168,6 +186,7 @@ const theme = {
     flexDirection: "column",
   },
   
+
   ['input-field'] : {
     ...flexCenter,
     width: '200px',
@@ -180,12 +199,14 @@ const theme = {
     boxSizing: 'border-box',
   },
 
+
   ['input-border']: {
     borderRadius: '0px',
     borderStyle: 'none',
     borderWidth: '0px',
     borderColor: 'transparent',
   },
+
 
   ['input-placeholder'] : {
     [`&::placeholder`]: {
@@ -194,6 +215,7 @@ const theme = {
     },
   },
 
+  
   ...themeDatePicker,
   ...themeSelect,
 };
