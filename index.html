@@ -1,16 +1,26 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/assets/logos/logo-circle_hr-net.png" />
-    <link rel="stylesheet" href= /assets/index.css />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="HRnet" />
-    <!-- <title>HRnet</title> -->
+
+    <title>HRnet</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/logos/logo-circle_hr-net.png" />
+
+    <!-- Load the stylesheet that will reference the LCP image. -->
+    <link rel="stylesheet" href= /assets/index.css />
+
+    <!-- TODO in index or component?? -->
+    <!-- Preload the LCP image with a high fetchpriority so it starts loading with the stylesheet. -->
+    <link rel="preload" fetchpriority="high" as="image" href="/assets/logos/logo-circle-bg_hr-net_240x240.webp" type="image/webp">
+    
     
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="./src/main.jsx"></script>
+    <script type="module" src="./src/main.jsx" defer></script>
   </body>
 </html>

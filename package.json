@@ -6,9 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "build:watch": "vite build --watch",
     "preview": "vite preview",
-    "sass": "sass --watch src/styles/scss/index.scss:public/assets/index.css"
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "sass": "sass --watch src/styles/scss/index.scss:public/assets/index.css --style=compressed"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",

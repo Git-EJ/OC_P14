@@ -30,7 +30,7 @@ const SphereLineWheel = ({innerRadius="0px", startAngle=0, numberOfSphereLine, a
   const array = new Array(numberOfSphereLine).fill(0)
   const delta = 360 / numberOfSphereLine;
 
-  // const [animation, setAnimation] = useState(null)
+  const [animation, setAnimation] = useState(null)
   const [current, setCurrent] = useState(
     {
       angle: 0,
@@ -39,33 +39,33 @@ const SphereLineWheel = ({innerRadius="0px", startAngle=0, numberOfSphereLine, a
     }
   );
 
-  // const intervalAngle = useCallback(() => {
-  //   setCurrent(c => {
-  //     const dif = (c.target - c.speed)
-  //     if (Math.abs(dif) < 0.01) {
-  //       c.speed = c.target
-  //     } else {
-  //       c.speed = c.speed + (c.target - c.speed) / 100;
-  //     }
-  //     return {...c, angle: c.angle + c.speed}
-  //   })
-  // }, [])
+  const intervalAngle = useCallback(() => {
+    setCurrent(c => {
+      const dif = (c.target - c.speed)
+      if (Math.abs(dif) < 0.01) {
+        c.speed = c.target
+      } else {
+        c.speed = c.speed + (c.target - c.speed) / 100;
+      }
+      return {...c, angle: c.angle + c.speed}
+    })
+  }, [])
 
-  // useEffect(() => {
-  //   if (animationSpeed !== current.target) {
-  //     setCurrent(c=>({...c, target:animationSpeed}));
-  //   }
-  // }, [animationSpeed, current])
+  useEffect(() => {
+    if (animationSpeed !== current.target) {
+      setCurrent(c=>({...c, target:animationSpeed}));
+    }
+  }, [animationSpeed, current])
 
-  // useEffect(() => {
-  //   if (!animation) setAnimation (setInterval(intervalAngle, 30))
-  //   return () => {
-  //     if (animation) {
-  //       clearInterval(animation)
-  //       setAnimation(null)
-  //     }
-  //   }
-  // }, [intervalAngle, animation])
+  useEffect(() => {
+    if (!animation) setAnimation (setInterval(intervalAngle, 30))
+    return () => {
+      if (animation) {
+        clearInterval(animation)
+        setAnimation(null)
+      }
+    }
+  }, [intervalAngle, animation])
   
 
   return (

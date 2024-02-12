@@ -1,11 +1,30 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { lazy, useEffect, useLayoutEffect, useRef, useState } from "react";
 import Header from "../molecules/Header";
-import SphereLineWheel from "../molecules/SphereLineWheel";
-
+import LogoWheel from '/assets/logos/logo-circle-bg_hr-net_240x240.webp';
+const SphereLineWheel = lazy(() => import('../molecules/SphereLineWheel'));
 
 const Home = () => {
   document.title = process.env.NODE_ENV === "development" ? "HRnet | Home DEV" : "HRnet | Home ";
   
+
+  //TODO in index or component??
+  // useEffect(() => {
+  //   const link = document.createElement('link');
+  //   link.rel = 'preload';
+  //   link.fetchpriority = 'high';
+  //   link.as = 'image';
+  //   link.href = LogoWheel;
+  //   link.type = 'image/webp';
+
+  //   document.head.appendChild(link);
+
+  //   return () => document.head.removeChild(link);
+  // }, []);
+
+
+
+
+
   const [animationSpeed, setAnimationSpeed] = useState(0.02);
   const [logoSize, setLogoSize] = useState({ width: '100%', height: '100%' });
   const [innerRadius, setInnerRadius] = useState('120px'); // wheel logo height or width / 2 => find it in variable.scss
@@ -60,8 +79,8 @@ const Home = () => {
 
           <div className="home-main_logo_container">
             <img className="home-main_logo_img"
-              src='/assets/logos/logo-circle-bg_hr-net.png'
-              alt="Logo HR net" 
+              src= {LogoWheel}
+              alt="Logo HR net"
               onClick={handleClickLogo}
               style={logoSize}
             />

@@ -180,11 +180,6 @@ const Pagination = ({
     }
   }, [totalPageCount, onPageChange])
 
-  // useEffect(() => {
-  //   console.log('currentPage JUMP', currentPage);
-  //   console.log('inputValue JUMP', inpuValue);
-  // },[inpuValue, currentPage])
-
 
   return (
     <div className="pagination_container">
@@ -210,7 +205,7 @@ const Pagination = ({
       </div>
 
       <div className="pagination_buttons_container">
-        <button className="pagination_button_previous" onClick={onPreviousPage}>
+        <button type="button" className="pagination_button_previous" onClick={onPreviousPage} aria-label="previous page"> 
           {currentPage === 1 || totalPageCount === 0 ? null : IconLeft ? <IconLeft /> : "<"}
         </button>
  
@@ -219,7 +214,7 @@ const Pagination = ({
           totalPageCount={totalPageCount}
           onPageChange={onPageChange}
         />
-        <button className="pagination_button_next" onClick={onNextPage}>
+        <button type="button" className="pagination_button_next" onClick={onNextPage} aria-label="next page">
           {currentPage === totalPageCount || totalPageCount === 0 ? null : IconRight ? <IconRight /> : ">"}
         </button>
       </div>

@@ -7,6 +7,7 @@ import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 
 
+
 const StyledSelect = styled(InputBase)(({theme}) => ({
   
   [`&.${'MuiInputBase-root'}`]: {
@@ -47,7 +48,7 @@ const StyledMenuItem = styled(MenuItem)(({theme}) => ({
 }));
 
 
-const StyledSelectList = styled('Menu')(({theme}) => ({
+const StyledSelectList = styled('menu')(({theme}) => ({
 
   '& .MuiMenu-paper': {
     maxHeight: '300px',
@@ -86,17 +87,21 @@ const SelectField = ({ id, name, label, placeholder, containerClassName, labelCl
       <FormControl >
         <Select 
           input={<StyledSelect />}
-          id={id}
           name={name}
           open={open}
           value={fieldValue}
-          inputProps={{ 'aria-label': 'Without label' }}
           onClose={handleClose}
           onOpen={handleOpen}
           onChange={handleChange}
           variant='outlined'
           displayEmpty // to display the placeholder when no value is selected
           native = {false} // if true native browser select is used
+
+          inputProps={{ 
+            'aria-label': `${label} select field`, 
+            id: id
+          }}
+
           MenuProps={{
             component: StyledSelectList,
 
@@ -126,7 +131,7 @@ const SelectField = ({ id, name, label, placeholder, containerClassName, labelCl
           {menuItem.map(item => (
             <StyledMenuItem autoFocus={false}
               key={`selectField_${item.abbreviation}`}
-              value={item.abbreviation} 
+              value={item.abbreviation}
             >
               {item.name}
             </StyledMenuItem>

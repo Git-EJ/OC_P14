@@ -169,7 +169,7 @@ export const themeSelect = {
 
 
 const theme = {
-  
+
   ['palette']: {...palette},
   
   ['typography']: {...typography},
@@ -215,7 +215,7 @@ const theme = {
     },
   },
 
-  
+
   ...themeDatePicker,
   ...themeSelect,
 };

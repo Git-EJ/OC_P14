@@ -77,6 +77,7 @@
       border-radius: 50px 20px;
       background: $quartery_linear-gradient;
       animation: dynamic_border_bottom_linear 8s linear infinite;
+      will-change: background-position;
     }
   }
 

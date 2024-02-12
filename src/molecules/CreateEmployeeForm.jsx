@@ -378,7 +378,7 @@ const CreateEmployeeForm = () => {
                         {fieldset.legend === "Employee Address" && input.id === "city" && (
                           <>
                             <SelectField
-                              id={'state'}
+                              id={'select-state'}
                               name={'state'}
                               label={'State'}
                               placeholder={'State'}
@@ -397,7 +397,7 @@ const CreateEmployeeForm = () => {
                   {fieldset.legend === "Employee Informations" && 
                     <>
                       <SelectField
-                        id={'department'}
+                        id={'select-department'}
                         name={'department'} 
                         label={'Department'}
                         placeholder={'Department'}

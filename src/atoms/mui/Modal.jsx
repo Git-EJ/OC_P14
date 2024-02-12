@@ -56,17 +56,6 @@ Fade.propTypes = {
   ownerState: PropTypes.object,
 };
 
-// const style = {
-//   position: 'absolute',
-//   top: '50%',
-//   left: '50%',
-//   transform: 'translate(-50%, -50%)',
-//   width: 400,
-//   bgcolor: 'background.paper',
-//   border: '2px solid #000',
-//   boxShadow: 24,
-//   p: 4,
-// };
 
 
 const SpringModal = ({prefix, anim1, anim2, text}) => {
@@ -105,17 +94,16 @@ const SpringModal = ({prefix, anim1, anim2, text}) => {
           },
         }}
       >
-        {/* <Fade in={isModalOpen} sx={style}>  */}
+
         <Fade in={isModalOpen}> 
           <Box className={modalOpenForTooLong ? `${prefix}_container ${anim1}` : `${prefix}_container` }>
-              <Typography id="spring-modal-title" variant="" component="div"> {/*variant = style && component = render in html element*/}
+              <Typography id="spring-modal-title" variant="" component="div">
                 <div className={`${prefix}_text`}>{`${text}`}</div>
               </Typography>
-              <Typography id="spring-modal-description" component="div" sx={{ mt: 0 }} className={modalOpenForTooLong ? `${anim2}` : ""}> {/*sx = margin-top */}
+              <Typography id="spring-modal-description" component="div" sx={{ mt: 0 }} className={modalOpenForTooLong ? `${anim2}` : ""}>
                 <div className={`${prefix}_close-button`} onClick={handleClose} >X</div>
                 <div className={`${prefix}_close-button_label`}>close</div>
               </Typography>
-            {/* </div> */}
           </Box>
         </Fade>
       </Modal>

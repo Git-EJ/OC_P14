@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
+import  { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DatePicker, LocalizationProvider, PickersLayout } from '@mui/x-date-pickers';
-import  { useState } from 'react';
 import 'dayjs/locale/fr';
 import  Popper  from '@mui/material/Popper';
 import TextField from '@mui/material/TextField';
+
 
 // Style for date calendar layout
 const StyledPickersLayout = styled(PickersLayout)(({ theme }) => ({
@@ -102,19 +103,19 @@ const FormDatePicker = ({label, id, name, labelClassName, placeholder, container
           
           slotProps={{
             value: value,
+
             popper: {
               placement: "bottom",
             },
-            paper: {
-              elevation: 0, //shadow depth //TODO NOT WORKING
-            },
+
             textField: {
-              name: name,
               id: id,
+              name: name,
               placeholder: placeholder, 
               formatDensity:"spacious",
             },
           }}
+
         />
       </div>
     </LocalizationProvider>

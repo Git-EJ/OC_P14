@@ -25,7 +25,7 @@ const Header = ({ navigateButton_1, textButton_1, navigateButton_2, textButton_2
         <div className="header_contents_container">
 
           <div className="header_logo_container">
-            <img className="header_logo_img" src='/assets/logos/logo-circle_hr-net.png' alt="Logo HR Net" onClick={onClickHome} />
+            <img className="header_logo_img" src='/assets/logos/logo-circle_hr-net_115x115.webp' alt="Logo HR Net" onClick={onClickHome} />
             <h1 className="header_logo_title">HR net</h1>
           </div>
 
