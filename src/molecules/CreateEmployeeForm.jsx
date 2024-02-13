@@ -97,6 +97,7 @@ const arrayOfStates = [
 ]
 
 
+
 const CreateEmployeeForm = () => { 
   
   const { state: createEmployeeState, dispatch: createEmployeeDispatch } = useContext(CreateEmployeeContext);
@@ -259,6 +260,20 @@ const CreateEmployeeForm = () => {
   }, [validateAndFormatInput]);
 
 
+  const [debounceInputChange, setDebounceInputChange] = useState(0)
+  const debounceInput = useCallback ((e) => {
+    if(debounceInputChange) {
+      clearTimeout(debounceInputChange)
+    }
+    setDebounceInputChange(
+      setTimeout(() => {
+        onInputChange(e);
+        setDebounceInputChange(0);
+      },500)
+    );
+  },[onInputChange, debounceInputChange]);
+
+
   const onSelectChange = useCallback((name, value) => {
     onInputChange({ target: { name, value } });
   }, [onInputChange]);
@@ -342,7 +357,7 @@ const CreateEmployeeForm = () => {
                             name={input.id}
                             placeholder={input.placeholder} 
                             className={input.inputClassName} 
-                            onChange={onInputChange}
+                            onChange={debounceInput}
                             onBlur={onInputBlur}
                           />
                           {inputError[input.id] && <div className="form_input_error">{inputError[input.id]}</div>}
@@ -358,7 +373,7 @@ const CreateEmployeeForm = () => {
                               placeholder={'Birthdate'}
                               containerClassName={'form_input_container'}
                               labelClassName={'form_input_label'}
-                              onChange={onInputChange}
+                              onChange={debounceInput}
                             />
                             {inputError['dateOfBirth'] && <div className="form_input_error">{inputError['dateOfBirth']}</div>}
 
@@ -369,7 +384,7 @@ const CreateEmployeeForm = () => {
                               placeholder={'Start Date'}
                               containerClassName={'form_input_container'}
                               labelClassName={'form_input_label'}
-                              onChange={onInputChange}
+                              onChange={debounceInput}
                             />
                             {inputError['startDate'] && <div className="form_input_error">{inputError['startDate']}</div>}
                           </>
