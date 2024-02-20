@@ -101,8 +101,49 @@
   }
 }
 
+
 @media screen and (max-width: 450px){
-  .header_logo_title {
-    margin-left: .5rem;
+  .header {
+  
+    &_logo {
+      &_title {
+        margin-left: .5rem;
+      }
+    }
+  }
+}
+
+
+@media screen and (max-width: 400px){
+  .header {
+
+    &_logo {
+      &_container {
+        padding: 1.2rem 0 0.4rem 0;
+      }
+    }
+
+    &_contents_container {
+      flex-direction: column;
+    }
+
+    &_logo_container {
+      margin: 0 .2rem;
+    }
+  
+    &_button {
+    
+      &_container {
+        margin: 0 .2rem;
+      }
+
+      &_nav:nth-child(2) {
+        margin-bottom: .4rem;
+      }
+    }
+
+    &_border_bottom::after {
+      bottom: -2.2rem
+    }
   }
 }

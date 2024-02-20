@@ -6,9 +6,8 @@
     height: auto;
     padding: 0 2rem 1rem 2rem;
     cursor: default;
-    overflow-x: auto; 
   }
-
+  
   &_options {
 
     &_container {
@@ -21,12 +20,50 @@
       gap: 1rem;
     }
     
-    &_search_container {
+    &_right_container {
       @include flex_center_row;
       width: fit-content;
       height: auto;
       gap: 1rem;
     }
+
+    &_reset-button {
+      &_container {
+        @include flex_center_row;
+        width: fit-content;
+        height: 100%;
+
+        >p {
+          margin-right: 0.5rem;
+        }
+      }
+
+      &_button {
+        @include flex_center;
+        width: fit-content;
+        height: 100%;
+        background-color: transparent;
+
+
+        &>svg {
+          width: 1rem;
+          height: 1rem;
+          path {
+            fill: $primary-color;
+          }
+        }
+
+        &:hover {
+          cursor: pointer;
+        }
+
+        &_animated{
+          animation: resetRotate .5s ease;
+        }
+      }
+    }
+
+
 
     &-entries,
     &_search_select,
@@ -69,27 +106,26 @@
   }
 
 
+  &_table_container {
+    width: 100%;
+    margin-top: 1rem;
+    border: 2px solid $primary-color;
+    border-radius: 10px;
+    overflow-x: scroll;
+  }
+
   &_titles_container {
     @include flex_center_row;
     justify-content: space-between;
     align-items: stretch;
     width: 100%;
-    margin-top: 1rem;
 
-    >div:first-child {
-      border-radius: 10px 0 0 0;
-      border: 2px solid $primary-color;
-      border-bottom: none;
-    }
-
-    >div:nth-child(n+2) {
-      border: 2px solid $primary-color;
-      border-left: none;
-      border-bottom: none;
+    & >div {
+      border-right: 2px solid $primary-color;
     }
 
     >div:last-child {
-      border-radius: 0 10px 0 0;
+      border-right: none;
     }
   }
 
@@ -97,7 +133,6 @@
     
     &_item {
       @include data_table_contents_width;
-      
 
       &_value {
         width: fit-content;
@@ -138,19 +173,12 @@
 
   &_content-lines_container {
     @include flex_center_column;
-    width: 100%;
+    min-width: 100%;
+    width: fit-content;
     height: auto;
-    border: 2px solid $primary-color;
-    border-radius: 0 0 10px 10px;
-
-    >div:first-child {
-      border-top: 2px solid $primary-color;
-    }
-
-    >div:last-child {
-      border-bottom: none;
-    }
+    border-top: 4px solid $primary-color;
   }
+
 
   &_content-line {
 
@@ -159,10 +187,17 @@
       justify-content: space-between;
       align-items: stretch;
       width: 100%;
+      min-width: 120px;
+
+      &_selected {
+        background: rgb(20, 148, 185, .65) !important;
+        color: #fff
+      }
 
       &:nth-child(even) {
-        background: rgba(14, 60, 85, 0.200);
+        background: rgba(14, 60, 85, .2);
       }
+
     }
     
     &_item {
@@ -213,34 +248,42 @@
         @include gradient_text($secondary_linear-gradient);
       }
     }
-
-    &_reset {
-
-      &_container {
-        @include flex_center;
-        width: 100%;
-        height: auto;
-        margin-top: 0.5rem;
-      }
-
-      &_button {
-        width: fit-content;
-        height: auto;
-        padding: 0.5rem 1rem;
-        font-size: $datatable_font_size;
-        font-family: 'Tektur_Bold', sans-serif;
-        @include gradient_text($secondary_linear-gradient);
-        cursor: pointer;
-        border: 4px solid $primary-color;
-        border-radius: 50px 15px;
-        @include button_hover_push-effect(15px, 0.2);
-      }
-    }
   }
 }
 
 .caret_active {
   path {
     fill: $secondary-color;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .data-table {
+
+    &_options {
+
+      &_container {
+        @include flex_center_column;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 580px) {
+  .data-table {
+
+    &_options {
+      
+      &_right_container {
+        @include flex_center_column;
+      }
+    }
+
+    &_below {
+
+      &_container {
+        @include flex_center_column;
+      }
+    }
   }
 }

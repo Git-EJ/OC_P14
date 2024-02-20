@@ -1,8 +1,8 @@
 @import './utils/__fonts.scss';
 @import './utils/__variables.scss';
 @import './utils/__mixins.scss';
-@import './utils/__flex_mixins.scss';
 @import './utils/__animations.scss';
+@import './utils/__flex_mixins.scss';
 
 @import './base/__reset.scss';
 @import './base/__all.scss';
@@ -12,10 +12,10 @@
 @import './components/spherelinewheel.scss';
 @import './components/spherepyramid.scss';
 @import './components/spheresbutton.scss';
-@import './components/paginations.scss';
 @import './components/header.scss'; 
 @import './components/modal.scss';
 @import './components/createemployeeform.scss';
+@import './components/paginations.scss';
 @import './components/datatable.scss';
 
 

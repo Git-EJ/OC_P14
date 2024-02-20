@@ -1,34 +1,27 @@
+import { Fragment } from "react";
 import PropTypes from "prop-types";
 
-
-
-const DataContents = ({data}) => {
-
-  const dataTableShape = {
-    firstName: '',
-    lastName: '',
-    startDate: '',
-    department: '',
-    dateOfBirth: '',  
-    street: '',
-    city: '',
-    state: '',
-    zipCode: '',
-  };
+const DataContents = ({headers, data, lineSelected, setLineSelected}) => {
 
   return data.map((content, i) => (
       
-    <div className="data-table_content-line_container"
+    <div className= {`data-table_content-line_container ${lineSelected === i ? 'data-table_content-line_container_selected' : ''}`}
       id={`data-table_content-line_container_${i}`}
       key={`${i}_${content.firstName}-${content.lastName}`}
+      onClick={() => {setLineSelected(i)}}
     >
 
-      {Object.keys(dataTableShape).map((property, j) => {
-
+      {headers.map((cell, j) => {
         return (
-          <div className={`data-table_content-line_item_${j}`} key={`item_${i}_${property}`}>
-            <p className="data-table_content-line_item_value">{content[property]}</p>
-          </div>
+          <Fragment key={`item_${i}_${cell.key}`}>
+            {cell.key && (
+            <div
+              className={`data-table_content-line_item`}
+              style={cell.sx}
+            >
+              <p className="data-table_content-line_item_value">{content[cell.key]}</p>
+            </div>
+          )}</Fragment>
         )
       })}
     </div>
@@ -36,7 +29,7 @@ const DataContents = ({data}) => {
 };
 
 
-const DisplayDataContents = ({data, entriesSelectValue, displayDataLength, currentPage}) => {
+const DisplayDataContents = ({headers, data, entriesSelectValue, displayDataLength, currentPage, lineSelected, setLineSelected}) => {
   
   //avoid error when data.length is 0
   if (!data) {
@@ -45,7 +38,10 @@ const DisplayDataContents = ({data, entriesSelectValue, displayDataLength, curre
 
   return (
     <DataContents
+      headers={headers}
       data={(entriesSelectValue >= displayDataLength) ? data : data.slice((currentPage - 1) * entriesSelectValue, currentPage * entriesSelectValue )}
+      lineSelected={lineSelected}
+      setLineSelected={setLineSelected}
     />
   )
 };
@@ -53,8 +49,11 @@ const DisplayDataContents = ({data, entriesSelectValue, displayDataLength, curre
 export default DisplayDataContents;
 
 DisplayDataContents.propTypes = {
+  headers: PropTypes.arrayOf(PropTypes.object),
   data: PropTypes.arrayOf(PropTypes.object),
   entriesSelectValue: PropTypes.number,
   displayDataLength: PropTypes.number,
   currentPage: PropTypes.number,
+  lineSelected: PropTypes.number,
+  setLineSelected: PropTypes.func,
 };

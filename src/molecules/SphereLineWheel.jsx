@@ -1,14 +1,10 @@
 import PropTypes from "prop-types";
 import SphereLine from "../atoms/SphereLine";
-import { useEffect, useCallback, useState, useMemo } from "react";
+import { useEffect, useCallback, useState } from "react";
 import useResponsiveRadius from "../atoms/style/useResponsiveRadius";
-
-
-let c = 1; //DEV
 
 const RenderSpheresLines = ({innerRadius, angle, container, maxRadius}) => {
 
-  // console.log('RenderSpheresLines', c++) //TODO to many render
   const responsiveRadius = useResponsiveRadius({container, maxRadius}) ;
 
   return (

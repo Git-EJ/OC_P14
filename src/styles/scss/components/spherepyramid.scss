@@ -25,4 +25,8 @@
     background: $primary_radial-gradient;
   }
 
+  &_disabled {
+    @include displayNone;
+  }
+
 }

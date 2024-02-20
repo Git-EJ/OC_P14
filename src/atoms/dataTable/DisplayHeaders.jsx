@@ -22,7 +22,11 @@ const DisplayDataHeaders = ({
 
   return (
     headers.map((entry, index) => (
-      <div className={`data-table_title_item_${index}`} key={`${index}_${entry.value}`}>
+      <div
+        className={`data-table_title_item`}
+        style={entry.sx ? entry.sx : {}}
+        key={`${index}_${entry.value}`}
+      >
         <p className="data-table_title_item_value">{entry.value}</p>
         
         <div className="data-table_title_item_sorting_container">

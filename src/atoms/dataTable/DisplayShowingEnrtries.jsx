@@ -1,18 +1,8 @@
 import PropTypes from "prop-types";
-import { useEffect } from "react";
-
 
 const DisplayShowingEntries = ({entriesSelectValue, displayDataLength, currentPage}) => {
 
 let entriesText = displayDataLength <= 1 ? 'entry' : 'entries';
-
-useEffect(() => {
-  // console.log('entriesSelectValue: ', entriesSelectValue);
-  // console.log('displayDataLength: ', displayDataLength);
-  // console.log('currentPage: ', currentPage);
-  // console.log('DisplayShowingEntries rendered');
-}, [entriesSelectValue, displayDataLength, currentPage]);
-
 
   if(entriesSelectValue > displayDataLength) {
     return (

@@ -6,12 +6,29 @@ const useResponsiveRadius = ({container,  maxRadius }) => {
   
   useLayoutEffect(() => {
     if (!container || maxRadius === undefined) return;
+
     const updateRadius = () => {
+      const laptopScreen = window.innerHeight < 800;
       const containerWidth = container === window ? container.innerWidth : container.offsetWidth;
-      console.log('container', containerWidth)
-      const radius = Math.min(maxRadius, containerWidth / 10);
+      
+      const getDivider = (width) => {
+        if (!laptopScreen) return 10;
+        if (width < 500) return 11;
+        if (width < 600) return 13;
+        if (width < 700) return 15;
+        if (width < 800) return 17;
+        if (width < 900) return 18;
+        if (width < 1000) return 20;
+        if (width < 1100) return 22;
+        return 24;
+      };
+    
+      const divider = getDivider(containerWidth);
+      const radius = Math.min(maxRadius, containerWidth / divider);
       setResponsiveRadius(radius);
     };
+
+
     
     updateRadius();
     
@@ -19,15 +36,10 @@ const useResponsiveRadius = ({container,  maxRadius }) => {
     return () => {
       window.removeEventListener('resize', updateRadius);
     };
+
   }, [container, maxRadius]);
   
-  // if (typeof responsiveRadius !== 'number' || isNaN(responsiveRadius)) {
-  //   console.log('HOOK RETURN 1')
-  //   return;
-  // } else {
-  //   console.log('HOOK RETURN 2', responsiveRadius)
-    return responsiveRadius;
-  // }
+  return responsiveRadius;
 }
 
 export default useResponsiveRadius;

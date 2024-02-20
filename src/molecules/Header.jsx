@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MultipleVerticalBar from "../atoms/MultipleVerticalBar";
 import SpherePyramid from "../atoms/SpherePyramid";
@@ -19,6 +20,21 @@ const Header = ({ navigateButton_1, textButton_1, navigateButton_2, textButton_2
     navigate(navigateButton_2);
   }
 
+
+  const [widthWatcher, setWidthWatcher] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidthWatcher(window.innerWidth);
+    }
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    }
+  }, [widthWatcher]);
+
+
+
   return (
     <>
       <header className="header_wrapper">
@@ -35,8 +51,8 @@ const Header = ({ navigateButton_1, textButton_1, navigateButton_2, textButton_2
 
 
           <div className="header_button_container">
-            <div className="sphere-pyramid_wrapper">
-              <SpherePyramid arrayOfPattern={[7, 5, 3 ,2, 1]}/>
+            <div className={`sphere-pyramid_wrapper${widthWatcher < 400 ? '_disabled' : ''}`}>
+              {widthWatcher >= 400 && <SpherePyramid arrayOfPattern={[7, 5, 3 ,2, 1]}/>}
             </div>
 
               <button className="header_button_nav" onClick={handleClick_1}>{textButton_1}</button>
@@ -45,8 +61,8 @@ const Header = ({ navigateButton_1, textButton_1, navigateButton_2, textButton_2
               <button className="header_button_nav" onClick={handleClick_2}>{textButton_2}</button>
               }
 
-            <div className="sphere-pyramid_wrapper">
-              <SpherePyramid arrayOfPattern={[7, 5, 3 ,2, 1]}/>
+            <div className={`sphere-pyramid_wrapper${widthWatcher < 400 ? '_disabled' : ''}`}>
+              {widthWatcher >= 400 && <SpherePyramid arrayOfPattern={[7, 5, 3 ,2, 1]}/>}
             </div>
           </div>
         </div>

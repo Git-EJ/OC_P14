@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import EmployeesDataContext from "../context/employeesData/EmployeesDataContext";
 import Header from "../molecules/Header";
@@ -14,42 +14,69 @@ const arrayOfEmployeesDataTitle = [
     key: "firstName",
     value: "FirstName",
     editable: true,
+    sx: {
+      width: '13%',
+    }
   },
   {
     key: "lastName",
     value: "LastName",
+    sx: {
+      width: '13%',
+    }
   },
   {
     key: "startDate",
     value: "StartDate",
     type: "date",
+    sx: {
+      width: '10%',
+    }
   },
   {
     key: "department",
     value: "Department",
+    sx: {
+      width: '13%',
+    }
   },
   {
     key: "dateOfBirth",
     value: "Date Of Birth",
     type: "date",
+    sx: {
+      width: '10%',
+    }
   },
   {
     key: "street",
     value: "Street",
-    type: 'street'
+    type: 'street',
+    sx: {
+      width: '13%',
+    }
   },
   {
     key: "city",
     value: "City",
+    sx: {
+      width: '13%',
+    }
   },
   {
     key: "state",
     value: "State",
+    sx: {
+      width: '7%',
+    }
   },
   {
     key: "zipCode",
     value: "ZipCode",
-    type: 'number'
+    type: 'number',
+    sx: {
+      width: '8%',
+    }
   },
 ]
 
@@ -65,22 +92,11 @@ const EmployeeList = () => {
     employeesData,
   } = state;
 
-  const [resetSettings, setResetSettings] = useState(false);
-
-  const onResetSettings = useCallback(() => {
-    setResetSettings(currentState => !currentState)
-  }, [setResetSettings]);
-
 
   const addEmployeeLink = () => {
     navigate('/employee-create');
   }
 
-  useEffect(() => {
-    console.log("data:", employeesData)
-  }, [employeesData])
-
-  
   const onResetData = useCallback(() => {
     if (process.env.NODE_ENV === "development") {
       let data = []
@@ -101,8 +117,7 @@ const EmployeeList = () => {
             headers={arrayOfEmployeesDataTitle} 
             data={employeesData}
             onResetData={onResetData}
-            onResetSettings={onResetSettings}
-            resetSettings={resetSettings}
+            enableResetSettings={true}
             IconLeft={()=><CircleArrowLeft color1={'#1494B9'} color2={'#1494B9'} rayon={70}/>} //for future dev with background gradient on svg icon
             IconRight={()=><CircleArrowRight color1={'#1494B9'} color2={'#1494B9'} rayon={70} />} //for future dev with background gradient on svg icon
           />

@@ -40,9 +40,10 @@ const Home = () => {
 
   useLayoutEffect(() => {
     const updateLogoSize = () => {
+      const laptotScreen = window.innerHeight < 800;
       const largeScreen = window.innerWidth > 600;
-      const logoSize = largeScreen ? { width: '100%', height: '100%' } : { width: '70%', height: '70%' };
-      const innerRadius = largeScreen ? '120px' : '84px';
+      const logoSize = largeScreen && !laptotScreen ? { width: '100%', height: '100%' } : { width: '70%', height: '70%' };
+      const innerRadius = largeScreen && !laptotScreen ? '120px' : '84px';
       setInnerRadius(innerRadius);
       setLogoSize(logoSize);
     }
@@ -57,18 +58,19 @@ const Home = () => {
   
   return (
     <>
+    <header className="header_wrapper">
       <Header 
         navigateButton_1='/create-employee' 
         textButton_1='Create Employee'
         navigateButton_2='/employee-list'
         textButton_2='Employee List' 
       />
+    </header>
       
       <main className="main_wrapper">
 
         <div ref={myRef} className="home-main_container relative" >
 
-          {/* TODO HEIGHT OF WHEEL ON LAPTOP */}
           <SphereLineWheel 
             numberOfSphereLine={12}
             animationSpeed={animationSpeed}
