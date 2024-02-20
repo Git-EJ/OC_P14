@@ -4,17 +4,17 @@ import DisplayDataHeaders from "../atoms/dataTable/DisplayHeaders";
 import Pagination from "../atoms/dataTable/Pagination";
 import DisplayShowingEntries from "../atoms/dataTable/DisplayShowingEnrtries";
 import Loading from "../atoms/LoadingAnim";
-const DisplayDataContents = lazy(() => import("../atoms/dataTable/DataContents"))
+// const DisplayDataContents = lazy(() => import("../atoms/dataTable/DataContents"))
 
 const PREFIX = "data-table"
 
 
-// //DEV timeout
-// const DisplayDataContents = lazy(() => 
-// new Promise(resolve => {
-//   setTimeout(() => resolve(import("../atoms/dataTable/DataContents")), 2000);
-// })
-// );
+//DEV timeout
+const DisplayDataContents = lazy(() => 
+new Promise(resolve => {
+  setTimeout(() => resolve(import("../atoms/dataTable/DataContents")), 2000);
+})
+);
 
 
 const formatData = (data, headerIndex) => {
@@ -131,9 +131,8 @@ const sort = (entry, data, sortBy='asc') => {
 }
 
 const searchBySelectValue = (selectedOption, value, row) => {
-  if (selectedOption === 'all')
-    return Object.keys(row).find((key) => row[key] && row[key].toLowerCase().includes(value))
-  return row[selectedOption] && row[selectedOption].toLowerCase().includes(value)
+  if (selectedOption === 'all') return Object.keys(row).find((key) => row[key].toLowerCase().includes(value))
+  return row[selectedOption].toLowerCase().includes(value)
 }
 
 
@@ -155,7 +154,10 @@ const DataTable = ({
   unformatedData = false,
 }) => {
 
-  const formatedData = useMemo(() => unformatedData ? formatData(data, headers) : data, [unformatedData, data, headers]);
+  const formatedData = useMemo(() => {
+    return unformatedData ? formatData(data, headers) : data
+  }, [unformatedData, data, headers]);
+
   const [displayData, setDisplayData] = useState( formatedData);
 
   const [config, setConfig] = useState({
@@ -175,7 +177,12 @@ const DataTable = ({
     animated: false,
   });
 
+  useEffect(() => {
+    console.log('config', config.search.option)
+  }, [config])
+
   const searchRef = useRef({value:""})
+  const [searchSelectValue, setSearchSelectValue] = useState(itemsSearchSelectValue);
   const [lastSearch, setLastSearch] = useState('');
   const [searchTimeout, setSearchTimeout] = useState(0);
   
@@ -199,12 +206,14 @@ const DataTable = ({
     })
 
     searchRef.current && (searchRef.current.value = "")
+    setSearchSelectValue(itemsSearchSelectValue);
     setLastSearch('');
 
   }, [
     searchRef,
     formatedData, 
-    itemsPerPage, 
+    itemsPerPage,
+    itemsSearchSelectValue,
   ]);
 
 
@@ -268,6 +277,7 @@ const DataTable = ({
       search: {
         ...prevState.search,
         keyword: value,
+        option: searchSelectValue,
       },
       pagination: {
         ...prevState.pagination,
@@ -277,7 +287,7 @@ const DataTable = ({
 
     setLastSearch(value);
     
-  }, [lastSearch, handleResetSettings]);
+  }, [lastSearch, handleResetSettings, searchSelectValue]);
   
   
   const searchEntry = useCallback((e) => {
@@ -294,6 +304,7 @@ const DataTable = ({
 
 
   const onSearchSelectChange = useCallback((e) => {
+    console.log('onSearchSelectChange', e.target.value)
     setConfig(prevState => ({
       ...prevState,
       search: {
@@ -303,8 +314,9 @@ const DataTable = ({
       pagination: {
         ...prevState.pagination,
         currentPage: 1
-      }
+      },
     }))
+    setSearchSelectValue(e.target.value);
   }, [setConfig]);
   
 
@@ -344,27 +356,28 @@ const DataTable = ({
     }
 
     setDisplayData(array);
-    
-  }, [formatedData, config, headers]);
+
+  }, [formatedData, config.search, config.sort, headers]);
 
 
-
+  //for reset button animation
   useEffect(() => {
-    if(searchTimeout) clearTimeout(searchTimeout);
-
-    setTimeout(() => {
+   const resetTimeout = setTimeout(() => {
       if (config.animated) {
         setConfig(prevState => ({
           ...prevState,
           animated: false,
         }))
       }
-    }, 500)
-  }, [config.animated, setConfig, searchTimeout]);
+    }, 500);
+    return () => clearTimeout(resetTimeout);
+  }, [config.animated]);
+
+  useEffect(() => {
+    console.log('itemSearchSelectValue', itemsSearchSelectValue)
+  }, [itemsSearchSelectValue])
+
   
-
-
-
   //START DataTable RETURN
   return (
 
@@ -393,7 +406,8 @@ const DataTable = ({
         { enableResetSettings && (
             <div className={`${PREFIX}_options_reset-button_container`}>
               <p>Reset:</p>
-              <button 
+              <button
+                aria-label="Reset settings" 
                 className={`${PREFIX}_options_reset-button_button ${config.animated ? `${PREFIX}_options_reset-button_button_animated` : ''}`} 
                 onClick={() => {
                   handleResetSettings(); 
