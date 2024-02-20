@@ -1,6 +1,7 @@
 import { lazy, useEffect, useLayoutEffect, useRef, useState } from "react";
 import Header from "../molecules/Header";
 import LogoWheel from '/assets/logos/logo-circle-bg_hr-net_240x240.webp';
+import { a } from "@react-spring/web";
 const SphereLineWheel = lazy(() => import('../molecules/SphereLineWheel'));
 
 const Home = () => {
@@ -63,8 +64,8 @@ const Home = () => {
     const y = e.clientY;
     const w = window.innerWidth;
     const h = window.innerHeight;
-    const xAxis = (w / 2 - x) / 5;
-    const yAxis = (h / 2 - y) / 5;
+    const xAxis = (w / 2 - x) / 2;
+    const yAxis = (h / 2 - y) / 2;
 
     // Calculate the angle from the center
     const angleDeg = Math.atan2(y - h / 2, x - w / 2) * 180 / Math.PI;
