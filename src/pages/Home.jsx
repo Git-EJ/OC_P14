@@ -54,8 +54,40 @@ const Home = () => {
       window.removeEventListener('resize', updateLogoSize);
     }
   }, []);
+
+
+  const myRefMouseMoove = useRef(null);
+
+  const handleMouseMove = (e) => {
+    const x = e.clientX;
+    const y = e.clientY;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const xAxis = (w / 2 - x) / 5;
+    const yAxis = (h / 2 - y) / 5;
+
+    // Calculate the angle from the center
+    const angleDeg = Math.atan2(y - h / 2, x - w / 2) * 180 / Math.PI;
+    // Use the angle to determine the direction of rotation on the Z axis
+    const zAxis = angleDeg * 2;
+
+    if(myRefMouseMoove.current){
+      myRefMouseMoove.current.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg) rotateZ(${zAxis}deg)`;
+    }
+  };
+
+  const timeoutRef = useRef(null);
   
-  
+  const handleResetMouseMoove = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+    timeoutRef.current = setTimeout(() => {
+      if(myRefMouseMoove.current){
+        myRefMouseMoove.current.style.transform = `rotateY(0deg) rotateX(0deg) rotateZ(0deg)`;
+      }
+    }, 1000);
+  };
+
   return (
     <>
     <header className="header_wrapper">
@@ -69,7 +101,7 @@ const Home = () => {
       
       <main className="main_wrapper">
 
-        <div ref={myRef} className="home-main_container relative" >
+        <div ref={myRef} className="home-main_container relative">
 
           <SphereLineWheel 
             numberOfSphereLine={12}
@@ -79,12 +111,15 @@ const Home = () => {
             maxRadius={80}
           />     
 
-          <div className="home-main_logo_container">
+          <div className="home-main_logo_container" ref={myRefMouseMoove}>
+            
             <img className="home-main_logo_img"
               src= {LogoWheel}
               alt="Logo HR net"
               onClick={handleClickLogo}
               style={logoSize}
+              onMouseMove={(e) => {handleMouseMove(e)}}
+              onMouseLeave={() => {handleResetMouseMoove()}}
             />
           </div>
 

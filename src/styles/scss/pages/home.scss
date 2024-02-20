@@ -13,12 +13,15 @@
       @include flex_center;
       height: $logo_wheel_size;
       width: $logo_wheel_size;
+      perspective: 1000px;
     }
 
     &_img {
       width: 100%;
       height: 100%;
       cursor: pointer;
+      transition: transform 0.1s;
+      transform-style: preserve-3d;
     }
   }
 }
