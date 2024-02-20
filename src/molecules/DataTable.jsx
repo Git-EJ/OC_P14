@@ -144,6 +144,7 @@ const DataTable = ({
   onPageChanged  = () => {},
   onResetData = () => {},
   enableResetSettings = true,
+  resetAfterSearch = false,
   itemsPerPage = 5,
   arrayOfItemsPerPage = [1, 5, 10, 50, 100],
   itemsSearchSelectValue = 'all',
@@ -267,7 +268,7 @@ const DataTable = ({
     
     if (value === lastSearch) return;
     
-    if (value === '') {
+    if (resetAfterSearch && value === '') {
       handleResetSettings()
       return;
     }
@@ -287,7 +288,7 @@ const DataTable = ({
 
     setLastSearch(value);
     
-  }, [lastSearch, handleResetSettings, searchSelectValue]);
+  }, [lastSearch, handleResetSettings, searchSelectValue, resetAfterSearch]);
   
   
   const searchEntry = useCallback((e) => {
@@ -304,7 +305,7 @@ const DataTable = ({
 
 
   const onSearchSelectChange = useCallback((e) => {
-    console.log('onSearchSelectChange', e.target.value)
+
     setConfig(prevState => ({
       ...prevState,
       search: {
@@ -372,10 +373,6 @@ const DataTable = ({
     }, 500);
     return () => clearTimeout(resetTimeout);
   }, [config.animated]);
-
-  useEffect(() => {
-    console.log('itemSearchSelectValue', itemsSearchSelectValue)
-  }, [itemsSearchSelectValue])
 
   
   //START DataTable RETURN
@@ -522,6 +519,7 @@ DataTable.propTypes = {
   onPageChanged: PropTypes.func,
   onResetData: PropTypes.func,
   enableResetSettings: PropTypes.bool,
+  resetAfterSearch: PropTypes.bool,
   IconLeft: PropTypes.func,
   IconRight: PropTypes.func,
   IconAsc: PropTypes.func,

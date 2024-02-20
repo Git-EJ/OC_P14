@@ -118,6 +118,7 @@ const EmployeeList = () => {
             data={employeesData}
             onResetData={onResetData}
             enableResetSettings={true}
+            resetAfterSearch={true}
             IconLeft={()=><CircleArrowLeft color1={'#1494B9'} color2={'#1494B9'} rayon={70}/>} //for future dev with background gradient on svg icon
             IconRight={()=><CircleArrowRight color1={'#1494B9'} color2={'#1494B9'} rayon={70} />} //for future dev with background gradient on svg icon
           />
