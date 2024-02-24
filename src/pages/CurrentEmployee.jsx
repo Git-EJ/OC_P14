@@ -2,7 +2,7 @@ import { useCallback, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import EmployeesDataContext from "../context/employeesData/EmployeesDataContext";
 import Header from "../molecules/Header";
-import DataTable from "../molecules/DataTable";
+import DataTable from 'oc_react_datatable';
 import SpheresButton from "../molecules/SpheresButton";
 import CircleArrowLeft from "../atoms/icons/CircleArrowLeft";
 import CircleArrowRight from "../atoms/icons/CircleArrowRight";
@@ -113,7 +113,8 @@ const EmployeeList = () => {
       <main className="main_wrapper">
         <h2 className="current-employee_page-title">Employee List</h2>
 
-          <DataTable 
+          <DataTable
+            stylePrefix={'data-table'}
             headers={arrayOfEmployeesDataTitle} 
             data={employeesData}
             onResetData={onResetData}

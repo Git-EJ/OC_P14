@@ -1,112 +1,118 @@
-.pagination {
-      
-  &_container {
-    @include flex_center_row;
-    justify-content: space-between;
-    align-items: stretch;
-    width: fit-content;
-    gap: 2rem;
-  }
-
-  &_jump {
+.data-table {
+  
+  &_pagination {
+        
     &_container {
       @include flex_center_row;
-      width: 100%;
-      height: auto;
-      gap: 0.2rem;
-      
-      >input {
-        height: 100%;
-        text-align: center;
-        border: 2px solid $primary-color;
-        border-radius: 0.2rem;
-        padding: 0.2rem 0;
-        
-        &::selection { //for input value when focus on
-          background: transparent;
-        }
-      }
-    }  
-    
-    &_text-label {
-      @include flex_center_column;
+      justify-content: space-between;
+      align-items: stretch;
       width: fit-content;
-      height: auto;
-      white-space: nowrap;
-
-      >label {
-        font-size: $datatable_font_size;
-        font-family: 'Tektur_Semi-Bold', sans-serif;
-        width: fit-content;
-        margin-right: 0.5rem;
-      }
-
-      >p {
-        font-size: 0.7rem;
-        font-family: 'Roboto_regular_italic', sans-serif;
-      }
-    }  
-  }
-
-  &_buttons_container {
-    @include flex_center_row;
-    justify-content: space-between;
-    width: fit-content;
-    height: auto;
-    gap: 0.5rem;
-  }
-  
-  &_button {
-    
-    &_previous,
-    &_next,
-    &_current,
-    &_not-current{
-      @include flex_center;
-      width: fit-content;
-      background: none;
-      font-size: $pagination_font_size;
-      cursor: pointer;
-      
-      >svg {
-        width: 2rem;
-        height: 2rem;
-
-        //#svg_radial-gradient in props => in the currentEmployee.jsx return / DataTable props
-        @supports (fill: url(#svg_radial-gradient)) {
-          >path {
-            fill: url(#svg_radial-gradient); 
-          }
-        }
-
-        @supports not (fill: url(#svg_radial-gradient)) {
-          >path {
-            fill: $primary-color;
-          }
-        }
-      }
+      gap: 2rem;
     }
-
-    &_current {
-      min-width:1.5rem;
-      height: 1.5rem;
-      background: $primary-color;
-      color: #fff;
-      border-radius: 15px;
-      padding:0.2rem;
+  
+    &_jump {
+      &_container {
+        @include flex_center_row;
+        width: 100%;
+        height: auto;
+        gap: 0.2rem;
+        
+        >input {
+          height: 100%;
+          text-align: center;
+          border: 2px solid $primary-color;
+          border-radius: 0.2rem;
+          padding: 0.2rem 0;
+          
+          &::selection { //for input value when focus on
+            background: transparent;
+          }
+        }
+      }  
+      
+      &_text-label {
+        @include flex_center_column;
+        width: fit-content;
+        height: auto;
+        white-space: nowrap;
+  
+        >label {
+          font-size: $datatable_font_size;
+          font-family: 'Tektur_Semi-Bold', sans-serif;
+          width: fit-content;
+          margin-right: 0.5rem;
+        }
+  
+        >p {
+          font-size: 0.7rem;
+          font-family: 'Roboto_regular_italic', sans-serif;
+        }
+      }  
+    }
+  
+    &_buttons_container {
+      @include flex_center_row;
+      justify-content: space-between;
+      width: fit-content;
+      height: auto;
+      gap: 0.5rem;
+    }
+    
+    &_button {
+      
+      &_previous,
+      &_next,
+      &_current,
+      &_not-current{
+        @include flex_center;
+        width: fit-content;
+        background: none;
+        font-size: $pagination_font_size;
+        cursor: pointer;
+        
+        >svg {
+          width: 2rem;
+          height: 2rem;
+  
+          //#svg_radial-gradient in props => in the currentEmployee.jsx return / DataTable props
+          @supports (fill: url(#svg_radial-gradient)) {
+            >path {
+              fill: url(#svg_radial-gradient); 
+            }
+          }
+  
+          @supports not (fill: url(#svg_radial-gradient)) {
+            >path {
+              fill: $primary-color;
+            }
+          }
+        }
+      }
+  
+      &_current {
+        min-width:1.5rem;
+        height: 1.5rem;
+        background: $primary-color;
+        color: #fff;
+        border-radius: 15px;
+        padding:0.2rem;
+      }
     }
   }
 }
 
+
 @media screen and (max-width: 400px) {
-  .pagination {
+  .data-table {
+    .pagination {
 
-    &_jump {
+      &_jump {
 
-      &_container {
-        
-        >input {
-          padding: 0;
+        &_container {
+          
+          >input {
+            padding: 0;
+          }
         }
       }
     }
