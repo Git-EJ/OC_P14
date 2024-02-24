@@ -178,7 +178,7 @@ const Pagination = ({
     if(totalPageCount === 0) {
       setInputValue(0);
     }
-  }, [totalPageCount, onPageChange])
+  }, [totalPageCount])
 
 
   return (

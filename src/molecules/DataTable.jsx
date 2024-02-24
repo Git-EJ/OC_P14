@@ -463,15 +463,22 @@ const DataTable = ({
               <Loading />
             </div>
           }>
-            <DisplayDataContents
-              headers={headers}
-              displayDataLength={displayData.length}
-              data={displayData}
-              entriesSelectValue={config.pagination.entriesPerPage}
-              currentPage={config.pagination.currentPage}
-              setLineSelected={setLineSelected}
-              lineSelected={config.lineSelected}
-            />
+
+            {displayData.length !== 0 ?
+              <DisplayDataContents
+                headers={headers}
+                displayDataLength={displayData.length}
+                data={displayData}
+                entriesSelectValue={config.pagination.entriesPerPage}
+                currentPage={config.pagination.currentPage}
+                setLineSelected={setLineSelected}
+                lineSelected={config.lineSelected}
+              />
+            :
+              <div className={`${PREFIX}_content-lines_container_no_data`}>
+                <p>No data found</p>
+              </div>
+            }
 
           </Suspense>
         </div>
