@@ -36,7 +36,7 @@ npm run preview
 ```
 <br>
 
-<strong>Link to npm DataTable component:</strong><br>
+<strong>Link to npm DataTable component (made from scratch):</strong><br>
 https://www.npmjs.com/package/oc_react_datatable?activeTab=readme
 <br><br>
 
