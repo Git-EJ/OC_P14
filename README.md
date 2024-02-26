@@ -2,7 +2,7 @@
 
 <div align='center'>
 
- <img src="/public/assets/logos/logo-circle_hr-net_115x115.webp" alt="HR Net Logo" title="HR Net Logo" width="150" height="150"/>
+ <img src="/public/assets/logos/logo-circle_hr-net 240x240.webp" alt="HR Net Logo" title="HR Net Logo" width="150" height="150"/>
  
 </div><br>
 
