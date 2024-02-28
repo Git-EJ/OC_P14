@@ -68,12 +68,16 @@ https://www.npmjs.com/package/oc_react_datatable?activeTab=readme
  - form datePicker
  - form modal
 
-
+<strong> Screenshots:</strong><br><br
 <div align='center'>
 
  <img src="./src/screenshots/HRNet_screenshot-homepage.png" alt="HRNet homepage screenshot" title="HRnet homepage screenshot" width="auto" height="auto"/>
 
+ <br>
+
  <img src="./src/screenshots/HRNet_screenshot-addEmployeePage.png" alt="HRnet add employee page screenshot" title="HRnet add employee page screenshot" width="auto" height="auto"/>
+
+<br>
 
  <img src="./src/screenshots/HRNet_screenshot-employeesListPage.png" alt="HRnet employee list page screenshot" title="HRnet employee list page screenshot" width="auto" height="auto"/>
  
