@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 .env
+
+public/assets/index.css
+public/assets/index.css.map
