@@ -1,4 +1,4 @@
-<h1>OC_P14</h1>
+# OC_P14
 
 <div align='center'>
 
@@ -6,7 +6,7 @@
  
 </div><br>
 
-<h2>HR Net: Human Resource app</h2>
+## HR Net: Human Resource app
 
 App for employee management, employee creation with a form, and a datatable for the list of employees including their informations.
 
@@ -20,7 +20,7 @@ App for employee management, employee creation with a form, and a datatable for 
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
 
 
-<strong>Project:</strong> From scratch, no reuse of OC jQuery code. 
+<strong>Project:</strong> From scratch,  Translating OC JQuery code into a React 18 modules 
 
 <strong>Project goal:</strong> Moving a jQuery library to React, make a npm package.
 
@@ -29,6 +29,7 @@ App for employee management, employee creation with a form, and a datatable for 
 <strong>Make my own DataTable component npm package</strong>
 
 
+### How to setup the project:
 
 <strong>Install dependencies:</strong>
 
@@ -36,17 +37,21 @@ App for employee management, employee creation with a form, and a datatable for 
 npm i
 ```
 
+<strong>run sass:</strong>
+
+```
+npm run sass
+
+```
+### How to run the project in dev mode::
+
 <strong>run dev preview:</strong>
 
 ```
 npm run dev
 ```
 
-<strong>run sass</strong>
-
-```
-npm run sass
-```
+### How to build and run the project:
 
 <strong>build:</strong>
 ```
@@ -63,7 +68,7 @@ npm run preview
 https://www.npmjs.com/package/oc_react_datatable?activeTab=readme
 <br><br>
 
-<strong>MUI:</strong>
+<strong>This app uses MUI for the add employee form:</strong>
  - form select
  - form datePicker
  - form modal
