@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import employeesDataContext from "../context/employeesData/EmployeesDataContext";
 import CreateEmployeeContext from "../context/createEmployee/CreateEmployeeContext"
 import SelectField from "../atoms/mui/SelectField";
@@ -7,7 +7,18 @@ import SpringModal from "../atoms/mui/Modal";
 import FormDatePicker from "../atoms/mui/DatePicker";
 import dayjs from "dayjs";
 
-
+/**
+ * @description CreateEmployeeForm array of fieldsets
+ * @type {Array<Object>}
+ * @property {string} legend - legend of the fieldset
+ * @property {Array<Object>} input - array of input fields
+ * @property {string} input.label - label of the input field
+ * @property {string} input.id - id of the input field
+ * @property {string} input.labelClassName - class name of the
+ * @property {string} input.type - type of the input field
+ * @property {string} input.placeholder - placeholder of the input field
+ * @property {string} input.inputClassName - class name of the input field
+ */
   const formFieldsets = [
   {
     legend: "Employee Informations",
@@ -26,6 +37,12 @@ import dayjs from "dayjs";
   }
 ]
 
+/**
+ * @description CreateEmployeeForm array of departments
+ * @type {Array<Object>}
+ * @property {string} name - name of the department
+ * @property {string} abbreviation - abbreviation of the department
+*/
 const arrayOfDepartments = [
   {name: "Sales", abbreviation: "sales"},
   {name: "Marketing", abbreviation: "marketing"},
@@ -34,6 +51,12 @@ const arrayOfDepartments = [
   {name: "Legal", abbreviation: "legal"},
 ]
 
+/**
+ * @description CreateEmployeeForm array of states
+ * @type {Array<Object>}
+ * @property {string} name - name of the state
+ * @property {string} abbreviation - abbreviation of the state
+*/
 const arrayOfStates = [
   {name: "Alabama", abbreviation: "AL"},
   {name: "Alaska", abbreviation: "AK"},
@@ -97,7 +120,10 @@ const arrayOfStates = [
 ]
 
 
-
+/**
+ * @description CreateEmployeeForm component
+ * @returns {JSX} - CreateEmployeeForm component
+ */
 const CreateEmployeeForm = () => { 
   
   const { state: createEmployeeState, dispatch: createEmployeeDispatch } = useContext(CreateEmployeeContext);
@@ -125,7 +151,16 @@ const CreateEmployeeForm = () => {
     department: '',
   });
 
-
+  /**
+   * @description CreateEmployeeForm regex patterns
+   * @property {RegExp} lastName - regex pattern for lastName /^[a-zA-ZÀ-ÿ- ]{1,30}$/
+   * @property {RegExp} firstName - regex pattern for firstName /^[a-zA-ZÀ-ÿ- ]{1,30}$/
+   * @property {RegExp} dateOfBirth - regex pattern for dateOfBirth /^(0?[1-9]|1[0-9]|2[0-9]|3[0-1])[/](0[1-9]|1[0-2])[/]([0-9]{4})$/
+   * @property {RegExp} startDate - regex pattern for startDate /^(0?[1-9]|1[0-9]|2[0-9]|3[0-1])[/](0[1-9]|1[0-2])[/]([0-9]{4})$/
+   * @property {RegExp} street - regex pattern for street /^(?!.*\.\.)[a-zA-Z0-9-. ]+$/
+   * @property {RegExp} city - regex pattern for city /^[a-zA-ZÀ-ÿ- ]{1,30}$/
+   * @property {RegExp} zipCode - regex pattern for zipCode /^\d{5}$/
+   */
   const regexPatterns = useMemo(() => {
     const onlyLettersHyphenSpace= /^[a-zA-ZÀ-ÿ- ]{1,30}$/;
     const dateFR= /^(0?[1-9]|1[0-9]|2[0-9]|3[0-1])[/](0[1-9]|1[0-2])[/]([0-9]{4})$/;
@@ -260,7 +295,9 @@ const CreateEmployeeForm = () => {
   }, [validateAndFormatInput]);
 
 
+
   const [debounceInputChange, setDebounceInputChange] = useState(0)
+
   const debounceInput = useCallback ((e) => {
     if(debounceInputChange) {
       clearTimeout(debounceInputChange)
@@ -298,7 +335,7 @@ const CreateEmployeeForm = () => {
     setNewArrayOfValues(prevArray => ({...prevArray, [key]: value}));
   }, []);
 
-
+  
   const createEmployee = (e) => {
     e.preventDefault();
     
@@ -421,6 +458,7 @@ const CreateEmployeeForm = () => {
           }
 
           <SpheresButton 
+            type="submit" //TODO WAS NO TYPE BEFORE ????
             className="spheres-button_button" 
             onClick= {createEmployee}
             text="Add Employee" 

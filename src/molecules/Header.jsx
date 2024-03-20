@@ -4,7 +4,14 @@ import { useNavigate } from "react-router-dom";
 import MultipleVerticalBar from "../atoms/MultipleVerticalBar";
 import SpherePyramid from "../atoms/SpherePyramid";
 
-
+/**
+ * 
+ * @param {string} navigateButton_1 - navigation button up
+ * @param {string} textButton_1 - text button up
+ * @param {string} navigateButton_2 - navigation button down
+ * @param {string} textButton_2 - text button down
+ * @returns 
+ */
 const Header = ({ navigateButton_1, textButton_1, navigateButton_2, textButton_2 }) => {
 
   const navigate = useNavigate();

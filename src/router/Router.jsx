@@ -5,15 +5,18 @@ const Home = lazy(() => import('../pages/Home'));
 const CreateEmployee = lazy(() => import('../pages/CreateEmployee'));
 const EmployeeList = lazy(() => import('../pages/CurrentEmployee'));
 
-
-// // DEV
-// const Home = lazy(() => withDelay(() => import('../pages/Home')));
-// const withDelay = (importFunc, delay = 2000) => {
-//   return new Promise(resolve => {
-//     setTimeout(() => resolve(importFunc()), delay);
-//   });
-// };
-
+/**
+ * @description Loading Spinner configuration
+ * @type {{addContainerClass: string, textFontSize: string, dotFontSize: string, nbreDots: number}}
+ * @property {string} addContainerClass - Add a class to the container
+ * @property {string} textFontSize - Font size of the loading text
+ * @property {string} dotFontSize - Font size of the loading dots
+ * @property {number} nbreDots - Number of dots
+ * @default * addContainerClass: "page_loading", 
+            * textFontSize: "3rem", 
+            * dotFontSize: "2.5rem", 
+            * nbreDots: 6     
+ */
 const loadingConfig= {
   addContainerClass: "page_loading",
   textFontSize: "3rem",

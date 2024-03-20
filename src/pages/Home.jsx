@@ -1,8 +1,18 @@
-import { lazy, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { lazy, useLayoutEffect, useRef, useState } from "react";
 import Header from "../molecules/Header";
 import LogoWheel from '/assets/logos/logo-circle-bg_hr-net_240x240.webp';
 const SphereLineWheel = lazy(() => import('../molecules/SphereLineWheel'));
 
+
+
+/**
+ * @description Home page component
+ * @module pages/Home
+ * @see module:molecules/Header
+ * @see module:molecules/SphereLineWheel
+ * @see module:assets/logos/logo-circle-bg_hr-net_240x240.webp
+ * @return {JSX.Element} - Rendered Component
+*/
 const Home = () => {
   document.title = process.env.NODE_ENV === "development" ? "HRnet | Home DEV" : "HRnet | Home ";
   
@@ -12,6 +22,12 @@ const Home = () => {
   
   const myRef = useRef(null)
 
+
+  /**
+   * @description Handle click on the logo to increase the animation speed
+   * @function handleClickLogo
+   * @returns {void} - No return
+  */
   const handleClickLogo = () => {
     setAnimationSpeed(c=>c*3);
     setTimeout(() => {
@@ -19,6 +35,11 @@ const Home = () => {
     }, 3000);
   };
 
+  /**
+   * @description Update the logo size and inner radius on window resize
+   * @function useLayoutEffect
+   * @returns {void} - No return
+  */
   useLayoutEffect(() => {
     const updateLogoSize = () => {
       const laptotScreen = window.innerHeight < 800;
@@ -39,6 +60,13 @@ const Home = () => {
 
   const myRefMouseMoove = useRef(null);
 
+  /**
+   * @description Handle the mouse move event to rotate the wheel logo
+   * @function handleMouseMove
+   * @param {Event} e - Mouse move event
+   * @returns {void} - No return
+   * @see module:assets/logos/logo-circle-bg_hr-net_240x240.webp
+  */
   const handleMouseMove = (e) => {
     const x = e.clientX;
     const y = e.clientY;
@@ -57,8 +85,14 @@ const Home = () => {
     }
   };
 
-  const timeoutRef = useRef(null);
   
+  const timeoutRef = useRef(null);
+
+  /**
+   * @description Reset the wheel logo rotation to 0 after timeout param
+   * @function handleResetMouseMoove
+   * @returns {void} - No return
+   */
   const handleResetMouseMoove = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
 

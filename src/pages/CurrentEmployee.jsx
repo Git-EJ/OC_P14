@@ -8,6 +8,16 @@ import CircleArrowLeft from "../atoms/icons/CircleArrowLeft";
 import CircleArrowRight from "../atoms/icons/CircleArrowRight";
 
 
+/**
+ * @description DataTable Headers for the Employee List
+ * @constant arrayOfEmployeesDataTitle
+ * @type {Array<object>}
+ * @property {string} key - key for the data
+ * @property {string} value - value for the header
+ * @property {boolean} editable - is the data editable(optional)
+ * @property {object} sx - style object for the header
+ * @property {string} type - type of the data (optional)
+ */
 const arrayOfEmployeesDataTitle = [
   //for editing the data create date read only or not
   {
@@ -80,7 +90,10 @@ const arrayOfEmployeesDataTitle = [
   },
 ]
 
-
+/**
+ * @description EmployeeList page component 
+ * @returns {JSX.Element} - EmployeeList component
+ */
 const EmployeeList = () => {
 
   document.title = process.env.NODE_ENV === "development" ? "HRnet | Employee List DEV" : "HRnet | Employee List";
@@ -97,6 +110,9 @@ const EmployeeList = () => {
     navigate('/employee-create');
   }
 
+  /**
+   * @description Reset the data that is displayed
+   */
   const onResetData = useCallback(() => {
     if (process.env.NODE_ENV === "development") {
       let data = []

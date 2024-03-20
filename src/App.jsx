@@ -4,7 +4,21 @@ import { useContext, useEffect } from "react";
 import employeesDataContext from "./context/employeesData/EmployeesDataContext";
 
 
-//51 mocked employees data
+/**
+ * @description Array of 51 employees Mocked data
+ * @type {Array<Object>} 
+ * @property {string} firstName - First name of the employee
+ * @property {string} lastName - Last name of the employee
+ * @property {string} startDate - Start date of the employee
+ * @property {string} department - Department of the employee
+ * @property {string} dateOfBirth - Date of birth of the employee
+ * @property {string} street - Street of the employee
+ * @property {string} city - City of the employee
+ * @property {string} state - State of the employee
+ * @property {string} zipCode - Zip code of the employee
+ * @example   {'firstName': 'Diane', 'lastName': 'Pierce', 'startDate': '11/09/2021', 'department': 'IT', 'dateOfBirth': '23/01/1981', 'street': '017 Harris Plain', 'city': 'North Sharon', 'state': 'NC', 'zipCode': '12492'},
+ */
+
 const arrayOfEmployeesDataContents = [
   {'firstName': 'Diane', 'lastName': 'Pierce', 'startDate': '11/09/2021', 'department': 'IT', 'dateOfBirth': '23/01/1981', 'street': '017 Harris Plain', 'city': 'North Sharon', 'state': 'NC', 'zipCode': '12492'},
   {'firstName': 'Craig', 'lastName': 'Roth', 'startDate': '01/06/2021', 'department': 'HR', 'dateOfBirth': '08/07/1954', 'street': '7119 Leslie Spurs', 'city': 'Port Susanchester', 'state': 'FL', 'zipCode': '74557'},
@@ -60,6 +74,13 @@ const arrayOfEmployeesDataContents = [
   
   ]
 
+
+/**
+ * 
+ * @description Function that returns an array of chosen number of employees
+ * @param {number} nbEmployees of employees you want to generate
+ * @returns array of employees mocked data
+ */
 const generateMockedData = (nbEmployees) => {
   let out = [];
   for (let i = 0; i < nbEmployees; i++) {

@@ -1,9 +1,19 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+
+/**
+ * @description MultipleVerticalBar component that renders a given number of vertical bars.
+ * @param {number} maxBars - The maximum number of bars to render.
+ * @param {string} className - The className of the vertical bars.
+ * @returns {JSX} - Returns the JSX of the MultipleVerticalBar component with the given parameters.
+ */
 const MultipleVerticalBar = ({ maxBars, className}) => {
   const [nbreOfBars, setNbreOfBars] = useState(0);
 
+  /**
+   * @description Update the number of bars displayed based on the container width.
+   */
   useEffect(() => {
     const updateNumberOfBars = () => {
       

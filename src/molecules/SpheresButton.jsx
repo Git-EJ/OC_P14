@@ -4,8 +4,16 @@ import useResponsiveRadius from "../atoms/style/useResponsiveRadius";
 import { useLayoutEffect, useState } from "react";
 import theme from "../theme";
 
-
-
+/**
+ * 
+ * @param {string} type - type of the button
+ * @param {string} className - class of the button
+ * @param {function} onClick - function to call when the button is clicked
+ * @param {string} text - text to display on the button
+ * @param {object} container - container of the button
+ * @param {number} maxRadius - max radius of spheres
+ * @returns {JSX.Element} - Spheres + Button 
+ */
 const SpheresButton = ({ type, className, onClick, text, container, maxRadius }) => {
 
   const [innerRadius, setInnerRadius] = useState('68px'); // wheel logo height or width / 2 => find it in variable.scss
@@ -19,7 +27,9 @@ const SpheresButton = ({ type, className, onClick, text, container, maxRadius })
   });
 
 
-
+  /**
+   * @description Update the button properties on window resize (2 sizes for the button)
+  */
   useLayoutEffect(() => {
     const updateButtonSize = () => {
       const largeScreen = window.innerWidth > 600;
@@ -39,14 +49,16 @@ const SpheresButton = ({ type, className, onClick, text, container, maxRadius })
     }
   }, []);
 
-  
+  /**
+  * @description Calculate the radius of the spheres
+  * @param {object} container - container of the button
+  * @param {number} maxRadius - max radius of spheres
+  * @returns {number} - radius of the spheres
+  */
   const responsiveRadius = useResponsiveRadius({container, maxRadius}) ;
   
 
   return (
-    // if you want to change the innerRadius, you have to change in spheresbutton.scss
-    // the value of .spheres-button_container :nth-child(3) > :nth-child(1) 
-    // first value of translate as egal for the innerRadius
     
     <div className="spheres-button_container">
       <SphereLine innerRadius={innerRadius} radius={responsiveRadius} angle={180} numberOfSpheres={4} gap="1px" />

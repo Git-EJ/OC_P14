@@ -1,6 +1,14 @@
 import PropTypes from "prop-types";
 import { useLayoutEffect, useState } from "react";
 
+
+/**
+* @description useResponsiveRadius hook that calculates the radius of a sphere based on the container width.
+* @param {object} container - The container to calculate the radius from.
+* @param {number} maxRadius - The maximum radius of the sphere.
+* @returns {number} - Returns the radius of the sphere based on the container width.
+*/
+
 const useResponsiveRadius = ({container,  maxRadius }) => {
   const [responsiveRadius, setResponsiveRadius] = useState(maxRadius);
   
