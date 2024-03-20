@@ -54,12 +54,18 @@
       cursor: default;
       
     }
-  
+
     &_item {
+      width: 4px;
+      margin: 0 4px;
+      height: 40px;
+      background: $tertiary_linear-gradient;
+      opacity: 1;
+
       &:hover {
-        transform: scale(1.1); //TODO: when hover, the text should be bigger ?
+        opacity: 0;
       }
-    } 
+    }
   }
   
   &_border_bottom {

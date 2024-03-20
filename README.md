@@ -41,7 +41,6 @@ npm i
 
 ```
 npm run sass
-
 ```
 ### How to run the project in dev mode::
 

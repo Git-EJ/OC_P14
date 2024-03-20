@@ -28,12 +28,14 @@ const MultipleVerticalBar = ({ maxBars, className}) => {
     };
   }, [maxBars]);
 
-  let verticalBars = [];
-  for (let i = 0; i < nbreOfBars; i++) {
-    verticalBars.push(<div className={className} key={`${className}_${i}`}>|</div>);
-  }
 
-  return <div className="header_vertical_bar_container">{verticalBars}</div>;
+  return (
+    <div className="header_vertical_bar_container">
+        {(new Array(nbreOfBars).fill()).map((_, i) =>
+          <div className={className} key={`${className}_${i}`}></div>
+        )}
+    </div>
+  )
 };
 
 MultipleVerticalBar.propTypes = {

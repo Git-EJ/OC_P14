@@ -45,11 +45,8 @@ const Header = ({ navigateButton_1, textButton_1, navigateButton_2, textButton_2
             <h1 className="header_logo_title">HR net</h1>
           </div>
 
-          <div className="header_vertical_bar_container">
-            <MultipleVerticalBar maxBars={50} className={'header_vertical_bar_item'} />
-          </div>
-
-
+          <MultipleVerticalBar maxBars={50} className={'header_vertical_bar_item'} />
+        
           <div className="header_button_container">
             <div className={`sphere-pyramid_wrapper${widthWatcher < 400 ? '_disabled' : ''}`}>
               {widthWatcher >= 400 && <SpherePyramid arrayOfPattern={[7, 5, 3 ,2, 1]}/>}
