@@ -319,23 +319,6 @@ const CreateEmployeeForm = () => {
     }
   }
   
-  // DEV
-  useEffect(() => {
-    if (process.env.NODE_ENV === "development" ) {
-      console.log('newArrayOfValues', newArrayOfValues)
-      console.log('isValid', isValid)
-    }
-  }, [newArrayOfValues, isValid])
-
-  //   // DEV for formatDate test error format
-  // useEffect(() => {
-  // if (process.env.NODE_ENV === "development" ) {
-  //     formatDate('112/2021', 'dateOfBirth');
-  //     formatDate(2021, 'startDate');
-  //   }
-  // }, [formatDate]);
-
-
   return (
     <>
       <main className={`main_wrapper ${isModalOpen ? 'main_modal-opacity' : ''}`}>
